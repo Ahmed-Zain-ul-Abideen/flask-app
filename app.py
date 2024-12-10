@@ -1106,7 +1106,7 @@ def pricing():
             context = { "free_flag": False,"subs_flag":subs_flag}
             return render_template("pricing.html", **context)
         else:
-            flash("Login first to complete this action","error")
+            # flash("Login first to complete this action","error")
             context = { "free_flag": True,"subs_flag":True}
             return render_template("pricing.html", **context)
 
@@ -1349,16 +1349,17 @@ def confirm_email(token):
 @log_execution_time
 def connexion():
     form=MyForm()
+    errors = {}
     if request.method == "POST":
         # Retrieve form data
         email = request.form.get("email")
         if not email:
-            error_message = "Veuillez entrer votre adresse email."
-            return render_template("connexion.html", form=form, error_message=error_message)
+            errors["email"] = "Ce champ est obligatoire. Veuillez remplir ce champ."
+            return render_template("connexion.html", form=form, errors=errors)
         password = request.form.get("psw")
         if not password:
-            error_message = "Veuillez entrer votre mot de passe."
-            return render_template("connexion.html", form=form, error_message=error_message)
+            errors["password"] = "Ce champ est obligatoire. Veuillez remplir ce champ."
+            return render_template("connexion.html", form=form,  errors=errors)
         next = request.form.get("next")
         remember_me = request.form.get("remember_me")
         print("remember_me",remember_me)
@@ -1479,7 +1480,7 @@ def connexion():
 
             flash("Vérifiez votre email pour valider votre compte.", "warning")
             return render_template(
-                "connexion.html",form=form
+                "connexion.html",form=form,errors=errors
                 # error_message="Vérifiez votre email pour valider votre compte.",
             )
         else:
@@ -1488,7 +1489,7 @@ def connexion():
             logging.warning(f"Failed login attempt for {email}.")
             flash("Identifiants invalides. Veuillez réessayer.", "error")
             return render_template(
-                "connexion.html",form=form
+                "connexion.html",form=form,errors=errors
                 # error_message="Identifiants invalides. Veuillez réessayer.",
             )
     email = ''
@@ -1503,7 +1504,7 @@ def connexion():
         print("pass in ses")
         password = session["password"]
         pass_f = False
-    return render_template("connexion.html",form=form,email=email,password=password,pass_f=pass_f,email_f=email_f)
+    return render_template("connexion.html",form=form,email=email,password=password,pass_f=pass_f,email_f=email_f,errors=errors)
 
 @app.route("/logout")
 @log_execution_time
@@ -1929,4 +1930,4 @@ if __name__ == "__main__":
 
     # # mail = Mail(app)
 
-    app.run()
+    app.run(host='192.168.18.94', port=8008,debug=True)
