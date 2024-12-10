@@ -379,8 +379,8 @@ def confirm_token_expire(token, salt="password-reset-salt", expiration=180):
 @app.route("/")
 @log_execution_time
 def index():
-    # if  current_user.is_authenticated:
-    #     print("curen addr",current_user.address,current_user.reports_count)
+    if  current_user.is_authenticated:
+        print("curen addr",current_user.address,current_user.reports_count)
     return render_template("indexV2.html")
 
 @app.route("/code_form")
@@ -1981,4 +1981,4 @@ if __name__ == "__main__":
 
     # # mail = Mail(app)
 
-    app.run()
+    app.run(host='192.168.18.85', port=8007,debug=True)
