@@ -3,7 +3,7 @@ import Data_generator as dg
 # from src import Data_generator as dg
 import Report_generator as rg
 import db_models
-from .utility import log_execution_time
+from utility import log_execution_time
 #from .Report_Customiser import upload_logo, customise_workbook
 import random
 import string

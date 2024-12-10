@@ -1,4 +1,4 @@
-from .utility import log_execution_time
+from utility import log_execution_time
 import os
 import requests
 import pandas as pd
