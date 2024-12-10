@@ -1981,4 +1981,4 @@ if __name__ == "__main__":
 
     # # mail = Mail(app)
 
-    app.run(host='192.168.18.94', port=8008,debug=True)
+    app.run()
