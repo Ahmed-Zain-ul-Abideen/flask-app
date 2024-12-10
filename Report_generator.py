@@ -11,7 +11,7 @@ from Excel_Utility import (
     build_metrics_text,
 )
 
-from .Text_Utility import (
+from Text_Utility import (
     build_text_surfaces,
     build_text_pieces,
     build_text_prix,
