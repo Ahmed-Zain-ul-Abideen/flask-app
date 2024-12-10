@@ -1523,7 +1523,7 @@ def connexion():
             else:
                 # flash("Connexion réussie.", "success")
                 return render_template(
-                    "index.html",
+                    "indexV2.html",
                     # success_message="Connexion réussie.",
                 )
         elif user and user.check_password(password) and not user.is_active:
