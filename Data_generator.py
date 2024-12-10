@@ -43,7 +43,7 @@ def build_url(base_url, endpoint, criteria=None):
 def get_stats(url):
     # print(url)
     data = requests.get(url)
-    # print(data.json())
+    print("data.json()",data.json())
     df = pd.json_normalize(data.json(), "data")
     return df
 
@@ -167,13 +167,8 @@ def get_scoring_voies(criteria):
     # scoring_voies.to_csv(csv_file_path, index=False)
     return scoring_voies
 
-import requests
-@log_execution_time
-# def get_cities():
-#     url = build_url(base_url=base_url, endpoint="get_cities")
-#     cities = requests.get(url).json()
-#     cities = [c["city"] for c in cities]
-#     return cities
+
+@log_execution_time 
 def get_cities():
     url = "https://api-data-immo-yudqj273iq-uc.a.run.app/get_cities"
     try:

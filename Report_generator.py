@@ -11,17 +11,6 @@ from Excel_Utility import (
     build_metrics_text,
 )
 
-# from Text_Utility import (
-#     build_text_surfaces,
-#     build_text_pieces,
-#     build_text_prix,
-# )
-
-
-
-
-
-
 import re
 import logging
 
@@ -213,8 +202,6 @@ def build_text_prix(analytics):
 
 
 # build_text_prix(analytics)
-
-
 
 import pandas as pd
 import numpy as np
@@ -2062,12 +2049,13 @@ class REPORT_BUILDER:
         # Create a line chart object for 'prix_au_m2'.
         col_name = {i - 96: chr(i).upper() for i in range(ord("a"), ord("z") + 1)}
         # prev_position = ''
-        valid_val = False
-        try:
-            validation_list = df.iloc[:, 0].to_list()
-            valid_val = True
-        except:
-            pass
+        validation_list = df.iloc[:, 0].to_list()
+        # valid_val = False
+        # try:
+        #     validation_list = df.iloc[:, 0].to_list()
+        #     valid_val = True
+        # except:
+        #     pass
 
         if sheet_name == "VOLUMES_PIECES" or sheet_name == "VOLUMES_SURFACES":
             chart = self.workbook.add_chart(
@@ -2124,13 +2112,13 @@ class REPORT_BUILDER:
         # self.color_palette
 
         elif sheet_name == "PRIX_PIECES":
-            if  valid_val:
-                worksheet.data_validation(
-                    "B17", {"validate": "list", "source": validation_list[:-1]}
-                )
-                worksheet.data_validation(
-                    "B18", {"validate": "list", "source": validation_list[:-1]}
-                )
+            # if  valid_val:
+            worksheet.data_validation(
+                "B17", {"validate": "list", "source": validation_list[:-1]}
+            )
+            worksheet.data_validation(
+                "B18", {"validate": "list", "source": validation_list[:-1]}
+            )
              
 
 
@@ -2557,34 +2545,40 @@ class REPORT_BUILDER:
             format=self.title_format,
         )
         # worksheet.merge_range("H9:I9", "Sélectionner une voie", self.merge_format)
+        validation_list = df.iloc[:, 1].to_list()
+        worksheet.data_validation(
+            "H10", {"validate": "list", "source": f"B2:B{len(validation_list)+1}"}
+        )
 
-        print("df.shape",df.shape)
-        try: 
-            validation_list = df.iloc[:, 1].to_list()
-            worksheet.data_validation(
-                "H10", {"validate": "list", "source": f"B2:B{len(validation_list)+1}"}
-            )
+        worksheet.merge_range("H10:I10", validation_list[0], self.merge_format_neutral)
 
-            worksheet.merge_range("H10:I10", validation_list[0], self.merge_format_neutral)
-            print("valadation list first try success")
-        except:
-            print("valadation list second try start")
-            try:
-                validation_list = df.iloc[:, 0].to_list()
-                worksheet.data_validation(
-                    "H10", {"validate": "list", "source": f"B2:B{len(validation_list)+1}"}
-                )
+        #print("df.shape",df.shape)
+        # try: 
+        #     validation_list = df.iloc[:, 1].to_list()
+        #     worksheet.data_validation(
+        #         "H10", {"validate": "list", "source": f"B2:B{len(validation_list)+1}"}
+        #     )
 
-                worksheet.merge_range("H10:I10", validation_list[0], self.merge_format_neutral)
-                print("valadation list second try success")
-            except:
-                zns = 1
-                worksheet.data_validation(
-                    "H10", {"validate": "list", "source": f"B2:B{zns}"}
-                )
+        #     worksheet.merge_range("H10:I10", validation_list[0], self.merge_format_neutral)
+        #     print("valadation list first try success")
+        # except:
+        #     print("valadation list second try start")
+        #     try:
+        #         validation_list = df.iloc[:, 0].to_list()
+        #         worksheet.data_validation(
+        #             "H10", {"validate": "list", "source": f"B2:B{len(validation_list)+1}"}
+        #         )
 
-                worksheet.merge_range("H10:I10", 1, self.merge_format_neutral)
-                print("valadation list end try success")
+        #         worksheet.merge_range("H10:I10", validation_list[0], self.merge_format_neutral)
+        #         print("valadation list second try success")
+        #     except:
+        #         zns = 1
+        #         worksheet.data_validation(
+        #             "H10", {"validate": "list", "source": f"B2:B{zns}"}
+        #         )
+
+        #         worksheet.merge_range("H10:I10", 1, self.merge_format_neutral)
+        #         print("valadation list end try success")
 
 
         

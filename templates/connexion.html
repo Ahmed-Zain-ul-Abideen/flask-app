@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'baseV2.html' %}
 
 {% block title %}Connexion{% endblock %}
 
@@ -92,19 +92,29 @@
           <p class="success_msg" id="success-message">{{ success_message }}</p>
           {% endif %} -->
 
-      <label for="email"><b>Email</b></label>
+      <label for="email"><b>Email</b><span class="required">*</span></label>
       {% if  email_f %}
-        <input type="text"  value="{{email}}" name="email" id="email" > 
+        <input type="text" class="form-input"  value="{{email}}" name="email" id="email" > 
       {%else%}
-        <input type="text" placeholder="Entrez votre Email" name="email" id="email" value="{{ request.form.get('firstname', '') }}" >
+        <input type="text" class="form-input" placeholder="Entrez votre Email" name="email" id="email" value="{{ request.form.get('email', '') }}" >
+      {% endif %}
+
+      {% if errors.email %}
+          <p class="error_msg_alpha">{{ errors.email }}</p>
       {% endif %}
       
 
-      <label for="psw"><b>Mot de passe</b></label>
+      <label for="psw"><b>Mot de passe</b><span class="required">*</span></label>
       {% if  pass_f %}
-        <input type="password" value="{{ password}}" name="psw" id="psw" required>
+        <input type="password" class="form-input" value="{{ password}}" name="psw" id="psw" >
       {%else%}
-        <input type="password" placeholder="Entrez votre mot de passe" name="psw" id="psw" required>
+        <div style="position: relative;">
+          
+          <input type="password" class="form-input" placeholder="Le mot de passe" name="psw" id="psw" oninput="toggleEyeVisibility()" ><span id="togglePassword" style="position: absolute; right: 80px; top: 37%; transform: translateY(-50%); cursor: pointer; display: none;" onclick="togglePasswordVisibility()">👁️</span>
+        </div>
+      {% endif %}
+      {% if errors.password %}
+          <p id = "pass_error_mgs" class="error_msg_alpha">{{ errors.password }}</p>
       {% endif %}
       
       <label style= "margin-top:10px;">
@@ -112,7 +122,10 @@
         <b>Se souvenir de moi</b>
       </label>
       <hr>
-      <div class="g-recaptcha" data-sitekey="6LdlnooqAAAAAGPBP_jjP8JZl6VmnurDRg2Zx9hy"></div>
+      <div tabindex="0" id="captcha_container">
+        <div id="captcha_id" class="g-recaptcha" data-sitekey="6LdlnooqAAAAAGPBP_jjP8JZl6VmnurDRg2Zx9hy"></div>
+    </div>
+    <p style= "margin-top:-5px;" class="error_msg_alpha" id="error-message-script-captcha" style="display: none;"></p>
 
       <form action="{{ url_for('connexion') }}" method="POST" id="login">
       <input type="hidden" name="next" value="{{ request.args.get('next') }}">
@@ -162,7 +175,7 @@
 <script>
   document.getElementById('login').addEventListener('submit', function(event) {
       
-      const errorMessage = document.getElementById('error-message-script');
+      const errorMessage = document.getElementById('error-message-script-captcha');
   
       // Check reCAPTCHA response
       const recaptchaResponse = grecaptcha.getResponse();
@@ -177,6 +190,58 @@
       }
   });
 </script>
+
+
+<script>
+  function togglePasswordVisibility() {
+      const passwordField = document.getElementById('psw');
+      const togglePassword = document.getElementById('togglePassword');
+      
+      // Toggle between password and text input types
+      if (passwordField.type === 'password') {
+          passwordField.type = 'text';
+          togglePassword.textContent = '🔒'; // Eye with a line icon
+      } else {
+          passwordField.type = 'password';
+          togglePassword.textContent = '👁️'; // Normal eye icon
+      }
+  }
+
+  function toggleEyeVisibility() {
+      const passwordField = document.getElementById('psw');
+      const togglePassword = document.getElementById('togglePassword');
+      const errorMessages = document.getElementById('pass_error_mgs');
+      
+      // Show the eye icon if there is text in the password field
+      if (passwordField.value) {
+          togglePassword.style.display = 'block';
+          errorMessages.style.display = 'none';
+      } else {
+          togglePassword.style.display = 'none';
+      }
+  }
+</script>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const inputs = document.querySelectorAll(".form-input");
+      const errorMessages = document.querySelectorAll(".error_msg_alpha");
+
+      // Add a focus event listener to each input field
+      inputs.forEach((input) => {
+          input.addEventListener("focus", function() {
+              // Check if the next sibling is an error message and hide it
+              const errorMsg = input.nextElementSibling;
+              if (errorMsg && errorMsg.classList.contains("error_msg_alpha")) {
+                  errorMsg.style.display = "none";
+              }
+          });
+      });
+  });
+</script>
+
 
 {% block footer %}
 <!-- Footer is disabled for this page -->
