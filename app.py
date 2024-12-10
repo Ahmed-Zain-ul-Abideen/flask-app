@@ -1266,57 +1266,58 @@ def backed():
 @log_execution_time
 def inscription():
     form=MyForm()
+    errors = {}
     if request.method == "POST":
-
+        
         # Retrieve data from the form
         firstname = request.form.get("firstname")  # noqa: F841
+
         if not firstname:
-            error_message = "Veuillez entrer votre prénom."
-            return render_template("inscription.html", form=form, error_message=error_message)
+            errors["firstname"] = "Ce champ est obligatoire. Veuillez remplir ce champ."
+            return render_template("inscription.html", form=form, errors=errors)
         name = request.form.get("name")  # noqa: F841
         if not name:
-            error_message = "Veuillez entrer votre nom."
-            return render_template("inscription.html", form=form, error_message=error_message)
+            errors["name"] = "Ce champ est obligatoire. Veuillez remplir ce champ."
+            return render_template("inscription.html", form=form, errors=errors)
         
         phone = request.form.get("phone")
         if not phone:
-            error_message = "Veuillez entrer votre numéro de téléphone."
-            return render_template("inscription.html", form=form, error_message=error_message)
+            errors["phone"] = "Ce champ est obligatoire. Veuillez remplir ce champ."
+            return render_template("inscription.html", form=form, errors=errors)
         email = request.form.get("email")  # noqa: F841
         if not email:
-            error_message = "Veuillez entrer votre adresse email."
-            return render_template("inscription.html", form=form, error_message=error_message)
+            errors["email"] = "Ce champ est obligatoire. Veuillez remplir ce champ."
+            return render_template("inscription.html", form=form, errors=errors)
         post_code = request.form.get("post-code")
-        if not post_code:
-            error_message = "Veuillez entrer votre code postal."
-            return render_template("inscription.html", form=form, error_message=error_message)
+        # if not post_code:
+        #     errors["post_code"] = "Veuillez entrer votre code postal."
+        #     return render_template("inscription.html", form=form, errors=errors)
         address = request.form.get("address")  # noqa: F841
-        if not address:
-            error_message = "Veuillez entrer votre adresse."
-            return render_template("inscription.html", form=form, error_message=error_message)
+        # if not address:
+        #     errors["address"] = "Veuillez entrer votre adresse."
+        #     return render_template("inscription.html", form=form, errors=errors)
         password = request.form.get("password")  # noqa: F841
         if not password:
-            error_message = "Veuillez entrer votre mot de passe."
-            return render_template("inscription.html", form=form, error_message=error_message)
+            errors["password"] = "Ce champ est obligatoire. Veuillez remplir ce champ."
+            return render_template("inscription.html", form=form, errors=errors)
         password_repeat = request.form.get("password-repeat")  # noqa: F841
         if not password_repeat:
-            error_message = "Veuillez répéter votre mot de passe."
-            return render_template("inscription.html", form=form, error_message=error_message)
+            errors["password_repeat"] = "Ce champ est obligatoire. Veuillez remplir ce champ."
+            return render_template("inscription.html", form=form, errors=errors)
         
         terms_checkbox = request.form.get("terms-checkbox")
         if not terms_checkbox:
-            error_message = "Vous devez accepter les conditions d'utilisation."
-            return render_template("inscription.html", form=form, error_message=error_message)
+            errors["check_box"] = "Ce champ est obligatoire. Veuillez remplir ce champ."
+            return render_template("inscription.html", form=form, errors=errors)
+        
         logging.debug(f"USER INFO: {firstname}, {name}, {phone}, {email}, {post_code}, {address}")
 
         # Server-side validation
         if password != password_repeat:
             # Pass error message to the template if passwords don't match
-            flash("Les mots de passe ne correspondent pas.", "error")
-            return render_template(
-                "inscription.html",
-                error_message="Les mots de passe ne correspondent pas.",
-            )
+            # flash("Les mots de passe ne correspondent pas.", "error")
+            errors["password_match"]="Les mots de passe ne correspondent pas."
+            return render_template("inscription.html", form=form, errors=errors )
 
         # Check if user already exists
         existing_user = User.query.filter_by(email=email).first()
@@ -1324,14 +1325,16 @@ def inscription():
             # flash("Email already registered", "error")
             # return redirect(url_for("inscription"))
             flash("Email déjà enregistré.", "error")
-            return render_template("inscription.html",error_message="Email already registered",form=form )
+            errors["email_exists"]="Email already registered"
+            return render_template("inscription.html", form=form, errors=errors )
         
         # Check if user with this phone already exists
         existing_user = User.query.filter_by(phone=phone).first()
         if existing_user:
             
             flash("Téléphone déjà enregistré.", "error")
-            return render_template("inscription.html", error_message="Téléphone already registered",form=form  )
+            errors["phone_exists"]="Téléphone already registered"
+            return render_template("inscription.html", errors = errors ,form=form  )
 
         # Create a new user and save to database
         new_user = User(firstname=firstname, name=name, phone=phone, email=email, post_code = post_code, address = address, city = address)
@@ -1344,7 +1347,8 @@ def inscription():
         db.session.commit()
 
         # Send confirmation email for activation
-        send_confirmation_email(email)  # {{ edit_1 }}
+        send_confirmation_email(email)
+  # {{ edit_1 }}
 
         # Process the form data (e.g., save it to the database)
         # Redirect to the login page after successful submission
@@ -1353,7 +1357,7 @@ def inscription():
 
     # Render the form page for GET requests
     # flash("Veuillez vérifier votre email et valider votre.", "info")
-    return render_template("inscription.html",form=form)
+    return render_template("inscription.html",form=form,errors=errors)
 
     # Render the form page for GET requests
     # return render_template("inscription.html")
