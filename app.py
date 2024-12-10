@@ -1156,7 +1156,7 @@ def pricing():
             context = { "free_flag": False,"subs_flag":subs_flag}
             return render_template("pricing.html", **context)
         else:
-            # flash("Login first to complete this action","error")
+            flash("Login first to complete this action","error")
             context = { "free_flag": True,"subs_flag":True}
             return render_template("pricing.html", **context)
 
