@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'baseV2.html' %}
 
 {% block title %}Inscription{% endblock %}
 
@@ -84,7 +84,10 @@
             </div>
             <div>
                 <label for="password-repeat"><b>Répétez le mot de passe</b><span class="required">*</span></label>
-                <input type="password" class="form-input" placeholder="Répétez le mot de passe" name="password-repeat" id="password-repeat" >
+                <div style="position: relative;">
+                    <input type="password" class="form-input" placeholder="Répétez le mot de passe" name="password-repeat" id="password-repeat" oninput="toggleEyeVisibilityrepeat()" >
+                    <span id="togglePasswordrepeat" style="position: absolute; right: 80px; top: 37%; transform: translateY(-50%); cursor: pointer; display: none;" onclick="togglePasswordVisibilityrepeat()">👁️</span>
+                </div>
 
                 {% if errors.password_repeat %}
                     <p class="error_msg_alpha">{{ errors.password_repeat }}</p>
@@ -215,6 +218,34 @@
     function toggleEyeVisibility() {
         const passwordField = document.getElementById('password');
         const togglePassword = document.getElementById('togglePassword');
+        
+        // Show the eye icon if there is text in the password field
+        if (passwordField.value) {
+            togglePassword.style.display = 'block';
+        } else {
+            togglePassword.style.display = 'none';
+        }
+    }
+</script>
+
+<script>
+    function togglePasswordVisibilityrepeat() {
+        const passwordField = document.getElementById('password-repeat');
+        const togglePassword = document.getElementById('togglePasswordrepeat');
+        
+        // Toggle between password and text input types
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            togglePassword.textContent = '🔒'; // Eye with a line icon
+        } else {
+            passwordField.type = 'password';
+            togglePassword.textContent = '👁️'; // Normal eye icon
+        }
+    }
+
+    function toggleEyeVisibilityrepeat() {
+        const passwordField = document.getElementById('password-repeat');
+        const togglePassword = document.getElementById('togglePasswordrepeat');
         
         // Show the eye icon if there is text in the password field
         if (passwordField.value) {

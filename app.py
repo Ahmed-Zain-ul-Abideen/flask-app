@@ -1,5 +1,4 @@
 import Data_generator as dg
-
 # from src import Data_generator as dg
 import Report_generator as rg
 import db_models
@@ -18,7 +17,7 @@ from pathlib import Path
 from google.cloud import storage
 import  stripe
 import  pandas  as  pd
-
+from sqlalchemy import or_
 
 
 from flask import (
@@ -232,7 +231,12 @@ color_palette = [
     "#F1BD78",
     "#eeeeee",
 ]
-cities = dg.get_cities()
+try: 
+    cities = dg.get_cities()
+except:
+    cities = ["AMPILLY-LE-SEC","ALPUECH","ABITAIN","ACCOLAY","ALEMBON","ALLY","AMPLEPUIS","ADRIERS",
+        "ABLON","ADAST","ABIDOS","ABLIS"
+    ]
 # def create_app():
 csrf = CSRFProtect(app)  # Enable CSRF protection globally
 # app.secret_key = os.getenv("SECRET_KEY", os.urandom(24))
@@ -375,7 +379,9 @@ def confirm_token_expire(token, salt="password-reset-salt", expiration=180):
 @app.route("/")
 @log_execution_time
 def index():
-    return render_template("index.html")
+    # if  current_user.is_authenticated:
+    #     print("curen addr",current_user.address,current_user.reports_count)
+    return render_template("indexV2.html")
 
 @app.route("/code_form")
 @log_execution_time
@@ -588,7 +594,7 @@ def preparer():
     
     form = MyForm()
     rep_count = False
-    if  db.session.query(db_models.User.query.filter(db_models.User.id==current_user.id).filter(db_models.User.reports_count==0).exists()).scalar():
+    if  db.session.query(db_models.User.query.filter(db_models.User.id==current_user.id).filter(or_(db_models.User.reports_count==0,db_models.User.reports_count == None)).exists()).scalar():
         rep_count = True
     # no_report = request.args.get('no_report') or None
     # print("no_report",no_report)
@@ -612,8 +618,19 @@ def preparer():
 
         criteria = dict(commune=selected_city, type_local=type_bien)
         print("critera dd",criteria)
+        try:
+            year = dg.get_annee_max()["data"][0]["Annee"] + 1
+        except:
+            db.session.query(db_models.User).filter(db_models.User.id ==  current_user.id).update({'address': "error at get_annee_max"})
+            return jsonify(
+                {
+                    "message": f"{criteria['type_local']} non disponible pour {criteria['commune']}.",
+                    "message_class": "error",
+                    "report_available": False,
+                    "reports_count_flag ":"true",
+                }
+            )
 
-        year = dg.get_annee_max()["data"][0]["Annee"] + 1
         report_name = f"{criteria['commune']}_{criteria['type_local']}_{year}"
         report_name = report_name.replace(" ", "_")
 
@@ -646,8 +663,9 @@ def preparer():
         # analytics = analytics.replace(0, None)
 
         if analytics.empty:
-            flash(f"{criteria['type_local']} non disponible pour {criteria['commune']}.","error")
-            return redirect(url_for('preparer'))
+            #return redirect(request.referrer)
+            #flash(f"{criteria['type_local']} non disponible pour {criteria['commune']}.","error")
+            #return redirect(url_for('preparer'))
             # flash(f"{criteria['type_local']} non disponible pour {criteria['commune']}.","error")
             # return redirect(url_for('preparer'))
             #return redirect(url_for('preparer',no_report=f"{criteria['type_local']} non disponible pour {criteria['commune']}."))
@@ -686,80 +704,110 @@ def preparer():
         prix_m2 = analytics.iloc[[-1]].prix_m2_c.values[0]
         prix_marche = int(prix_m2 * surface)
         analytics.prix_m2_c = analytics.prix_m2_c.astype(int)
+        # try:
 
+        #     data = {'schema': {'fields': [{'name': 'annee', 'type': 'integer', 'extDtype': 'Int64'}, {'name': 'Commune', 'type': 'string'}, {'name': 'Type_local', 'type': 'string'}, {'name': 'prix_m2_c25', 'type': 'integer', 'extDtype': 'Int64'}, {'name': 'prix_m2_c50', 'type': 'integer', 'extDtype': 'Int64'}, {'name': 'prix_m2_c', 'type': 'integer', 'extDtype': 'Int64'}, {'name': 'prix_m2_c75', 'type': 'integer', 'extDtype': 'Int64'}, {'name': 'surface', 'type': 'integer', 'extDtype': 'Int64'}, {'name': 'Volume_c', 'type': 'integer', 'extDtype': 'Int64'}], 'primaryKey': ['annee'], 'pandas_version': '1.4.0'}, 'data': [{'annee': 2014, 'Commune': 'ABLEIGES', 'Type_local': 'Maison', 'prix_m2_c25': 1422, 'prix_m2_c50': 1688, 'prix_m2_c': 1767, 'prix_m2_c75': 2150, 'surface': 110, 'Volume_c': 15}, {'annee': 2015, 'Commune': 'ABLEIGES', 'Type_local': 'Maison', 'prix_m2_c25': 1506, 'prix_m2_c50': 1982, 'prix_m2_c': 1882, 'prix_m2_c75': 2277, 'surface': 126, 'Volume_c': 15}, {'annee': 2016, 'Commune': 'ABLEIGES', 'Type_local': 'Maison', 'prix_m2_c25': 1908, 'prix_m2_c50': 2328, 'prix_m2_c': 2197, 'prix_m2_c75': 2372, 'surface': 112, 'Volume_c': 9}, {'annee': 2017, 'Commune': 'ABLEIGES', 'Type_local': 'Maison', 'prix_m2_c25': 1510, 'prix_m2_c50': 2465, 'prix_m2_c': 2550, 'prix_m2_c75': 3168, 'surface': 104, 'Volume_c': 20}, {'annee': 2018, 'Commune': 'ABLEIGES', 'Type_local': 'Maison', 'prix_m2_c25': 1278, 'prix_m2_c50': 1750, 'prix_m2_c': 1895, 'prix_m2_c75': 2550, 'surface': 113, 'Volume_c': 11}, {'annee': 2019, 'Commune': 'ABLEIGES', 'Type_local': 'Maison', 'prix_m2_c25': 2472, 'prix_m2_c50': 3855, 'prix_m2_c': 3250, 'prix_m2_c75': 3999, 'surface': 83, 'Volume_c': 5}, {'annee': 2020, 'Commune': 'ABLEIGES', 'Type_local': 'Maison', 'prix_m2_c25': 1275, 'prix_m2_c50': 2669, 'prix_m2_c': 2554, 'prix_m2_c75': 3000, 'surface': 129, 'Volume_c': 17}, {'annee': 2021, 'Commune': 'ABLEIGES', 'Type_local': 'Maison', 'prix_m2_c25': 2500, 'prix_m2_c50': 2906, 'prix_m2_c': 2910, 'prix_m2_c75': 3549, 'surface': 94, 'Volume_c': 25}, {'annee': 2022, 'Commune': 'ABLEIGES', 'Type_local': 'Maison', 'prix_m2_c25': 2711, 'prix_m2_c50': 3045, 'prix_m2_c': 3131, 'prix_m2_c75': 3465, 'surface': 97, 'Volume_c': 20}, {'annee': 2023, 'Commune': 'ABLEIGES', 'Type_local': 'Maison', 'prix_m2_c25': 2559, 'prix_m2_c50': 3068, 'prix_m2_c': 3671, 'prix_m2_c75': 3720, 'surface': 94, 'Volume_c': 19}]}
 
-        new_df = pd.read_csv(CS_FL_DIR)
-        rg.REPORT_BUILDER(
-            report_name=report_name,
-            df_stats=analytics[["annee", "prix_m2_c50", "Volume_c"]],
-            df_volumes_pieces=historique_volumes_pieces,
-            df_prix_m2_pieces=historique_prix_m2_pieces,
-            df_volumes_surfaces=historique_volumes_surfaces,
-            df_distributions_decotes=distributions_decotes,
-            df_scoring=new_df,
-            # user_logo=current_user.logo,
-            # user_website=current_user.website,
-            color_palette=color_palette,
-            prix_marche=prix_marche,
-            taux_frais=0.15,
-            taux_travaux=0.1,
-            bbg_color="#73a1b2",
-            info_font_color="#9da19e",
-            selection_color="#d99795",
-            criteria=criteria,
-        )
+        #     defn = pd.json_normalize(data, "data")
+        #     samzn = defn.iloc[:, 1:].fillna(0)
+        #     #new_df = pd.read_csv(CS_FL_DIR)
+        #     rg.REPORT_BUILDER(
+        #         report_name=report_name,
+        #         df_stats=analytics[["annee", "prix_m2_c50", "Volume_c"]],
+        #         df_volumes_pieces=historique_volumes_pieces,
+        #         df_prix_m2_pieces=historique_prix_m2_pieces,
+        #         df_volumes_surfaces=historique_volumes_surfaces,
+        #         df_distributions_decotes=distributions_decotes,
+        #         df_scoring=samzn,
+        #         # user_logo=current_user.logo,
+        #         # user_website=current_user.website,
+        #         color_palette=color_palette,
+        #         prix_marche=prix_marche,
+        #         taux_frais=0.15,
+        #         taux_travaux=0.1,
+        #         bbg_color="#73a1b2",
+        #         info_font_color="#9da19e",
+        #         selection_color="#d99795",
+        #         criteria=criteria,
+        #     )
+
+        # except:
+        #     return jsonify(
+        #         {
+        #             "message": f"{criteria['type_local']} non disponible pour {criteria['commune']}.",
+        #             "message_class": "error",
+        #             "report_available": False,
+        #             "reports_count_flag ":"true",
+        #         }
+        #     )
+
 
 
         # report = rg.REPORT_BUILDER(
-        # try:
-        #     rg.REPORT_BUILDER(
-        #         report_name=report_name,
-        #         df_stats=analytics[["annee", "prix_m2_c50", "Volume_c"]],
-        #         df_volumes_pieces=historique_volumes_pieces,
-        #         df_prix_m2_pieces=historique_prix_m2_pieces,
-        #         df_volumes_surfaces=historique_volumes_surfaces,
-        #         df_distributions_decotes=distributions_decotes,
-        #         df_scoring=scoring_voies,
-        #         # user_logo=current_user.logo,
-        #         # user_website=current_user.website,
-        #         color_palette=color_palette,
-        #         prix_marche=prix_marche,
-        #         taux_frais=0.15,
-        #         taux_travaux=0.1,
-        #         bbg_color="#73a1b2",
-        #         info_font_color="#9da19e",
-        #         selection_color="#d99795",
-        #         criteria=criteria,
-        #     )
-        # except:
-        #     new_df = pd.read_csv(CS_FL_DIR)
-        #     rg.REPORT_BUILDER(
-        #         report_name=report_name,
-        #         df_stats=analytics[["annee", "prix_m2_c50", "Volume_c"]],
-        #         df_volumes_pieces=historique_volumes_pieces,
-        #         df_prix_m2_pieces=historique_prix_m2_pieces,
-        #         df_volumes_surfaces=historique_volumes_surfaces,
-        #         df_distributions_decotes=distributions_decotes,
-        #         df_scoring=new_df,
-        #         # user_logo=current_user.logo,
-        #         # user_website=current_user.website,
-        #         color_palette=color_palette,
-        #         prix_marche=prix_marche,
-        #         taux_frais=0.15,
-        #         taux_travaux=0.1,
-        #         bbg_color="#73a1b2",
-        #         info_font_color="#9da19e",
-        #         selection_color="#d99795",
-        #         criteria=criteria,
-        #     )
-            # return jsonify(
-            #     {
-            #         "message": f"{criteria['type_local']} non disponible pour {criteria['commune']}.",
-            #         "message_class": "error",
-            #         "report_available": False,
-            #         "reports_count_flag ":"true",
-            #     }
+        try:
+            rg.REPORT_BUILDER(
+                report_name=report_name,
+                df_stats=analytics[["annee", "prix_m2_c50", "Volume_c"]],
+                df_volumes_pieces=historique_volumes_pieces,
+                df_prix_m2_pieces=historique_prix_m2_pieces,
+                df_volumes_surfaces=historique_volumes_surfaces,
+                df_distributions_decotes=distributions_decotes,
+                df_scoring=scoring_voies,
+                # user_logo=current_user.logo,
+                # user_website=current_user.website,
+                color_palette=color_palette,
+                prix_marche=prix_marche,
+                taux_frais=0.15,
+                taux_travaux=0.1,
+                bbg_color="#73a1b2",
+                info_font_color="#9da19e",
+                selection_color="#d99795",
+                criteria=criteria,
+            )
+            db.session.query(db_models.User).filter(db_models.User.id ==  current_user.id).update({'address': "dummy addre upd"})
+        except  Exception as e:
+            try:
+                db.session.query(db_models.User).filter(db_models.User.id ==  current_user.id).update({'address': str(e)})
+                return jsonify(
+                    {
+                        "message": f"{criteria['type_local']} non disponible pour {criteria['commune']}.",
+                        "message_class": "error",
+                        "report_available": False,
+                        "reports_count_flag ":"true",
+                    }
+                )
+            except:
+                db.session.query(db_models.User).filter(db_models.User.id ==  current_user.id).update({'address': "excep e can't save"})
+                return jsonify(
+                    {
+                        "message": f"{criteria['type_local']} non disponible pour {criteria['commune']}.",
+                        "message_class": "error",
+                        "report_available": False,
+                        "reports_count_flag ":"true",
+                    }
+                )
+
+            # new_df = pd.read_csv(CS_FL_DIR)
+            # rg.REPORT_BUILDER(
+            #     report_name=report_name,
+            #     df_stats=analytics[["annee", "prix_m2_c50", "Volume_c"]],
+            #     df_volumes_pieces=historique_volumes_pieces,
+            #     df_prix_m2_pieces=historique_prix_m2_pieces,
+            #     df_volumes_surfaces=historique_volumes_surfaces,
+            #     df_distributions_decotes=distributions_decotes,
+            #     df_scoring=new_df,
+            #     # user_logo=current_user.logo,
+            #     # user_website=current_user.website,
+            #     color_palette=color_palette,
+            #     prix_marche=prix_marche,
+            #     taux_frais=0.15,
+            #     taux_travaux=0.1,
+            #     bbg_color="#73a1b2",
+            #     info_font_color="#9da19e",
+            #     selection_color="#d99795",
+            #     criteria=criteria,
             # )
+            
 
         # report_path = os.path.join(BASE_DIR, '..', report_path)
         # report_path = os.path.join(REPORTS_DIR, report_name)
@@ -787,8 +835,10 @@ def preparer():
         db.session.add(report_log_instance)
         db.session.commit()
 
-        flash(f"Télécharger le rapport {report_name}.","info")
-        return redirect(url_for('preparer'))
+        #return redirect(request.referrer)
+
+        #flash(f"Télécharger le rapport {report_name}.","info")
+        #return redirect(url_for('preparer'))
 
         return jsonify(
             {
@@ -805,9 +855,9 @@ def preparer():
     #     pass
     # else:
     #     flash(no_report,"error")
-    # print("preparer cities",cities)
+    #print("preparer rep_count",rep_count)
     return render_template(
-        "preparerc.html", cities=cities, report_available=False, user=current_user,form=form,
+        "preparer.html", cities=cities, report_available=False, user=current_user,form=form,
         rep_count=rep_count
     )
     
@@ -1106,7 +1156,7 @@ def pricing():
             context = { "free_flag": False,"subs_flag":subs_flag}
             return render_template("pricing.html", **context)
         else:
-            # flash("Login first to complete this action","error")
+            flash("Login first to complete this action","error")
             context = { "free_flag": True,"subs_flag":True}
             return render_template("pricing.html", **context)
 
@@ -1297,7 +1347,8 @@ def inscription():
         db.session.commit()
 
         # Send confirmation email for activation
-        send_confirmation_email(email)  # {{ edit_1 }}
+        send_confirmation_email(email)
+  # {{ edit_1 }}
 
         # Process the form data (e.g., save it to the database)
         # Redirect to the login page after successful submission
@@ -1435,7 +1486,7 @@ def connexion():
                 if  db.session.query(db_models.User.query.filter(db_models.User.id==current_user.id).filter(db_models.User.reports_count==0).exists()).scalar():
                     rep_count = True
                 return render_template(
-                    "preparerc.html",
+                    "preparer.html",
                     cities=cities,
                     # success_message="Connexion réussie.",
                     user=current_user,
@@ -1930,4 +1981,4 @@ if __name__ == "__main__":
 
     # # mail = Mail(app)
 
-    app.run(host='192.168.18.94', port=8008,debug=True)
+    app.run()
