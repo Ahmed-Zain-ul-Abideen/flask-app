@@ -167,13 +167,26 @@ def get_scoring_voies(criteria):
     # scoring_voies.to_csv(csv_file_path, index=False)
     return scoring_voies
 
-
+import requests
 @log_execution_time
+# def get_cities():
+#     url = build_url(base_url=base_url, endpoint="get_cities")
+#     cities = requests.get(url).json()
+#     cities = [c["city"] for c in cities]
+#     return cities
 def get_cities():
-    url = build_url(base_url=base_url, endpoint="get_cities")
-    cities = requests.get(url).json()
-    cities = [c["city"] for c in cities]
-    return cities
+    url = "https://api-data-immo-yudqj273iq-uc.a.run.app/get_cities"
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raises HTTPError for bad status codes
+        try:
+            return response.json()
+        except ValueError:
+            print("Invalid JSON response")
+            return None
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching cities: {e}")
+        return None
 
 
 @log_execution_time
