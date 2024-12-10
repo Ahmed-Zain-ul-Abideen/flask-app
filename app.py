@@ -92,7 +92,7 @@ db = db_models.db
 User = db_models.User
 ContactMessage = db_models.ContactMessage
 ReportsLog = db_models.ReportsLog
-app = Flask(__name__, static_folder="../static", template_folder="../templates")
+app = Flask(__name__, static_folder="./static", template_folder="./templates")
 # Gmail SMTP server configuration
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 587
