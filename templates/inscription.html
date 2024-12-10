@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'baseV2.html' %}
 
 {% block title %}Inscription{% endblock %}
 
@@ -9,106 +9,48 @@
         <div class="container">
             <h1>Inscription</h1>
             <p>Veuillez remplir ce formulaire pour créer un compte.</p>
-            <!-- Error message area 
+            <!-- Error message area -->
+            {% if error_message %}
+            <p class="error_msg" id="error-message">{{ error_message }}</p>
+            {% endif %}
+            <p class="error_msg" id="error-message-script" style="display: none;"></p>
+            <hr>
+
+            <label for="firstname"><b>Prénom</b></label>
+            <input type="text" placeholder="Entrez votre Prénom" name="firstname" id="firstname" value="{{ request.form.get('firstname', '') }}" >
+
+            <label for="name"><b>Nom</b></label>
+            <input type="text" placeholder="Entrez votre Nom" name="name" id="name" value="{{ request.form.get('name', '') }}"  >
+
+            <label for="phone"><b>Téléphone</b></label>
+            <!--<input type="number" placeholder="Entrez votre Téléphone" name="phone" id="phone" required>-->
+            <input type="text" placeholder="Entrez votre Téléphone" name="phone" id="phone"    value="{{ request.form.get('phone', '') }}" oninput="validatePhone(this)" />
+
             
-            <p class="error_msg" id="error-message-script" style="display: none;"></p>-->
+            <label for="email"><b>Email</b></label>
+            <input type="email" placeholder="Entrez votre Email" name="email" id="email" value="{{ request.form.get('email', '') }}" >
+
+            <label for="post-code"><b>Code postal</b></label>
+            <input type="number" placeholder="Entrez votre Code postal" name="post-code" id="post-code" value="{{ request.form.get('post-code', '') }}" >
+
+            <label for="address"><b>Adresse</b></label>
+            <input type="text" placeholder="Entrez votre Adresse" name="address" id="address" value="{{ request.form.get('address', '') }}">
+    
+            <label for="password"><b>Mot de passe</b></label>
+            <input type="password" placeholder="Entrez votre mot de passe" name="password" id="password" >
+    
+            <label for="password-repeat"><b>Répétez le mot de passe</b></label>
+            <input type="password" placeholder="Répétez le mot de passe" name="password-repeat" id="password-repeat" >
             <hr>
-            <div>
-                <label for="firstname"><b>Prénom</b><span class="required">*</span></label>
-                <input type="text" class="form-input" placeholder="Entrez votre Prénom" name="firstname" id="firstname" value="{{ request.form.get('firstname', '') }}" >
-                {% if errors.firstname %}
-                    <p class="error_msg_alpha">{{ errors.firstname }}</p>
-                {% endif %}
-            </div>
-            <div>
-                <label for="name"><b>Nom</b><span class="required">*</span></label>
-                <input type="text" class="form-input" placeholder="Entrez votre Nom" name="name" id="name" value="{{ request.form.get('name', '') }}"  >
-                {% if errors.name %}
-                    <p class="error_msg_alpha">{{ errors.name }}</p>
-                {% endif %}
-            </div>
-            <div>
-                <label for="phone"><b>Téléphone</b><span class="required">*</span></label>
-                <!--<input type="number" placeholder="Entrez votre Téléphone" name="phone" id="phone" required>-->
-                <input type="text" class="form-input" placeholder="Entrez votre Téléphone" name="phone" id="phone"    value="{{ request.form.get('phone', '') }}" oninput="validatePhone(this)" />
-                {% if errors.phone %}
-                    <p class="error_msg_alpha">{{ errors.phone }}</p>
-                {% endif %}
-                {% if errors.phone_exists %}
-                    <p class="error_msg_alpha">{{ errors.phone_exists }}</p>
-                {% endif %}
-            </div>
-
-            <div>
-                <label for="email"><b>Email</b><span class="required">*</span></label>
-                <input type="email" class="form-input" placeholder="Entrez votre Email" name="email" id="email" value="{{ request.form.get('email', '') }}" >
-                {% if errors.email %}
-                    <p class="error_msg_alpha">{{ errors.email }}</p>
-                {% endif %}
-                {% if errors.email_exists %}
-                    <p class="error_msg_alpha">{{ errors.email_exists }}</p>
-                {% endif %}
-            </div>
-
-            <div>
-                <label for="post-code"><b>Code postal</b></label>
-                <input type="number" class="form-input" placeholder="Entrez votre Code postal" name="post-code" id="post-code" value="{{ request.form.get('post-code', '') }}" >
-
-                {% if errors.post_code %}
-                    <p class="error_msg_alpha">{{ errors.post_code }}</p>
-                {% endif %}
-            </div>
-
-            <div>
-                <label for="address"><b>Adresse</b></label>
-                <input type="text" class="form-input" placeholder="Entrez votre Adresse" name="address" id="address" value="{{ request.form.get('address', '') }}">
-
-                {% if errors.address %}
-                    <p class="error_msg_alpha">{{ errors.address }}</p>
-                {% endif %}
-            </div>
-            
-            <div>
-                <label for="password"><b>Mot de passe</b><span class="required">*</span></label>
-                <div style="position: relative;">
-                    <input type="password" class="form-input" placeholder="Entrez votre mot de passe" name="password" id="password" oninput="toggleEyeVisibility()">
-                    <span id="togglePassword" style="position: absolute; right: 80px; top: 37%; transform: translateY(-50%); cursor: pointer; display: none;" onclick="togglePasswordVisibility()">👁️</span>
-                </div>
-                {% if errors.password %}
-                    <p class="error_msg_alpha">{{ errors.password }}</p>
-                {% endif %}
-                {% if errors.password_match %}
-                    <p class="error_msg_alpha">{{ errors.password_match }}</p>
-                {% endif %}
-                <p class="error_msg_alpha" id="error-message-script" style="display: none;"></p>
-            </div>
-            <div>
-                <label for="password-repeat"><b>Répétez le mot de passe</b><span class="required">*</span></label>
-                <input type="password" class="form-input" placeholder="Répétez le mot de passe" name="password-repeat" id="password-repeat" >
-
-                {% if errors.password_repeat %}
-                    <p class="error_msg_alpha">{{ errors.password_repeat }}</p>
-                {% endif %}
+            <div style="display: flex; align-items: flex-start;">
+                <input   type="checkbox" id="terms-checkbox" name= "terms-checkbox" style="margin-right: 8px;"  {% if request.form.get('terms-checkbox') %}checked{% endif %} >
+                <label for="terms-checkbox" style="flex: 1; margin-top:2px;">
+                    En créant un compte, vous acceptez nos 
+                    <a href="{{ url_for('conditions') }}">Conditions d'utilisation & Politique de confidentialité</a>.
+                </label>
             </div>
             <hr>
-            <div>
-                <div style="display: flex; align-items: flex-start;">
-                    <input   type="checkbox" class="form-input" id="terms-checkbox" name= "terms-checkbox" style="margin-right: 8px;"  {% if request.form.get('terms-checkbox') %}checked{% endif %} >
-                    <span class="required">*</span>
-                    <label for="terms-checkbox" style="flex: 1; margin-top:2px;">
-                        En créant un compte, vous acceptez nos 
-                        <a href="{{ url_for('conditions') }}">Conditions d'utilisation & Politique de confidentialité</a>.
-                    </label>
-                </div>
-                {% if errors.check_box %}
-                    <p class="error_msg_alpha">{{ errors.check_box }}</p>
-                {% endif %}
-            </div>
-            <hr>
-            <div tabindex="0" id="captcha_container">
-                <div id="captcha_id" class="g-recaptcha" data-sitekey="6LdlnooqAAAAAGPBP_jjP8JZl6VmnurDRg2Zx9hy"></div>
-            </div>
-            <p style= "margin-top:-5px;" class="error_msg_alpha" id="error-message-script-captcha" style="display: none;"></p>
+            <div  class="g-recaptcha" data-sitekey="6LdlnooqAAAAAGPBP_jjP8JZl6VmnurDRg2Zx9hy"></div>
             <button type="submit" class="registerbtn">S'inscrire</button>
         </div>
     
@@ -132,38 +74,9 @@
 </script>
 
 <script>
-    // Wait for the DOM to load
-    document.addEventListener("DOMContentLoaded", function() {
-        // Select all input fields and their error messages
-        const inputs = document.querySelectorAll(".form-input");
-        const errorMessages = document.querySelectorAll(".error_msg_alpha");
-
-        // Add a focus event listener to each input field
-        inputs.forEach((input) => {
-            input.addEventListener("focus", function() {
-                // Find the sibling error message and hide it
-                const errorMsg = input.nextElementSibling;
-                if (errorMsg && errorMsg.classList.contains("error_msg_alpha")) {
-                    errorMsg.style.display = "none";
-                }
-            });
-        });
-    });
-</script>
-
-
-<script>
-    // Function to handle error message disappearance
-    function hideErrorMessage(field, errorMessageElement) {
-        field.addEventListener('focus', function() {
-            errorMessageElement.style.display = 'none';
-        });
-    }
-
     document.getElementById('register').addEventListener('submit', function(event) {
         const passwordField = document.getElementById('password');
         const errorMessage = document.getElementById('error-message-script');
-        const errorMessagecaptcha = document.getElementById('error-message-script-captcha');
         const password = passwordField.value;
 
         // Regular expression to check the password criteria
@@ -179,53 +92,14 @@
             errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
         } else if (!recaptchaResponse) {
             event.preventDefault(); // Prevent form submission
-            errorMessagecaptcha.textContent = "Veuillez vérifier le reCAPTCHA avant de soumettre le formulaire.";
-            errorMessagecaptcha.style.display = 'block';
-            errorMessagecaptcha.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            errorMessage.textContent = "Veuillez vérifier le reCAPTCHA avant de soumettre le formulaire.";
+            errorMessage.style.display = 'block';
+            errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
         } else {
             errorMessage.style.display = 'none'; // Hide the error message if valid
-            errorMessagecaptcha.style.display = 'none';
         }
     });
-
-    // Add focus listeners to fields
-    const passwordField = document.getElementById('password');
-    const captchaContainer = document.getElementById('captcha_container');
-
-    hideErrorMessage(passwordField, document.getElementById('error-message-script'));
-    hideErrorMessage(captchaContainer, document.getElementById('error-message-script-captcha'));
 </script>
-
-
-<script>
-    function togglePasswordVisibility() {
-        const passwordField = document.getElementById('password');
-        const togglePassword = document.getElementById('togglePassword');
-        
-        // Toggle between password and text input types
-        if (passwordField.type === 'password') {
-            passwordField.type = 'text';
-            togglePassword.textContent = '🔒'; // Eye with a line icon
-        } else {
-            passwordField.type = 'password';
-            togglePassword.textContent = '👁️'; // Normal eye icon
-        }
-    }
-
-    function toggleEyeVisibility() {
-        const passwordField = document.getElementById('password');
-        const togglePassword = document.getElementById('togglePassword');
-        
-        // Show the eye icon if there is text in the password field
-        if (passwordField.value) {
-            togglePassword.style.display = 'block';
-        } else {
-            togglePassword.style.display = 'none';
-        }
-    }
-</script>
-
-
 
 
 {% block footer %}
