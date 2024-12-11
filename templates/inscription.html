@@ -72,7 +72,24 @@
                 <label for="password"><b>Mot de passe</b><span class="required">*</span></label>
                 <div style="position: relative;">
                     <input type="password" class="form-input" placeholder="Entrez votre mot de passe" name="password" id="password" oninput="toggleEyeVisibility()">
-                    <span id="togglePassword" style="position: absolute; right: 80px; top: 37%; transform: translateY(-50%); cursor: pointer; display: none;" onclick="togglePasswordVisibility()">👁️</span>
+                    <span 
+                        id="togglePassword" 
+                        style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none;" 
+                        onclick="togglePasswordVisibility()"
+                    >
+                        <svg id="showIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display: inline;margin-left: -50px;margin-bottom: 14px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        <svg id="hideIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display: none; margin-left: -50px;margin-bottom: 14px;">
+                            <!-- Eye Shape -->
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7C3.732 7.943 7.523 5 12 5z" />
+                            <!-- Eye Pupil -->
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                            <!-- Diagonal Slash -->
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4l16 16" />
+                        </svg>
+                    </span>
                 </div>
                 {% if errors.password %}
                     <p class="error_msg_alpha">{{ errors.password }}</p>
@@ -86,7 +103,24 @@
                 <label for="password-repeat"><b>Répétez le mot de passe</b><span class="required">*</span></label>
                 <div style="position: relative;">
                     <input type="password" class="form-input" placeholder="Répétez le mot de passe" name="password-repeat" id="password-repeat" oninput="toggleEyeVisibilityrepeat()" >
-                    <span id="togglePasswordrepeat" style="position: absolute; right: 80px; top: 37%; transform: translateY(-50%); cursor: pointer; display: none;" onclick="togglePasswordVisibilityrepeat()">👁️</span>
+                    <span 
+                        id="togglePasswordrepeat" 
+                        style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none;" 
+                        onclick="togglePasswordVisibilityrepeat()"
+                    >
+                        <svg id="showIconrepeat" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display: inline;margin-left: -50px;margin-bottom: 14px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        <svg id="hideIconrepeat" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display: none; margin-left: -50px;margin-bottom: 14px;">
+                            <!-- Eye Shape -->
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7C3.732 7.943 7.523 5 12 5z" />
+                            <!-- Eye Pupil -->
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                            <!-- Diagonal Slash -->
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4l16 16" />
+                        </svg>
+                    </span>
                 </div>
 
                 {% if errors.password_repeat %}
@@ -203,15 +237,17 @@
 <script>
     function togglePasswordVisibility() {
         const passwordField = document.getElementById('password');
-        const togglePassword = document.getElementById('togglePassword');
-        
-        // Toggle between password and text input types
+        const showIcon = document.getElementById('showIcon');
+        const hideIcon = document.getElementById('hideIcon');
+  
         if (passwordField.type === 'password') {
             passwordField.type = 'text';
-            togglePassword.textContent = '🔒'; // Eye with a line icon
+            showIcon.style.display = 'none';
+            hideIcon.style.display = 'inline';
         } else {
             passwordField.type = 'password';
-            togglePassword.textContent = '👁️'; // Normal eye icon
+            showIcon.style.display = 'inline';
+            hideIcon.style.display = 'none';
         }
     }
 
@@ -231,15 +267,17 @@
 <script>
     function togglePasswordVisibilityrepeat() {
         const passwordField = document.getElementById('password-repeat');
-        const togglePassword = document.getElementById('togglePasswordrepeat');
-        
-        // Toggle between password and text input types
+        const showIcon = document.getElementById('showIconrepeat');
+        const hideIcon = document.getElementById('hideIconrepeat');
+  
         if (passwordField.type === 'password') {
             passwordField.type = 'text';
-            togglePassword.textContent = '🔒'; // Eye with a line icon
+            showIcon.style.display = 'none';
+            hideIcon.style.display = 'inline';
         } else {
             passwordField.type = 'password';
-            togglePassword.textContent = '👁️'; // Normal eye icon
+            showIcon.style.display = 'inline';
+            hideIcon.style.display = 'none';
         }
     }
 
