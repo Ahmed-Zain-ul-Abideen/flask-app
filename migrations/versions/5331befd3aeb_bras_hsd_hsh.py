@@ -1,8 +1,8 @@
-"""als fas s
+"""bras hsd hsh
 
-Revision ID: 66781120f004
+Revision ID: 5331befd3aeb
 Revises: 
-Create Date: 2024-12-04 13:31:03.059510
+Create Date: 2024-12-11 15:59:35.142556
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '66781120f004'
+revision = '5331befd3aeb'
 down_revision = None
 branch_labels = None
 depends_on = None
