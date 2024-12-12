@@ -81,7 +81,7 @@ SQLALCHEMY_TRACK_MODIFICATIONS = os.getenv("SQLALCHEMY_TRACK_MODIFICATIONS")
 stripe.api_key = os.getenv("STRIPE_API_KEY")
 # MAIL_DEFAULT_SENDER = os.getenv("MAIL_DEFAULT_SENDER")
 
-BASE_DIR = Path(__file__).parent.parent
+BASE_DIR = Path(__file__).parent
 
 REPORTS_DIR = f"{BASE_DIR}/{REPORT_DIR}"
 the_fl_var = "static/css/payment/data_report.csv"
