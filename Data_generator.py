@@ -179,10 +179,12 @@ def get_cities():
         except ValueError:
             print("Invalid JSON response")
             cities = ["AMPILLY-LE-SEC","ALPUECH"]
+            cities = "none"
             return cities
     except requests.exceptions.RequestException as e:
         print(f"Error fetching cities: {e}")
         cities = ["AMPILLY-LE-SEC","ALPUECH"]
+        cities = "none"
         return cities
 
 
