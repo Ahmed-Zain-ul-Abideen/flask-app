@@ -170,22 +170,13 @@ def get_scoring_voies(criteria):
 
 @log_execution_time 
 def get_cities():
-    url = "https://api-data-immo-yudqj273iq-uc.a.run.app/get_cities"
     try:
-        response = requests.get(url)
-        response.raise_for_status()  # Raises HTTPError for bad status codes
-        try:
-            return response.json()
-        except ValueError:
-            print("Invalid JSON response")
-            cities = ["AMPILLY-LE-SEC","ALPUECH"]
-            cities = "none"
-            return cities
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching cities: {e}")
-        cities = ["AMPILLY-LE-SEC","ALPUECH"]
-        cities = "none"
-        return cities
+        url = build_url(base_url=base_url, endpoint="get_cities")
+        cities = requests.get(url).json()
+        cities = [c["city"] for c in cities]
+        return cities  
+    except Exception as e: 
+        return "none"
 
 
 @log_execution_time
