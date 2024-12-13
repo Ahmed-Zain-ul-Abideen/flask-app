@@ -29,6 +29,9 @@
             <li class="link   {% if request.endpoint == 'frais' %}active{% endif %}"><a href="{{ url_for('frais') }}">Simulation des frais</a></li> 
             <li class="link   {% if request.endpoint == 'preparer' %}active{% endif %}"><a href="{{ url_for('preparer') }}">Générer vos rapports</a></li>
             <li  class="link  {% if request.endpoint == 'contact' %}active{% endif %}"><a href="{{ url_for('contact') }}">Contact Us</a></li>
+            {% if current_user.is_superuser%}
+                <li  class="link  {% if request.endpoint == 'backed' %}active{% endif %}"><a href="{{ url_for('backed') }}">Sauvegardée</a></li>
+            {% endif %}
             <li><a href="javascript:void(0)" for="droplist1" class="toggle" style="color: #fff;">PROFILE  +</a>
               <ul id="the_specsul">
                 {% if is_authenticated %}
