@@ -10,6 +10,10 @@ body {
 }
 
 header {
+  position:fixed;
+  top:0;
+  z-index: 1;
+  width:100%;
   background-color: #666;
   padding: 0 6%;
   box-shadow: 0 10px 20px rgb(0, 0, 0/5%), 0 6px 6px rgb(0, 0, 0/6%);
@@ -182,7 +186,7 @@ header nav {
     flex-direction: column;
     background-color: #2874f0;
     left: 0;
-    top: 65px;
+    top: 80px;
     height: 100vh;
     z-index: 1;
     padding: 15px 0 50px 0;
