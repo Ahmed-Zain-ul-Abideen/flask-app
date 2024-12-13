@@ -1,0 +1,292 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-color: #f1f3f6;
+}
+
+header {
+  background-color: #666;
+  padding: 0 6%;
+  box-shadow: 0 10px 20px rgb(0, 0, 0/5%), 0 6px 6px rgb(0, 0, 0/6%);
+}
+
+header nav {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.logo {
+  flex: 2;
+  display: flex;
+  align-items: center;
+}
+
+.logo a {
+  text-decoration: none;
+  font-size: 26px;
+  color: #04AA6D;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.bartoggle,
+#menubrop {
+  display: none;
+}
+
+.NavMenu {
+  flex: 10;
+  list-style: none;
+  position: relative;
+  display: flex;
+  justify-content: end;
+}
+
+.NavMenu li {
+  display: inline-block;
+}
+
+.NavMenu li input {
+  display: none;
+}
+
+.NavMenu li a {
+  display: block;
+  padding: 20px 14px;
+  font-size: 17px;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #fff;
+  position: relative;
+}
+.NavMenu li:hover{
+  background:#04AA6D;
+}
+.NavMenu li.active{
+  background:#04AA6D;
+}
+
+.NavMenu li a label {
+  cursor: pointer;
+  appearance: none;
+  display: block;
+  position: relative;
+}
+
+.NavMenu li a label::after {
+  content: "+";
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 20px;
+}
+
+.NavMenu>li>a label::after {
+  right: -15px;
+  top: -3px;
+}
+
+.NavMenu li ul {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  /* min-width: 200px; */
+  border-bottom: 2px solid #2874f0;
+  top: 100%;
+  box-shadow: 0 3px 5px rgb(0 0 0/20%);
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transform: translateY(10px);
+  -webkit-transform: translateY(10px);
+  -moz-transform: translateY(10px);
+  -ms-transform: translateY(10px);
+  -o-transform: translateY(10px);
+  visibility: hidden;
+  opacity: 0;
+}
+
+.NavMenu li ul li {
+  position: relative;
+}
+
+.NavMenu li ul li a {
+  color: #2874f0;
+  padding: 8px 10px;
+  display: block;
+  border-left: 2px solid transparent;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+}
+
+.NavMenu li ul li ul {
+  position: absolute;
+  left: 100%;
+  top: 0;
+}
+
+@media(min-width:992px) {
+  .NavMenu li ul li a:hover {
+    border-left: 2px solid #2874f0;
+  }
+
+  .NavMenu li:hover>ul,
+  .NavMenu li ul li:hover>ul {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+  }
+}
+
+@media(max-width:991.98px) {
+  header {
+    padding: 6px 5%;
+  }
+
+  .logo {
+    flex: 6;
+  }
+
+  .bartoggle {
+    display: flex;
+    justify-content: center;
+    font-size: 30px;
+    align-items: center;
+    background-color: #fff;
+    padding: 0 10px;
+    cursor: pointer;
+  }
+
+  .NavMenu {
+    width: 500px;
+    flex: 12;
+    position: fixed;
+    flex-direction: column;
+    background-color: #2874f0;
+    left: 0;
+    top: 65px;
+    height: 100vh;
+    z-index: 1;
+    padding: 15px 0 50px 0;
+    justify-content: start;
+    overflow-y: scroll;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transform: translateX(-100%);
+    -webkit-transform: translateX(-100%);
+    -moz-transform: translateX(-100%);
+    -ms-transform: translateX(-100%);
+    -o-transform: translateX(-100%);
+  }
+
+  .NavMenu li ul,
+  .NavMenu li ul li ul {
+    position: initial;
+    left: 0;
+    visibility: visible;
+    opacity: 1;
+    top: 0;
+    display: none;
+  }
+
+  .NavMenu li a {
+    padding: 8px 15px;
+    border-bottom: 1px solid #fff;
+  }
+
+  .NavMenu li ul li ul {
+    background: #2874f0;
+    position: inherit;
+    margin-top: -10px;
+  }
+
+  .NavMenu li ul li ul li a {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 400;
+    text-transform: initial;
+    padding: 7px 15px 7px 30px;
+  }
+
+  .NavMenu li a label::after {
+    right: 10px;
+  }
+
+  .NavMenu li input:checked+ul,
+  .NavMenu li ul li input:checked+ul {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+
+  input:checked+.NavMenu {
+    transform: translateX(0);
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+  }
+
+}
+
+@media(max-width:768px) {
+  .NavMenu {
+    width: 100%;
+  }
+}
+
+
+/* Hide the dropdown initially */
+ul ul {
+  display: none;
+  position: absolute;
+  background-color: white;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  list-style-type: none;
+  padding: 10px;
+  margin-top: 0;
+}
+
+li:hover > ul {
+  display: flex; /* Show the dropdown when hovering over the parent */
+  flex-direction: column;
+
+}
+
+/* Ensure dropdown behaves correctly when menu is toggled */
+#myDIV input[type="checkbox"]:checked ~ .NavMenu li > ul {
+  display: flex; /* Show the dropdown when hovering over the parent */
+  flex-direction: column;
+}
+
+#myDIV input[type="checkbox"]:checked ~ .NavMenu {
+  display: block;
+}
+
+/* Add additional styling for the parent list item */
+.NavMenu li {
+  position: relative;
+}
+     
