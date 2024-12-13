@@ -65,7 +65,13 @@
         </div>
         <div class="form-profile">
             <label for="website">Website:</label>
-            <input type="text" id="website" name="website" value="{{ user.website }}" disabled>
+            {% if user.website %}
+                <input type="text" id="website" name="website" value="{{ user.website }}" disabled>
+            {% else %}
+                <input type="text" id="website" name="website" placeholder = "Entrez votre site Web"  disabled>
+            {% endif %}
+            
+
         </div>
     
         
