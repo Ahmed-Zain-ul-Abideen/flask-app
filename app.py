@@ -260,7 +260,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.session_protection = "strong"  # or 'basic', depending on your needs
 # Customize the login message
-login_manager.login_message = "Connexion requise !"
+login_manager.login_message = None
 login_manager.login_view = "connexion"
 
 @login_manager.user_loader
@@ -1025,7 +1025,7 @@ def download(report_name):
 def frais():
 
     if not current_user.is_authenticated:
-        flash("Connexion requise.", "warning")
+        # flash("Connexion requise.", "warning")
         return redirect(url_for("connexion"))
     form = MyForm()
     if request.method == "POST":
@@ -1171,19 +1171,22 @@ def pricing():
             subs_type = "3 mois"
             subs_end = datetime.now() + relativedelta(months=+3)
             reports_count = 15
+            total_reports = 15
         elif int(package) == 6:
             subs_type = "6 mois"
             subs_end = datetime.now() + relativedelta(months=+6)
             reports_count = 45
+            total_reports = 45 
         elif int(package) == 12:
             subs_type = "1 an"
             subs_end = datetime.now() + relativedelta(months=+12)
             reports_count = 80
+            total_reports = 80
         else:
             pass
 
         print("subs end",subs_end)
-        updatuser = {'is_subscribed': True,'free_rep':False,'subscription_ends':subs_end,"reports_count":reports_count,
+        updatuser = {'total_reports':total_reports, 'is_subscribed': True,'free_rep':False,'subscription_ends':subs_end,"reports_count":reports_count,
             "subs_type": subs_type,"downloaded_current":0,"subs_start": datetime.now()
         }
         db.session.query(db_models.User).filter(db_models.User.id == current_user.id).update(updatuser)
@@ -1480,53 +1483,62 @@ def connexion():
             #     return abort(400)
             flash("Connexion réussie !", "success")
             print("next   b",next)
-            if next == "/preparer":
-                # flash("Connexion réussie.", "success")
-                # flash("Connexion réussie !", "info")
-                rep_count = False
-                if  db.session.query(db_models.User.query.filter(db_models.User.id==current_user.id).filter(db_models.User.reports_count==0).exists()).scalar():
-                    rep_count = True
+            if  user.is_superuser:
+                print("is super user")
+                users = User.query.all()
+
                 return render_template(
-                    "preparer.html",
-                    cities=cities,
-                    # success_message="Connexion réussie.",
-                    user=current_user,
-                    form=form,
-                    rep_count=rep_count,
-                )
-            
-            elif next == "/paym":
-                if  user.is_subscribed:
-                    return redirect(url_for("pricing"))
-                else:
-                    return redirect(url_for("paym_form"))
-            elif next == "/paym?package=12":
-                if  user.is_subscribed:
-                    return redirect(url_for("pricing"))
-                else:
-                    return redirect(url_for("paym_form",package=12))
-            elif next == "/paym?package=3":
-                if  user.is_subscribed:
-                    return redirect(url_for("pricing"))
-                else:
-                    return redirect(url_for("paym_form",package=3))
-            elif next == "/paym?package=6":
-                if  user.is_subscribed:
-                    return redirect(url_for("pricing"))
-                else:
-                    return redirect(url_for("paym_form",package=6))
-            elif next == "/frais":
-                # flash("Connexion réussie.", "success")
-                return render_template(
-                    "frais.html",
+                    "backed.html",users=users,
                     # success_message="Connexion réussie.",
                 )
             else:
-                # flash("Connexion réussie.", "success")
-                return render_template(
-                    "indexV2.html",
-                    # success_message="Connexion réussie.",
-                )
+                if next == "/preparer":
+                    # flash("Connexion réussie.", "success")
+                    # flash("Connexion réussie !", "info")
+                    rep_count = False
+                    if  db.session.query(db_models.User.query.filter(db_models.User.id==current_user.id).filter(db_models.User.reports_count==0).exists()).scalar():
+                        rep_count = True
+                    return render_template(
+                        "preparer.html",
+                        cities=cities,
+                        # success_message="Connexion réussie.",
+                        user=current_user,
+                        form=form,
+                        rep_count=rep_count,
+                    )
+                
+                elif next == "/paym":
+                    if  user.is_subscribed:
+                        return redirect(url_for("pricing"))
+                    else:
+                        return redirect(url_for("paym_form"))
+                elif next == "/paym?package=12":
+                    if  user.is_subscribed:
+                        return redirect(url_for("pricing"))
+                    else:
+                        return redirect(url_for("paym_form",package=12))
+                elif next == "/paym?package=3":
+                    if  user.is_subscribed:
+                        return redirect(url_for("pricing"))
+                    else:
+                        return redirect(url_for("paym_form",package=3))
+                elif next == "/paym?package=6":
+                    if  user.is_subscribed:
+                        return redirect(url_for("pricing"))
+                    else:
+                        return redirect(url_for("paym_form",package=6))
+                elif next == "/frais":
+                    # flash("Connexion réussie.", "success")
+                    return render_template(
+                        "frais.html",
+                        # success_message="Connexion réussie.",
+                    )
+                else:
+                    # flash("Connexion réussie.", "success")
+                    return render_template(
+                        "indexV2.html",
+                        # success_message="Connexion réussie.",
+                    )
         elif user and user.check_password(password) and not user.is_active:
             # send_confirmation_email(user.email)
 

@@ -48,6 +48,7 @@ class User(db.Model, UserMixin):
     downloaded_current = db.Column(db.Integer, nullable=True)
     downloaded_history = db.Column(db.Integer, nullable=True)
     is_superuser = db.Column(db.Boolean, default=False)
+    total_reports = db.Column(db.Integer, nullable=True)
     def set_password(self, password):
         """Hash the password before saving."""
         self.password_hash = generate_password_hash(password)
