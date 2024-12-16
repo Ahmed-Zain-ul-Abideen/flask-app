@@ -51,6 +51,7 @@ header nav {
   position: relative;
   display: flex;
   justify-content: end;
+  margin-bottom: -9px;
 }
 
 .NavMenu li {

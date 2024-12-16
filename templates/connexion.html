@@ -102,7 +102,8 @@
       {% if errors.email %}
           <p class="error_msg_alpha">{{ errors.email }}</p>
       {% endif %}
-      
+      <p class="error_msg_alpha" id="error-message-script-email" style="display: none;"> Ce champ est obligatoire. Veuillez remplir ce champ.</p>
+
 
       <label for="psw"><b>Mot de passe</b><span class="required">*</span></label>
       {% if  pass_f %}
@@ -110,7 +111,7 @@
       {%else%}
         <div style="position: relative;">
           
-          <input type="password" class="form-input" placeholder="Le mot de passe" name="psw" id="psw" oninput="toggleEyeVisibility()" >
+          <input type="password" class="form-input" placeholder="Le mot de passe" name="psw" id="psw" oninput="toggleEyeVisibility()" onfocus="hideErrorMessage()" >
           <span 
               id="togglePassword" 
               style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none;" 
@@ -135,7 +136,8 @@
       {% if errors.password %}
           <p id = "pass_error_mgs" class="error_msg_alpha">{{ errors.password }}</p>
       {% endif %}
-      
+      <p class="error_msg_alpha" id="error-message-script-password" style="display: none;"> Ce champ est obligatoire. Veuillez remplir ce champ.</p>
+
       <label style= "margin-top:10px;">
         <input type="checkbox" name="remember_me" id="remember_me">
         <b>Se souvenir de moi</b>
@@ -189,6 +191,44 @@
           return false;  // Allow form submission
       }
   }
+</script>
+
+<script>
+  document.getElementById('login').addEventListener('submit', function(event) {
+      
+      const errorMessage = document.getElementById('error-message-script-email');
+  
+      // Check email response
+      const email = document.getElementById('email').value.trim();
+      console.log ("email",email)
+
+      if (!email) {
+          event.preventDefault(); // Prevent form submission
+          errorMessage.style.display = 'block';
+          errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+          errorMessage.style.display = 'none'; // Hide the error message if valid
+      }
+  });
+</script>
+
+<script>
+  document.getElementById('login').addEventListener('submit', function(event) {
+      
+      const errorMessage = document.getElementById('error-message-script-password');
+  
+      // Check password response
+      const password = document.getElementById('psw').value.trim();
+      console.log ("password",password)
+
+      if (!password) {
+          event.preventDefault(); // Prevent form submission
+          errorMessage.style.display = 'block';
+          errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+          errorMessage.style.display = 'none'; // Hide the error message if valid
+      }
+  });
 </script>
 
 <script>
@@ -262,6 +302,14 @@
       });
   });
 </script>
+
+<script>
+  function hideErrorMessage() {
+    const errorMessage = document.getElementById('error-message-script-password');
+    errorMessage.style.display = 'none'; // Hide the error message when the field is focused
+  }
+</script>
+
 
 
 
