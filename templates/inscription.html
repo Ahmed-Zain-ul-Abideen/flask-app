@@ -19,6 +19,8 @@
                 {% if errors.firstname %}
                     <p class="error_msg_alpha">{{ errors.firstname }}</p>
                 {% endif %}
+                <p class="error_msg_alpha" id="error-message-script-firstname" style="display: none;"> Ce champ est obligatoire. Veuillez remplir ce champ.</p>
+
             </div>
             <div>
                 <label for="name"><b>Nom</b><span class="required">*</span></label>
@@ -26,6 +28,8 @@
                 {% if errors.name %}
                     <p class="error_msg_alpha">{{ errors.name }}</p>
                 {% endif %}
+                <p class="error_msg_alpha" id="error-message-script-name" style="display: none;"> Ce champ est obligatoire. Veuillez remplir ce champ.</p>
+
             </div>
             <div>
                 <label for="phone"><b>Téléphone</b><span class="required">*</span></label>
@@ -37,6 +41,8 @@
                 {% if errors.phone_exists %}
                     <p class="error_msg_alpha">{{ errors.phone_exists }}</p>
                 {% endif %}
+                <p class="error_msg_alpha" id="error-message-script-phone" style="display: none;"> Ce champ est obligatoire. Veuillez remplir ce champ.</p>
+
             </div>
 
             <div>
@@ -48,6 +54,8 @@
                 {% if errors.email_exists %}
                     <p class="error_msg_alpha">{{ errors.email_exists }}</p>
                 {% endif %}
+                <p class="error_msg_alpha" id="error-message-script-email" style="display: none;"> Ce champ est obligatoire. Veuillez remplir ce champ.</p>
+
             </div>
 
             <div>
@@ -294,8 +302,78 @@
     }
 </script>
 
-
-
+<script>
+    document.getElementById('register').addEventListener('submit', function(event) {
+        
+        const errorMessage = document.getElementById('error-message-script-firstname');
+    
+        // Check password response
+        const firstname = document.getElementById('firstname').value.trim();
+        console.log ("firstname",firstname)
+  
+        if (!firstname) {
+            event.preventDefault(); // Prevent form submission
+            errorMessage.style.display = 'block';
+            errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            errorMessage.style.display = 'none'; // Hide the error message if valid
+        }
+    });
+</script>
+<script>
+    document.getElementById('register').addEventListener('submit', function(event) {
+        
+        const errorMessage = document.getElementById('error-message-script-name');
+    
+        // Check password response
+        const name = document.getElementById('name').value.trim();
+        console.log ("name",name)
+  
+        if (!name) {
+            event.preventDefault(); // Prevent form submission
+            errorMessage.style.display = 'block';
+            errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            errorMessage.style.display = 'none'; // Hide the error message if valid
+        }
+    });
+</script>
+<script>
+    document.getElementById('register').addEventListener('submit', function(event) {
+        
+        const errorMessage = document.getElementById('error-message-script-phone');
+    
+        // Check password response
+        const phone = document.getElementById('phone').value.trim();
+        console.log ("phone",phone)
+  
+        if (!phone) {
+            event.preventDefault(); // Prevent form submission
+            errorMessage.style.display = 'block';
+            errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            errorMessage.style.display = 'none'; // Hide the error message if valid
+        }
+    });
+</script>
+<script>
+    document.getElementById('register').addEventListener('submit', function(event) {
+        
+        const errorMessage = document.getElementById('error-message-script-email');
+    
+        // Check password response
+        const email = document.getElementById('email').value.trim();
+        console.log ("email",email)
+  
+        if (!email) {
+            event.preventDefault(); // Prevent form submission
+            errorMessage.style.display = 'block';
+            errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            errorMessage.style.display = 'none'; // Hide the error message if valid
+        }
+    });
+</script>
 
 
 

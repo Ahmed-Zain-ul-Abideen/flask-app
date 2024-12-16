@@ -23,21 +23,24 @@
           <div style="margin-bottom: 14px;"><label for="menubrop" class="bartoggle">≡</label></div>
           <input type="checkbox" id="menubrop">
           <ul class="NavMenu" id="myDIV">
-            <li class="link   {% if request.endpoint == 'index' %}active{% endif %}"><a href="{{ url_for('index') }}">Accueil</a></li>
-            <li class="link   {% if request.endpoint == 'outil' %}active{% endif %}"><a href="{{ url_for('outil') }}">Découvrir notre outil</a></li>
-            <li class="link   {% if request.endpoint == 'pricing' %}active{% endif %}"><a href="{{ url_for('pricing') }}">Politique de prix</a></li>
-            <li class="link   {% if request.endpoint == 'frais' %}active{% endif %}"><a href="{{ url_for('frais') }}">Simulation des frais</a></li> 
-            <li class="link   {% if request.endpoint == 'preparer' %}active{% endif %}"><a href="{{ url_for('preparer') }}">Générer vos rapports</a></li>
-            <li  class="link  {% if request.endpoint == 'contact' %}active{% endif %}"><a href="{{ url_for('contact') }}">Contact Us</a></li>
+            
             {% if current_user.is_superuser%}
+                <li class="link   {% if request.endpoint == 'index' %}active{% endif %}"><a href="{{ url_for('index') }}">Accueil</a></li>
                 <li  class="link  {% if request.endpoint == 'backed' %}active{% endif %}"><a href="{{ url_for('backed') }}">Sauvegardée</a></li>
+            {% else %}
+                <li class="link   {% if request.endpoint == 'index' %}active{% endif %}"><a href="{{ url_for('index') }}">Accueil</a></li>
+                <li class="link   {% if request.endpoint == 'outil' %}active{% endif %}"><a href="{{ url_for('outil') }}">Découvrir notre outil</a></li>
+                <li class="link   {% if request.endpoint == 'pricing' %}active{% endif %}"><a href="{{ url_for('pricing') }}">Politique de prix</a></li>
+                <li class="link   {% if request.endpoint == 'frais' %}active{% endif %}"><a href="{{ url_for('frais') }}">Simulation des frais</a></li> 
+                <li class="link   {% if request.endpoint == 'preparer' %}active{% endif %}"><a href="{{ url_for('preparer') }}">Générer vos rapports</a></li>
+                <li  class="link  {% if request.endpoint == 'contact' %}active{% endif %}"><a href="{{ url_for('contact') }}">Contact Us</a></li>
             {% endif %}
             <li><a href="javascript:void(0)" for="droplist1" class="toggle" style="color: #fff;">PROFILE  +</a>
               <ul id="the_specsul">
                 {% if is_authenticated %}
                     <li><a href="{{ url_for('logout') }}">Se déconnecter</a></li>
                     <li><a href="{{ url_for('profile') }}">Profile</a></li>
-                    <li><a href="{{ url_for('reinitialisation') }}">Réinitialiser</a></li>
+                    
                 {% else %}
                     <li><a href="{{ url_for('connexion') }}">Se connecter</a></li>
                     <li><a href="{{ url_for('inscription') }}">S'inscrire</a></li>
