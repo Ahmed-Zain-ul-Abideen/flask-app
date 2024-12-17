@@ -17,7 +17,8 @@
                 <th>Début de l'abonnement</th>
                 <th>Type d'abonnement</th>
                 <th>Fin de l'abonnement</th>
-                <th>Nombre de rapports téléchargés</th>
+                <th>Nombre total de rapports</th>
+                <th>nombre de rapports restants</th>
                 <th>Rapports téléchargés</th>
             
             </tr>
@@ -31,6 +32,7 @@
                 <td>{{ user.subs_start.strftime('%d-%m-%Y') if user.subs_start  else 'Aucune date'}}</td>
                 <td>{{ user.subs_type if user.subs_type else 'Forfait gratuit' }} </td>
                 <td>{{ user.subscription_ends.strftime('%d-%m-%Y') if user.subscription_ends else 'Aucune date'}}</td>
+                <td>{{ user.total_reports if user.total_reports else 'Néant' }} </td>
                 <td>{{ user.reports_count if user.reports_count else 'Néant' }} </td>
                 <td>{{ user.downloaded_current if user.downloaded_current else 'Néant' }}</td>
             </tr>

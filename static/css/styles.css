@@ -524,7 +524,13 @@ ul li {
     width: 25%;
     padding: 8px;
   }
-  
+  .columns_alpha {
+    float: left;
+    /* width: 33.3%; */
+    width: 100%;
+    padding: 30px;
+
+  }
   .price {
     list-style-type: none;
     border: 1px solid #eee;
@@ -884,11 +890,20 @@ ul {
   display: inline-block;
   align-items: center;
   margin: 0 2% 0 2%;
-  width:45%
+  width:45%;
+
 }
 
 .form-profile label {
+  display: block;
   margin-bottom: 5px; /* Space between label and input */
+}
+
+.form-profile input {
+  display: block;
+  width: 100%;  /* Full width for the inputs */
+  padding: 8px;
+  margin-bottom: 5px; /* Space between the input and the error message */
 }
 
 /* ######################## CUSTOMISER ################### */
@@ -956,7 +971,7 @@ ul {
   margin: 0;
   padding: 20px;
   box-sizing: border-box;
-  margin-top: 20px;
+  margin-top: 100px;
   min-height: 278px;
 }
 
