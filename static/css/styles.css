@@ -816,7 +816,7 @@ ul {
     padding: 15px;
     border-radius: 5px;
     opacity: 1;
-    animation: fadeIn 0.5s, fadeOut 5s forwards; /* Fade in and out */
+    animation: fadeIn 0.5s, fadeOut 29.5s forwards; /* Fade in and out */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for pop-up effect */
 }
 @keyframes fadeIn {
