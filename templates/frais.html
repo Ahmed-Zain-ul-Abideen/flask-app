@@ -3,7 +3,7 @@
 {% block title %}Frais{% endblock %}
 
 {% block content %}
-
+<div style="text-align: center;padding-bottom: 1.9rem;"><p style="color: #6c757d;">Simulation des frais</p></div>
 <div class="step-container">
     <!-- Répartition des frais et honoraires -->
     <div class="step">
@@ -205,8 +205,8 @@
             <!-- # ####################### FLASH MESSAGE ####################################### -->
             <div id="flash-message" style="display:none;" class="flash-message">
                 <div class="message-header">
-                    <h2>Résultats</h2>
-                    <button class="close-btn" onclick="closeFlashMessage()">×</button>
+                    <h2 style = "cursor: none; margin-top:-13px;">Résultats</h2>
+                    <span class="close-icon" onclick="closeFlashMessage()">&#10006;</span>
                 </div>
                 <div class="message-content">
                     <p><strong>Prix d'Adjudication : <span id="flash_prix_adjudication"></span> €</strong></p> <!-- Change ID -->

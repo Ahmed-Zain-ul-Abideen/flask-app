@@ -1,6 +1,9 @@
 import Data_generator as dg
+#from  .  import  Data_generator  as dg
+#from  .Data_generator  import  *
 # from src import Data_generator as dg
 import Report_generator as rg
+#from . import Report_generator as rg
 import db_models
 from utility import log_execution_time
 #from .Report_Customiser import upload_logo, customise_workbook
@@ -93,6 +96,8 @@ ContactMessage = db_models.ContactMessage
 ReportsLog = db_models.ReportsLog
 app = Flask(__name__, static_folder="./static", template_folder="./templates")
 # Gmail SMTP server configuration
+app.config['UPLOAD_FOLDER'] = 'static/user_images'
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}  # Define allowed file types
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 587
 app.config["MAIL_USE_TLS"] = True
@@ -233,6 +238,7 @@ color_palette = [
 ]
 try: 
     cities = dg.get_cities()
+    #cities = get_cities()
 except:
     cities = "none"
     # cities = ["AMPILLY-LE-SEC","ALPUECH","ABITAIN","ACCOLAY","ALEMBON","ALLY","AMPLEPUIS","ADRIERS",
@@ -380,6 +386,8 @@ def confirm_token_expire(token, salt="password-reset-salt", expiration=180):
 @app.route("/")
 @log_execution_time
 def index():
+    # db.session.query(db_models.User).filter(db_models.User.id == current_user.id).update({'is_subscribed':False,'reports_count':0})
+    # db.session.commit()
     # if  current_user.is_authenticated:
     #     print("curen addr",current_user.address,current_user.reports_count)
     return render_template("indexV2.html")
@@ -571,7 +579,7 @@ def customise_report():
     if attribut_font_color:
         current_user.attribut_font_color = attribut_font_color
     if font_family:
-        current_user.font_family = font_family
+        current_user.fontFamily = font_family
 
     # Commit the changes to the database
     db.session.commit()
@@ -621,6 +629,7 @@ def preparer():
         print("critera dd",criteria)
         try:
             year = dg.get_annee_max()["data"][0]["Annee"] + 1
+            #year = get_annee_max()["data"][0]["Annee"] + 1
         except:
             db.session.query(db_models.User).filter(db_models.User.id ==  current_user.id).update({'address': "error at get_annee_max"})
             return jsonify(
@@ -1125,40 +1134,52 @@ def pricing():
     print("pricing userz",userz,package,free_report)
     if  free_report == str(121):
         if   current_user.is_authenticated:
-            db.session.query(db_models.User).filter(db_models.User.id == current_user.id).update({'free_rep':False,'reports_count':1,'subs_type':"free"})
-            db.session.commit()  # Don't forget to commit the changes
-            this_user_mail =  db.session.query(db_models.User.email).filter(db_models.User.id == current_user.id).scalar()
-            print("this_user_mail ",this_user_mail)
-            context_data = {'codevar': "you got 1  free report",'link': f"Merci d'avoir choisi notre forfait gratuit ! Nous sommes ravis de vous offrir l’accès à 1 téléchargement de rapport gratuit.",'flag_password_reset': False,'flag_confirm_email':"121"}
+            this_user_trial =  db.session.query(db_models.User.free_rep).filter(db_models.User.id == current_user.id).scalar()
+            if  not  this_user_trial:
+                subs_flag = True
+                user = User.query.filter_by(id=current_user.id).first()
+                if  user.is_subscribed:
+                    subs_flag = False
+                user_reports = ReportsLog.query.filter_by(user_id=current_user.id).all()
+                context = {"user_reports":user_reports,"free_flag": False,"subs_flag":subs_flag}
+                flash("tricher, c'est mal ! vous avez déjà utilisé l'essai gratuit","error")
+                return render_template("pricing.html", **context)
+            else:
+                db.session.query(db_models.User).filter(db_models.User.id == current_user.id).update({'free_rep':False,'reports_count':1,'subs_type':"free"})
+                db.session.commit()  # Don't forget to commit the changes
+                this_user_mail =  db.session.query(db_models.User.email).filter(db_models.User.id == current_user.id).scalar()
+                print("this_user_mail ",this_user_mail)
+                context_data = {'codevar': "you got 1  free report",'link': f"Merci d'avoir choisi notre forfait gratuit ! Nous sommes ravis de vous offrir l’accès à 1 téléchargement de rapport gratuit.",'flag_password_reset': False,'flag_confirm_email':"121"}
 
-            html_message = render_template('confrim_email.html', **context_data) 
-            msg = Message(
-                subject= "Confirmation de votre abonnement gratuit – 1 téléchargement de rapport gratuit",
-                sender=os.getenv("EMAIL_SENDER"),
-                recipients=[this_user_mail], 
-                html=html_message
-            )
-            # msg = Message(
-            #     "Confirmation de votre abonnement gratuit – 1 téléchargement de rapport gratuit",
-            #     sender=os.getenv(
-            #         "EMAIL_SENDER"
-            #     ),  # Use environment variable for sender email
-            #     recipients=[this_user_mail],
-            #     body=f"Merci d'avoir choisi notre forfait gratuit ! Nous sommes ravis de vous offrir l’accès à 1 téléchargement de rapport gratuit.",
-            # )
-            try:
-                mail.send(msg)
-            except Exception as e:
-                logging.error(f"free report confi Failed to send email to {this_user_mail}: {e}")
-            subs_flag = True
-            user = User.query.filter_by(id=current_user.id).first()
-            if  user.is_subscribed:
-                subs_flag = False
-            context = { "free_flag": False,"subs_flag":subs_flag}
-            return render_template("pricing.html", **context)
+                html_message = render_template('confrim_email.html', **context_data) 
+                msg = Message(
+                    subject= "Confirmation de votre abonnement gratuit – 1 téléchargement de rapport gratuit",
+                    sender=os.getenv("EMAIL_SENDER"),
+                    recipients=[this_user_mail], 
+                    html=html_message
+                )
+                # msg = Message(
+                #     "Confirmation de votre abonnement gratuit – 1 téléchargement de rapport gratuit",
+                #     sender=os.getenv(
+                #         "EMAIL_SENDER"
+                #     ),  # Use environment variable for sender email
+                #     recipients=[this_user_mail],
+                #     body=f"Merci d'avoir choisi notre forfait gratuit ! Nous sommes ravis de vous offrir l’accès à 1 téléchargement de rapport gratuit.",
+                # )
+                try:
+                    mail.send(msg)
+                except Exception as e:
+                    logging.error(f"free report confi Failed to send email to {this_user_mail}: {e}")
+                subs_flag = True
+                user = User.query.filter_by(id=current_user.id).first()
+                if  user.is_subscribed:
+                    subs_flag = False
+                user_reports = ReportsLog.query.filter_by(user_id=current_user.id).all()
+                context = {"user_reports":user_reports,"free_flag": False,"subs_flag":subs_flag}
+                return render_template("pricing.html", **context)
         else:
-            flash("Login first to complete this action","error")
-            context = { "free_flag": True,"subs_flag":True}
+            flash("Connectez-vous d'abord pour terminer cette action","error")
+            context = {"user_reports":None,"free_flag": True,"subs_flag":True}
             return render_template("pricing.html", **context)
 
 
@@ -1167,58 +1188,71 @@ def pricing():
     if userz is None:
         pass
     elif userz:
-        if int(package)  == 3:
-            subs_type = "3 mois"
-            subs_end = datetime.now() + relativedelta(months=+3)
-            reports_count = 15
-            total_reports = 15
-        elif int(package) == 6:
-            subs_type = "6 mois"
-            subs_end = datetime.now() + relativedelta(months=+6)
-            reports_count = 45
-            total_reports = 45 
-        elif int(package) == 12:
-            subs_type = "1 an"
-            subs_end = datetime.now() + relativedelta(months=+12)
-            reports_count = 80
-            total_reports = 80
+        if   current_user.is_authenticated:
+            this_user_subs =  db.session.query(db_models.User.is_subscribed).filter(db_models.User.id == current_user.id).scalar()
+            if  not  this_user_subs:
+                if int(package)  == 3:
+                    subs_type = "3 mois"
+                    subs_end = datetime.now() + relativedelta(months=+3)
+                    reports_count = 15
+                    total_reports = 15
+                elif int(package) == 6:
+                    subs_type = "6 mois"
+                    subs_end = datetime.now() + relativedelta(months=+6)
+                    reports_count = 45
+                    total_reports = 45 
+                elif int(package) == 12:
+                    subs_type = "1 an"
+                    subs_end = datetime.now() + relativedelta(months=+12)
+                    reports_count = 80
+                    total_reports = 80
+                else:
+                    pass
+
+                print("subs end",subs_end)
+                updatuser = {'total_reports':total_reports, 'is_subscribed': True,'free_rep':False,'subscription_ends':subs_end,"reports_count":reports_count,
+                    "subs_type": subs_type,"downloaded_current":0,"subs_start": datetime.now()
+                }
+                db.session.query(db_models.User).filter(db_models.User.id == current_user.id).update(updatuser)
+                db.session.commit()  # Don't forget to commit the changes
+                this_user_mail =  db.session.query(db_models.User.email).filter(db_models.User.id == current_user.id).scalar()
+                print("this_user_mail ",this_user_mail)
+                #m_body = "Thank you for subscribing to our 3-month package! We're excited to have you on board."
+                context_data = {'codevar': "you got " +  str(reports_count)  + " reports",'link': f"Merci de vous être abonné à notre {subs_type} emballer! Nous sommes ravis de vous avoir à bord.",'flag_password_reset': False,'flag_confirm_email':"121"}
+
+                html_message = render_template('confrim_email.html', **context_data) 
+                msg = Message(
+                    subject= "Confirmation d'abonnement",
+                    sender=os.getenv("EMAIL_SENDER"),
+                    recipients=[this_user_mail], 
+                    html=html_message
+                )
+                # msg = Message(
+                #     "Confirmation d'abonnement",
+                #     sender=os.getenv(
+                #         "EMAIL_SENDER"
+                #     ),  # Use environment variable for sender email
+                #     recipients=[this_user_mail],
+                #     body=f"Merci de vous être abonné à notre {subs_type} emballer! Nous sommes ravis de vous avoir à bord.",
+                # )
+                try:
+                    mail.send(msg)
+                except Exception as e:
+                    logging.error(f"subs confi Failed to send email to {this_user_mail}: {e}")
+                    #flash("Failed to re send ip address confirmation email. Please try again later.", "error")
+                flash("abonné avec succès","info")
+            else: 
+                flash("tricher, c'est mal ! tu es déjà abonné","error")
+                
+
         else:
-            pass
+            flash("Connectez-vous d'abord pour terminer cette action","error")
 
-        print("subs end",subs_end)
-        updatuser = {'total_reports':total_reports, 'is_subscribed': True,'free_rep':False,'subscription_ends':subs_end,"reports_count":reports_count,
-            "subs_type": subs_type,"downloaded_current":0,"subs_start": datetime.now()
-        }
-        db.session.query(db_models.User).filter(db_models.User.id == current_user.id).update(updatuser)
-        db.session.commit()  # Don't forget to commit the changes
-        this_user_mail =  db.session.query(db_models.User.email).filter(db_models.User.id == current_user.id).scalar()
-        print("this_user_mail ",this_user_mail)
-        #m_body = "Thank you for subscribing to our 3-month package! We're excited to have you on board."
-        context_data = {'codevar': "you got " +  str(reports_count)  + " reports",'link': f"Merci de vous être abonné à notre {subs_type} emballer! Nous sommes ravis de vous avoir à bord.",'flag_password_reset': False,'flag_confirm_email':"121"}
-
-        html_message = render_template('confrim_email.html', **context_data) 
-        msg = Message(
-            subject= "Confirmation d'abonnement",
-            sender=os.getenv("EMAIL_SENDER"),
-            recipients=[this_user_mail], 
-            html=html_message
-        )
-        # msg = Message(
-        #     "Confirmation d'abonnement",
-        #     sender=os.getenv(
-        #         "EMAIL_SENDER"
-        #     ),  # Use environment variable for sender email
-        #     recipients=[this_user_mail],
-        #     body=f"Merci de vous être abonné à notre {subs_type} emballer! Nous sommes ravis de vous avoir à bord.",
-        # )
-        try:
-            mail.send(msg)
-        except Exception as e:
-            logging.error(f"subs confi Failed to send email to {this_user_mail}: {e}")
-            #flash("Failed to re send ip address confirmation email. Please try again later.", "error")
-        flash("abonné avec succès","info")
     elif not userz:
-        flash("Une erreur s'est produite lors du paiement","error")
+        if   current_user.is_authenticated:
+            flash("Une erreur s'est produite lors du paiement","error")
+        else:
+            flash("Connectez-vous d'abord pour terminer cette action","error")
     else:
         pass
 
@@ -1234,7 +1268,6 @@ def pricing():
         user = User.query.filter_by(id=current_user.id).first()
         if  user:
             free_flag = user.free_rep
-            subs_flag = True
             if  user.is_subscribed:
                 subs_flag = False
     
@@ -1242,6 +1275,19 @@ def pricing():
                 "user_reports":user_reports,"subs_flag":subs_flag}
     return render_template("pricing.html", **context)
 
+
+@app.route("/mes_rapports")
+@log_execution_time
+def mes_rapports():
+
+    if current_user.is_authenticated:
+        user_reports = ReportsLog.query.filter_by(user_id=current_user.id).all()
+        print("user_reports",user_reports)
+    else:
+        user_reports = None
+
+    context = {"user_reports":user_reports}
+    return render_template("mes_rapports.html", **context)
 
 @app.route("/conditions")
 @log_execution_time
@@ -1854,6 +1900,23 @@ def inject_user():
 #         return jsonify({"url": logo_path})
 #     return jsonify({"error": "Logo upload failed"}), 400
 
+
+@app.route("/upload_logo", methods=["POST"])
+def upload_logo_route():
+    logo = request.files.get("logo")
+    if logo:
+        user_id = current_user.id
+        filename, error = User.upload_user_image(logo, app.config, user_id)
+        if error:
+            return jsonify({'error': error}), 400
+        
+        # if  current_user.user_image:
+        
+        # After saving the image, return the URL to the front-end
+        image_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        return jsonify({'url': image_url})
+    return jsonify({"error": "Logo upload failed"}), 400
+
 @app.route("/profile", methods=["GET", "POST"])
 @login_required
 @log_execution_time
@@ -1994,4 +2057,5 @@ if __name__ == "__main__":
 
     # # mail = Mail(app)
 
+    #app.run(host='192.168.18.85', port=8007,debug=True)
     app.run(host='0.0.0.0', port=4000)

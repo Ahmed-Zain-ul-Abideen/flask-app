@@ -1,8 +1,8 @@
-"""ald had gr
+"""user image these all
 
-Revision ID: 2cb4b5456aac
+Revision ID: 44777edb4eb8
 Revises: 
-Create Date: 2025-01-01 17:36:50.152758
+Create Date: 2025-01-09 13:58:24.707981
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '2cb4b5456aac'
+revision = '44777edb4eb8'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -67,6 +67,7 @@ def upgrade():
     sa.Column('downloaded_history', sa.Integer(), nullable=True),
     sa.Column('is_superuser', sa.Boolean(), nullable=True),
     sa.Column('total_reports', sa.Integer(), nullable=True),
+    sa.Column('user_image', sa.String(length=120), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('logo'),
