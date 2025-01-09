@@ -1162,4 +1162,38 @@ input[type="password"]::-webkit-text-security {
 }
 
 
+.my-globcontainer {
+  margin-top: 95px;
+  min-height: 450px;
+  width: 100%;
+  max-width: 1140px; /* This is equivalent to the large screen size of Bootstrap */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
 
+/* Responsive breakpoints to mimic Bootstrap's container behavior */
+@media (max-width: 1200px) {
+  .my-globcontainer {
+    max-width: 960px;
+  }
+}
+
+@media (max-width: 992px) {
+  .my-globcontainer{
+    max-width: 720px;
+  }
+}
+
+@media (max-width: 768px) {
+  .my-globcontainer {
+    max-width: 540px;
+  }
+}
+
+@media (max-width: 576px) {
+  .my-globcontainer {
+    max-width: 100%;
+  }
+}
