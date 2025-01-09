@@ -22,7 +22,11 @@
 
                         <li class="header" style="background-color:#04AA6D">Current Package: Essai</li>
                         <li class="grey">Total Reports: 1 </li>
-                        <li>Downloaded Reports:{{current_user.downloaded_current}}</li>
+                        {% if  current_user.downloaded_current  %}
+                            <li>Downloaded Reports:{{current_user.downloaded_current}}</li>
+                        {% else %}
+                            <li>Downloaded Reports:0</li>
+                        {% endif %}
                         <li class="grey"></li>
 
 
