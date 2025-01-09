@@ -1,0 +1,48 @@
+{% extends 'baseV3.html' %}
+
+{% block title %}Mes Rapports{% endblock %}
+
+{% block content %}
+    
+
+    <div style="display: {% if user_reports  %}Block{% else %}None{% endif %};">
+        <h2 style="text-align:center">Journal des rapports</h2>
+
+        <div style="overflow-x:auto;">
+
+            <table>
+                <tr>
+                
+                    <th>Id</th>
+                    <th>City</th>
+                    <th>Property Type</th>
+                    <th>Date</th>
+                    
+                
+                </tr>
+
+
+                {% for report in user_reports %}
+                <tr>
+                    <td>{{ report.id }}</td>
+                    <td>{{ report.city }}</td>
+                    <td>{{ report.property_type }}</td>
+                    <td>{{ report.download_date.strftime('%d-%m-%Y') }}</td>
+                    
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4">No Reports found.</td>
+                </tr>
+                {% endfor %}
+
+            
+            </table>
+        </div>
+    </div>
+
+    
+
+
+
+{% endblock %}
