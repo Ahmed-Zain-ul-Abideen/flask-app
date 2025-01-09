@@ -45,6 +45,17 @@
         <canvas id="colorCanvas" style="display:none; width: 50%; margin: 0 25% 0 25%;"></canvas>
             <!-- Color pickers -->
 
+            
+            <div class="form-customiser">
+                <label for="bg_color">Couleur d'arrière plan</label>
+                <input type="color" id="bg_color" name="bg_color" value="{{ user.bg_color }}">
+            </div>
+
+            <div class="form-customiser">
+                <label for="bg_font_color">Couleur de la police à associer à l'arrière plan</label>
+                <input type="color" id="bg_font_color" name="bg_font_color" value="{{ user.bg_font_color }}">
+            </div>
+
             <div class="form-customiser">
                 <label for="fontFamily">Font Family:</label>
                 <select id="fontFamily" name="fontFamily" onchange="updateFontPreview()">
@@ -57,21 +68,7 @@
                 </select>
             </div>
 
-            <div class="form-customiser">
-                <label for="bg_color">Couleur d'arrière plan</label>
-                <input type="color" id="bg_color" name="bg_color" value="{{ user.bg_color }}">
-            </div>
-
-            <div class="form-customiser">
-                <label for="bg_font_color">Couleur de la police à associer à l'arrière plan</label>
-                <input type="color" id="bg_font_color" name="bg_font_color" value="{{ user.bg_font_color }}">
-            </div>
-            <div class="form-customiser">
-                <!-- <label for="fontPreview">Font Previews:</label> -->
-                <div id="fontPreview1" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
-                    Aperçu du style de l'arrière plan
-                </div>
-            </div>
+            
 
 
             <div class="form-customiser">
@@ -84,10 +81,13 @@
             </div>
 
             <div class="form-customiser">
-                <div id="fontPreview2" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
-                    Aperçu du style des titres
+                <!-- <label for="fontPreview">Font Previews:</label> -->
+                <div id="fontPreview1" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
+                    Aperçu du style de l'arrière plan
                 </div>
             </div>
+
+            
 
 
             <div class="form-customiser">
@@ -100,10 +100,14 @@
             </div>
 
             <div class="form-customiser">
-                <div id="fontPreview3" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
+                <div id="fontPreview2" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
+                    Aperçu du style des titres
+                </div><div id="fontPreview3" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
                     Aperçu du style des attributs
                 </div>
             </div>
+
+            
 
             <!-- <button type="button" onclick="enableInputs()">Edit Profile</button> -->
             <button type="submit">Update Profile</button>

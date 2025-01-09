@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My App{% endblock %}</title>
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/MenuV2/style.css') }}">
     <!-- <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script> -->
@@ -19,7 +20,12 @@
     <!-- Header and Navigation -->
     <header>
         <nav>
-          <div class="logo"><a href="{{ url_for('index') }}">Encheres</a></div>
+            <div class="logo">
+                <a href="{{ url_for('index') }}">
+                    <img src="{{ url_for('static', filename='contents/avocat/logo.png') }}" alt="Encheres Logo" class="logo-image">
+                </a>
+            </div>
+          
           <div style="margin-bottom: 14px;"><label for="menubrop" class="bartoggle">≡</label></div>
           <input type="checkbox" id="menubrop">
           <ul class="NavMenu" id="myDIV">
@@ -28,18 +34,22 @@
                 <li class="link   {% if request.endpoint == 'index' %}active{% endif %}"><a href="{{ url_for('index') }}">Accueil</a></li>
                 <li  class="link  {% if request.endpoint == 'backed' %}active{% endif %}"><a href="{{ url_for('backed') }}">Sauvegardée</a></li>
             {% else %}
-                <li class="link   {% if request.endpoint == 'index' %}active{% endif %}"><a href="{{ url_for('index') }}">Accueil</a></li>
-                <li class="link   {% if request.endpoint == 'outil' %}active{% endif %}"><a href="{{ url_for('outil') }}">Découvrir notre outil</a></li>
-                <li class="link   {% if request.endpoint == 'pricing' %}active{% endif %}"><a href="{{ url_for('pricing') }}">Politique de prix</a></li>
+                <li class="link   {% if request.endpoint == 'outil' %}active{% endif %}"><a href="{{ url_for('outil') }}">Notre outil</a></li>
+                <li class="link   {% if request.endpoint == 'pricing' %}active{% endif %}"><a href="{{ url_for('pricing') }}">Prix</a></li>
                 <li class="link   {% if request.endpoint == 'frais' %}active{% endif %}"><a href="{{ url_for('frais') }}">Simulation des frais</a></li> 
                 <li class="link   {% if request.endpoint == 'preparer' %}active{% endif %}"><a href="{{ url_for('preparer') }}">Générer vos rapports</a></li>
-                <li  class="link  {% if request.endpoint == 'contact' %}active{% endif %}"><a href="{{ url_for('contact') }}">Contact Us</a></li>
+                <li  class="link  {% if request.endpoint == 'contact' %}active{% endif %}"><a href="{{ url_for('contact') }}">Contact</a></li>
             {% endif %}
-            <li><a href="javascript:void(0)" for="droplist1" class="toggle" style="color: #fff;">PROFILE  +</a>
+            <li><a href="javascript:void(0)" for="droplist1" class="toggle" style="color: #fff; margin-top:-5px;/">PROFILE 
+                <span class="profile-icon {% if is_authenticated %}logged-in{% endif %}">
+                    <i class="fas fa-user-circle"></i>
+                </span> 
+                </a>
               <ul id="the_specsul">
                 {% if is_authenticated %}
                     <li><a href="{{ url_for('logout') }}">Se déconnecter</a></li>
                     <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                    <li><a href="{{ url_for('mes_rapports') }}">Mes Rapports</a></li>
                     
                 {% else %}
                     <li><a href="{{ url_for('connexion') }}">Se connecter</a></li>

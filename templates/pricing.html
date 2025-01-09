@@ -90,6 +90,9 @@
                 <li class="grey">Total Reports: {{current_user.total_reports}}</li>
                 
                 <li>Downloaded Reports: {{current_user.downloaded_current}}</li>
+                <li class="grey">Remaining Reports: {{current_user.reports_count}}</li>
+                <li>Subscription Start Date: {{current_user.subs_start.strftime('%d-%m-%Y')}}</li>
+                <li class="grey">Subscription End Date: {{current_user.subscription_ends.strftime('%d-%m-%Y')}}</li>
     
             </ul>
         </div>
@@ -98,49 +101,8 @@
 
        </div>
     </div>
-    {% if user_reports  %} 
+  
 
-        <div style="display: {% if user_reports  %}Block{% else %}None{% endif %};">
-            <h2 style="text-align:center">Journal des rapports</h2>
-
-            <div style="overflow-x:auto;">
-
-                <table>
-                    <tr>
-                    
-                        <th>Id</th>
-                        <th>City</th>
-                        <th>Property Type</th>
-                        <th>Date</th>
-                        
-                    
-                    </tr>
-
-
-                    {% for report in user_reports %}
-                    <tr>
-                        <td>{{ report.id }}</td>
-                        <td>{{ report.city }}</td>
-                        <td>{{ report.property_type }}</td>
-                        <td>{{ report.download_date.strftime('%d-%m-%Y') }}</td>
-                        
-                    </tr>
-                    {% else %}
-                    <tr>
-                        <td colspan="4">No Reports found.</td>
-                    </tr>
-                    {% endfor %}
-
-                
-                </table>
-            </div>
-        </div>
-
-    {% else %}
-    {% endif %}
-</div>
-<div>
-</div>
 
 
 {% endblock %}

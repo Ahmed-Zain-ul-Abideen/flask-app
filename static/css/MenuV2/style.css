@@ -26,19 +26,31 @@ header nav {
   justify-content: space-between;
 }
 
-.logo {
+/* .logo {
   flex: 2;
   display: flex;
   align-items: center;
+
+} */
+
+.logo {
+  display: inline-block;
 }
 
-.logo a {
+.logo-image {
+  width: 150px; /* Adjust as needed */
+  height: auto;
+  display: block;
+}
+
+
+/* .logo a {
   text-decoration: none;
   font-size: 26px;
   color: #04AA6D;
   text-transform: uppercase;
   font-weight: 800;
-}
+} */
 
 .bartoggle,
 #menubrop {
@@ -64,7 +76,7 @@ header nav {
 
 .NavMenu li a {
   display: block;
-  padding: 20px 14px;
+  padding: 30px 14px;
   font-size: 17px;
   text-decoration: none;
   text-transform: uppercase;
@@ -300,3 +312,24 @@ body.no-scroll {
   overflow: hidden;
 }
      
+
+
+/* Style for the profile icon */
+.profile-icon {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: grey; 
+  text-align: center;
+  line-height: 27px;
+  color: white;
+  font-size: 17px;
+  transition: background-color 0.3s;
+}
+
+
+.profile-icon.logged-in {
+  background-color: #04AA6D;
+  
+}
