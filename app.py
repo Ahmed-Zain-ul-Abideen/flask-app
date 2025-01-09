@@ -1,6 +1,9 @@
 import Data_generator as dg
+#from  .  import  Data_generator  as dg
+#from  .Data_generator  import  *
 # from src import Data_generator as dg
 import Report_generator as rg
+#from . import Report_generator as rg
 import db_models
 from utility import log_execution_time
 #from .Report_Customiser import upload_logo, customise_workbook
@@ -93,6 +96,8 @@ ContactMessage = db_models.ContactMessage
 ReportsLog = db_models.ReportsLog
 app = Flask(__name__, static_folder="./static", template_folder="./templates")
 # Gmail SMTP server configuration
+app.config['UPLOAD_FOLDER'] = 'static/user_images'
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}  # Define allowed file types
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 587
 app.config["MAIL_USE_TLS"] = True
@@ -233,6 +238,7 @@ color_palette = [
 ]
 try: 
     cities = dg.get_cities()
+    #cities = get_cities()
 except:
     cities = "none"
     # cities = ["AMPILLY-LE-SEC","ALPUECH","ABITAIN","ACCOLAY","ALEMBON","ALLY","AMPLEPUIS","ADRIERS",
@@ -623,6 +629,7 @@ def preparer():
         print("critera dd",criteria)
         try:
             year = dg.get_annee_max()["data"][0]["Annee"] + 1
+            #year = get_annee_max()["data"][0]["Annee"] + 1
         except:
             db.session.query(db_models.User).filter(db_models.User.id ==  current_user.id).update({'address': "error at get_annee_max"})
             return jsonify(
@@ -860,7 +867,7 @@ def preparer():
     #     flash(no_report,"error")
     #print("preparer rep_count",rep_count)
     return render_template(
-        "preparer.html", cities=cities, report_available=False, user=current_user,form=form,
+        "preparerimg.html", cities=cities, report_available=False, user=current_user,form=form,
         rep_count=rep_count
     )
     
@@ -1880,6 +1887,23 @@ def inject_user():
 #         return jsonify({"url": logo_path})
 #     return jsonify({"error": "Logo upload failed"}), 400
 
+
+@app.route("/upload_logo", methods=["POST"])
+def upload_logo_route():
+    logo = request.files.get("logo")
+    if logo:
+        user_id = current_user.id
+        filename, error = User.upload_user_image(logo, app.config, user_id)
+        if error:
+            return jsonify({'error': error}), 400
+        
+        # if  current_user.user_image:
+        
+        # After saving the image, return the URL to the front-end
+        image_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        return jsonify({'url': image_url})
+    return jsonify({"error": "Logo upload failed"}), 400
+
 @app.route("/profile", methods=["GET", "POST"])
 @login_required
 @log_execution_time
@@ -2020,4 +2044,5 @@ if __name__ == "__main__":
 
     # # mail = Mail(app)
 
+    #app.run(host='192.168.18.85', port=8007,debug=True)
     app.run(host='0.0.0.0', port=4000)

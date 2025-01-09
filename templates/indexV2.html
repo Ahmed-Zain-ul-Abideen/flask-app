@@ -3,6 +3,94 @@
 {% block title %}Rapports Excel pour Avocats{% endblock %}
 
 {% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+    .custom-carousel {
+        width: 60%;
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+
+    .carousel-img {
+        height: 345px;            /* Fixed height */
+        object-fit: contain;      /* Maintain aspect ratio and ensure the image fits within the height */
+        width: auto;              /* Let the width adjust automatically based on the height */
+    }
+</style>
+
+<div style="text-align: center;padding-bottom: 1.9rem;"><p style="color: #6c757d;">Accueil</p></div>
+
+
+<div id="carouselExample" class="carousel slide  custom-carousel" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active"  data-bs-interval="3000">
+            <img src="{{ url_for('static', filename='images/image-1.png') }}" class="d-block w-100  carousel-img" alt="...">
+            <!-- <div class="carousel-caption d-none d-md-block">
+                <h5>First Slide</h5>
+                <p>Some description about the first image.</p>
+            </div> -->
+        </div>
+        <div class="carousel-item"   data-bs-interval="3000">
+            <img src="{{ url_for('static', filename='images/image-2.png') }}" class="d-block w-100  carousel-img" alt="...">
+            <!-- <div class="carousel-caption d-none d-md-block">
+                <h5>Second Slide</h5>
+                <p>Some description about the second image.</p>
+            </div> -->
+        </div>
+        <div class="carousel-item"   data-bs-interval="3000">
+            <img src="{{ url_for('static', filename='images/image-3.png') }}" class="d-block w-100  carousel-img" alt="...">
+            <!-- <div class="carousel-caption d-none d-md-block">
+                <h5>Third Slide</h5>
+                <p>Some description about the third image.</p>
+            </div> -->
+        </div>
+        <div class="carousel-item"   data-bs-interval="3000">
+            <img src="{{ url_for('static', filename='images/image-4.png') }}" class="d-block w-100   carousel-img" alt="...">
+            <!-- <div class="carousel-caption d-none d-md-block">
+                <h5>Fourth Slide</h5>
+                <p>Some description about the fourth image.</p>
+            </div> -->
+        </div>
+        <div class="carousel-item"   data-bs-interval="3000">
+            <img src="{{ url_for('static', filename='images/image-5.png') }}" class="d-block w-100   carousel-img" alt="...">
+            <!-- <div class="carousel-caption d-none d-md-block">
+                <h5>Fifth Slide</h5>
+                <p>Some description about the fifth image.</p>
+            </div> -->
+        </div>
+        <div class="carousel-item"   data-bs-interval="3000">
+            <img src="{{ url_for('static', filename='images/image-6.png') }}" class="d-block w-100   carousel-img" alt="...">
+            <!-- <div class="carousel-caption d-none d-md-block">
+                <h5>sixth Slide</h5>
+                <p>Some description about the sixth image.</p>
+            </div> -->
+        </div>
+        <div class="carousel-item"   data-bs-interval="3000">
+            <img src="{{ url_for('static', filename='images/image-7.png') }}" class="d-block w-100   carousel-img" alt="...">
+            <!-- <div class="carousel-caption d-none d-md-block">
+                <h5>Seventh Slide</h5>
+                <p>Some description about the seventh image.</p>
+            </div> -->
+        </div>
+        <div class="carousel-item"   data-bs-interval="3000">
+            <img src="{{ url_for('static', filename='images/image-8.png') }}" class="d-block w-100   carousel-img" alt="...">
+            <!-- <div class="carousel-caption d-none d-md-block">
+                <h5>eighth Slide</h5>
+                <p>Some description about the eighth image.</p>
+            </div> -->
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
 <div >
     <h1>Offrez un Accompagnement Supplémentaire à vos Clients et Gagnez en Compétitivité avec Nos Rapports d’Enchères Personnalisés</h1>
     <p>Le marché des ventes par adjudication est complexe, et il devient essentiel pour les avocats de fournir à leurs clients enchérisseurs des conseils non seulement juridiques, mais aussi financiers. En vous associant à notre solution, vous offrez à vos clients un avantage décisif : des <strong>rapports Excel personnalisés</strong>, conçus pour maximiser leur succès aux enchères et garantir la rentabilité de leurs opérations.</p>
@@ -40,4 +128,7 @@
 
     <p>En intégrant nos rapports Excel dans votre stratégie, vous offrez une prestation premium à vos clients tout en augmentant vos opportunités commerciales et votre réputation dans le domaine des enchères judiciaires.</p>
 </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock %}

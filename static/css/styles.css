@@ -1139,3 +1139,10 @@ input[type="password"]::-webkit-text-security {
   margin-top: -13px; 
   margin-left: 16px;
 }
+
+
+
+.disabled-link {
+  pointer-events: none;  /* Disables clicking */
+  opacity: 0.5;  /* Dim the link to show it is disabled */
+}
