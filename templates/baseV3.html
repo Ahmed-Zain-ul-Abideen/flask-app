@@ -40,7 +40,7 @@
                 <li class="link   {% if request.endpoint == 'preparer' %}active{% endif %}"><a href="{{ url_for('preparer') }}">Générer vos rapports</a></li>
                 <li  class="link  {% if request.endpoint == 'contact' %}active{% endif %}"><a href="{{ url_for('contact') }}">Contact</a></li>
             {% endif %}
-            <li><a href="javascript:void(0)" for="droplist1" class="toggle" style="color: #fff; margin-top:-5px;/">PROFILE 
+            <li><a href="javascript:void(0)" for="droplist1" class="toggle" style="color: #fff;">PROFILE 
                 <span class="profile-icon {% if is_authenticated %}logged-in{% endif %}">
                     <i class="fas fa-user-circle"></i>
                 </span> 

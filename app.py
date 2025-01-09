@@ -867,7 +867,7 @@ def preparer():
     #     flash(no_report,"error")
     #print("preparer rep_count",rep_count)
     return render_template(
-        "preparerimg.html", cities=cities, report_available=False, user=current_user,form=form,
+        "preparer.html", cities=cities, report_available=False, user=current_user,form=form,
         rep_count=rep_count
     )
     
