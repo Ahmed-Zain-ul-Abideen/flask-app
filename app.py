@@ -571,7 +571,7 @@ def customise_report():
     if attribut_font_color:
         current_user.attribut_font_color = attribut_font_color
     if font_family:
-        current_user.font_family = font_family
+        current_user.fontFamily = font_family
 
     # Commit the changes to the database
     db.session.commit()
@@ -1242,6 +1242,19 @@ def pricing():
                 "user_reports":user_reports,"subs_flag":subs_flag}
     return render_template("pricing.html", **context)
 
+
+@app.route("/mes_rapports")
+@log_execution_time
+def mes_rapports():
+
+    if current_user.is_authenticated:
+        user_reports = ReportsLog.query.filter_by(user_id=current_user.id).all()
+        print("user_reports",user_reports)
+    else:
+        user_reports = None
+
+    context = {"user_reports":user_reports}
+    return render_template("mes_rapports.html", **context)
 
 @app.route("/conditions")
 @log_execution_time
@@ -1994,4 +2007,4 @@ if __name__ == "__main__":
 
     # # mail = Mail(app)
 
-    app.run(host='0.0.0.0', port=4000)
+    app.run(host='0.0.0.0', port=4000, debug = "True")
