@@ -2,6 +2,10 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from sqlalchemy.orm  import  relationship
+from werkzeug.utils import secure_filename
+import  os
+import imghdr
+import  time
 
 db = SQLAlchemy()
 
@@ -49,6 +53,7 @@ class User(db.Model, UserMixin):
     downloaded_history = db.Column(db.Integer, nullable=True)
     is_superuser = db.Column(db.Boolean, default=False)
     total_reports = db.Column(db.Integer, nullable=True)
+    user_image = db.Column(db.String(120), nullable=True)
     def set_password(self, password):
         """Hash the password before saving."""
         self.password_hash = generate_password_hash(password)
@@ -56,6 +61,39 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         """Check hashed password for authentication."""
         return check_password_hash(self.password_hash, password)
+    
+
+    @staticmethod
+    def upload_user_image(file, app_config, user_id):
+        if file:
+            # Check if the file is a valid image type
+            img_type = imghdr.what(file)
+            if img_type not in ['jpeg', 'png', 'gif', 'bmp']:
+                return None, "Invalid image type. Please upload a valid image."
+
+            filename = secure_filename(file.filename)
+            filename_without_extension, file_extension = os.path.splitext(filename)
+            # Add a unique prefix to the filename to avoid collisions
+            unique_filename = f"{filename_without_extension}_{int(time.time())}{file_extension}"
+            upload_path = os.path.join(app_config['UPLOAD_FOLDER'], unique_filename)
+            
+            # Check if the user already has a profile image
+            user = User.query.get(user_id)
+            if user and user.user_image:
+                # If the user already has an image, delete the old one
+                old_image_path = os.path.join(app_config['UPLOAD_FOLDER'], user.user_image)
+                if os.path.exists(old_image_path):
+                    os.remove(old_image_path)
+
+            # Save the new image
+            file.save(upload_path)
+            
+            # Update the user's profile with the new image filename
+            user.user_image = unique_filename
+            db.session.commit()
+            
+            return unique_filename, None
+        return None, "No file uploaded"
 
 
 class ContactMessage(db.Model):  # {{ edit_1 }}

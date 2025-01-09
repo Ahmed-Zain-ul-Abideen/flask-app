@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div style="text-align: center;padding-bottom: 1.9rem;"><p style="color: #6c757d;">Générer vos rapports</p></div>
+
 {% if  cities == "none" %}
     <div id="rep-consent-banner">
         <p>quelque chose s'est mal passé, veuillez contacter l'administrateur.</p> 
@@ -45,17 +45,6 @@
         <canvas id="colorCanvas" style="display:none; width: 50%; margin: 0 25% 0 25%;"></canvas>
             <!-- Color pickers -->
 
-            
-            <div class="form-customiser">
-                <label for="bg_color">Couleur d'arrière plan</label>
-                <input type="color" id="bg_color" name="bg_color" value="{{ user.bg_color }}">
-            </div>
-
-            <div class="form-customiser">
-                <label for="bg_font_color">Couleur de la police à associer à l'arrière plan</label>
-                <input type="color" id="bg_font_color" name="bg_font_color" value="{{ user.bg_font_color }}">
-            </div>
-
             <div class="form-customiser">
                 <label for="fontFamily">Font Family:</label>
                 <select id="fontFamily" name="fontFamily" onchange="updateFontPreview()">
@@ -68,7 +57,21 @@
                 </select>
             </div>
 
-            
+            <div class="form-customiser">
+                <label for="bg_color">Couleur d'arrière plan</label>
+                <input type="color" id="bg_color" name="bg_color" value="{{ user.bg_color }}">
+            </div>
+
+            <div class="form-customiser">
+                <label for="bg_font_color">Couleur de la police à associer à l'arrière plan</label>
+                <input type="color" id="bg_font_color" name="bg_font_color" value="{{ user.bg_font_color }}">
+            </div>
+            <div class="form-customiser">
+                <!-- <label for="fontPreview">Font Previews:</label> -->
+                <div id="fontPreview1" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
+                    Aperçu du style de l'arrière plan
+                </div>
+            </div>
 
 
             <div class="form-customiser">
@@ -81,13 +84,10 @@
             </div>
 
             <div class="form-customiser">
-                <!-- <label for="fontPreview">Font Previews:</label> -->
-                <div id="fontPreview1" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
-                    Aperçu du style de l'arrière plan
+                <div id="fontPreview2" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
+                    Aperçu du style des titres
                 </div>
             </div>
-
-            
 
 
             <div class="form-customiser">
@@ -100,14 +100,10 @@
             </div>
 
             <div class="form-customiser">
-                <div id="fontPreview2" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
-                    Aperçu du style des titres
-                </div><div id="fontPreview3" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
+                <div id="fontPreview3" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
                     Aperçu du style des attributs
                 </div>
             </div>
-
-            
 
             <!-- <button type="button" onclick="enableInputs()">Edit Profile</button> -->
             <button type="submit">Update Profile</button>
@@ -294,7 +290,30 @@
         
 
         
-     
+    function uploadLogo() {
+        const logoInput = document.getElementById('logo');
+        const formData = new FormData();
+        formData.append('logo', logoInput.files[0]);
+
+        const csrfToken = document.querySelector('[name="csrf_token"]').value;
+
+        fetch('/upload_logo', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': csrfToken   
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.url) {
+                loadLogoToCanvas(data.url);
+            } else {
+                console.error(data.error);
+            }
+        })
+        .catch(error => console.error('Error uploading logo:', error));
+    }
 
 
     // Update the font preview dynamically based on user selection
@@ -337,30 +356,9 @@
     document.getElementById('attribut_font_color').addEventListener('input', updateFontPreview);
 
 
-    function uploadLogo() {
-        const logoInput = document.getElementById('logo');
-        const formData = new FormData();
-        formData.append('logo', logoInput.files[0]);
+     
 
-        const csrfToken = document.querySelector('[name="csrf_token"]').value;
-
-        fetch('/upload_logo', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRFToken': csrfToken   
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.url) {
-                loadLogoToCanvas(data.url);
-            } else {
-                console.error(data.error);
-            }
-        })
-        .catch(error => console.error('Error uploading logo:', error));
-    }
+     
 
     function loadLogoToCanvas(url) {
         const canvas = document.getElementById('colorCanvas');

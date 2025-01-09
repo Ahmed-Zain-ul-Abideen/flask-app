@@ -306,6 +306,11 @@ li:hover > ul {
 .NavMenu li {
   position: relative;
 }
+
+
+body.no-scroll {
+  overflow: hidden;
+}
      
 
 
