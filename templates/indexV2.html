@@ -12,23 +12,52 @@
         margin-right: 20%;
     }
 
+    .carousel-item {
+        max-height: 345px !important;            /* Fixed height */
+        min-height: 345px !important;
+        height: 345px !important;
+        overflow: hidden    ;
+    }
+
+
+
     .carousel-img {
-        height: 345px;            /* Fixed height */
+        height: 100%;
         object-fit: contain;      /* Maintain aspect ratio and ensure the image fits within the height */
         width: auto;              /* Let the width adjust automatically based on the height */
     }
 
     footer h2 {
         color: #04aa6d; /* Change the color of the h2 in footer to green */
+        font-weight: bold;
+    }
+    
+    .carousel-indicators {
+        bottom: -32px;
+    }
+
+    /* Set color of active dot */
+    .carousel-indicators .active {
+        background-color: #04aa6d;
     }
 </style>
 
-<div style="text-align: center;padding-bottom: 1.9rem;"><p style="color: #6c757d;">Accueil</p></div>
+<div><h2 style="text-align:center;color: #04aa6d; font-weight: bold;">Accueil</h2></div>
 
 
 <div id="carouselExample" class="carousel slide  custom-carousel" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button style="background-color: #04aa6d;" type="button" data-bs-target="#carouselExample" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button style="background-color: #04aa6d;" type="button" data-bs-target="#carouselExample" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        <button style="background-color: #04aa6d;" type="button" data-bs-target="#carouselExample" data-bs-slide-to="3" aria-label="Slide 4"></button>
+        <button style="background-color: #04aa6d;" type="button" data-bs-target="#carouselExample" data-bs-slide-to="4" aria-label="Slide 5"></button>
+        <button style="background-color: #04aa6d;" type="button" data-bs-target="#carouselExample" data-bs-slide-to="5" aria-label="Slide 6"></button>
+        <button style="background-color: #04aa6d;" type="button" data-bs-target="#carouselExample" data-bs-slide-to="6" aria-label="Slide 7"></button>
+        <button style="background-color: #04aa6d;" type="button" data-bs-target="#carouselExample" data-bs-slide-to="7" aria-label="Slide 8"></button>
+    </div>
     <div class="carousel-inner">
-        <div class="carousel-item active"  data-bs-interval="3000">
+        <div class="carousel-item active"  data-bs-interval="40000">
             <img src="{{ url_for('static', filename='images/image-1.png') }}" class="d-block w-100  carousel-img" alt="...">
             <!-- <div class="carousel-caption d-none d-md-block">
                 <h5>First Slide</h5>
@@ -77,7 +106,7 @@
                 <p>Some description about the seventh image.</p>
             </div> -->
         </div>
-        <div class="carousel-item"   data-bs-interval="3000">
+        <div class="carousel-item"   data-bs-interval="40000">
             <img src="{{ url_for('static', filename='images/image-8.png') }}" class="d-block w-100   carousel-img" alt="...">
             <!-- <div class="carousel-caption d-none d-md-block">
                 <h5>eighth Slide</h5>
@@ -85,17 +114,10 @@
             </div> -->
         </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
+    
 </div>
 
-<div >
+<div style="padding-top: 2rem;">
     <h1>Offrez un Accompagnement Supplémentaire à vos Clients et Gagnez en Compétitivité avec Nos Rapports d’Enchères Personnalisés</h1>
     <p>Le marché des ventes par adjudication est complexe, et il devient essentiel pour les avocats de fournir à leurs clients enchérisseurs des conseils non seulement juridiques, mais aussi financiers. En vous associant à notre solution, vous offrez à vos clients un avantage décisif : des <strong>rapports Excel personnalisés</strong>, conçus pour maximiser leur succès aux enchères et garantir la rentabilité de leurs opérations.</p>
 
