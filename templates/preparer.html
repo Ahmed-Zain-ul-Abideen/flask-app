@@ -25,7 +25,7 @@
             <div class="details" id="feesSimulator">
 
         <div style="display: flex; justify-content: center;">
-            <img src="{{ user.logo }}" alt="User Logo" style="max-width: 300px; max-height: 300px;">
+            <img id="orgimg" src="{{ url_for('static', filename='user_images/' + (user.user_image if  user.user_image else 'image-0.png')) }}" alt="User Logo" style="max-width: 300px; max-height: 300px;">
         </div>
 
         <div class="form-customiser" style="width: 50%; margin: 0 25% 0 25%;">
@@ -294,25 +294,7 @@
         
 
         
-    function uploadLogo() {
-        const logoInput = document.getElementById('logo');
-        const formData = new FormData();
-        // formData.append('logo', logoInput.files[0]);
-
-        fetch('/upload_logo', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.url) {
-                loadLogoToCanvas(data.url);
-            } else {
-                console.error(data.error);
-            }
-        })
-        .catch(error => console.error('Error uploading logo:', error));
-    }
+     
 
 
     // Update the font preview dynamically based on user selection
@@ -358,31 +340,16 @@
     function uploadLogo() {
         const logoInput = document.getElementById('logo');
         const formData = new FormData();
-        // formData.append('logo', logoInput.files[0]);
-
-        fetch('/upload_logo', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.url) {
-                loadLogoToCanvas(data.url);
-            } else {
-                console.error(data.error);
-            }
-        })
-        .catch(error => console.error('Error uploading logo:', error));
-    }
-
-    function uploadLogo() {
-        const logoInput = document.getElementById('logo');
-        const formData = new FormData();
         formData.append('logo', logoInput.files[0]);
 
+        const csrfToken = document.querySelector('[name="csrf_token"]').value;
+
         fetch('/upload_logo', {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: {
+                'X-CSRFToken': csrfToken   
+            }
         })
         .then(response => response.json())
         .then(data => {
@@ -397,13 +364,31 @@
 
     function loadLogoToCanvas(url) {
         const canvas = document.getElementById('colorCanvas');
+        const theabuserImage = document.getElementById('orgimg');
+        theabuserImage.style.display = 'none'; 
         const ctx = canvas.getContext('2d');
         const img = new Image();
         img.src = url;
         img.onload = () => {
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.drawImage(img, 0, 0);
+            // Set max width and height for the canvas
+            const maxWidth = 300;
+            const maxHeight = 300;
+
+            // Calculate the scale ratio to fit within the max width and height
+            let scaleWidth = maxWidth;
+            let scaleHeight = (img.height / img.width) * scaleWidth;
+
+            if (scaleHeight > maxHeight) {
+                scaleHeight = maxHeight;
+                scaleWidth = (img.width / img.height) * scaleHeight;
+            }
+
+            // Set canvas size to the new scaled dimensions
+            canvas.width = scaleWidth;
+            canvas.height = scaleHeight;
+
+            // Draw the image on the canvas with the calculated dimensions
+            ctx.drawImage(img, 0, 0, scaleWidth, scaleHeight);
             canvas.style.display = 'block';
         };
 
