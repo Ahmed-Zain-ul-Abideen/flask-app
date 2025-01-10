@@ -3,10 +3,11 @@
 {% block title %}Mes Rapports{% endblock %}
 
 {% block content %}
-    
 
-    <div style="display: {% if user_reports  %}Block{% else %}None{% endif %};">
-        <h2 style="text-align:center">Journal des rapports</h2>
+<div style = "padding:20px;"><h2 style="text-align:center">Journal des rapports</h2></div>
+
+    <div >
+        
 
         <div style="overflow-x:auto;">
 
@@ -32,7 +33,7 @@
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="4">No Reports found.</td>
+                    <td colspan="4" style="text-align: center;">No Reports found.</td>
                 </tr>
                 {% endfor %}
 

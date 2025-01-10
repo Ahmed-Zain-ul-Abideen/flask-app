@@ -1150,7 +1150,7 @@ input[type="password"]::-webkit-text-security {
 
 .close-icon {
   cursor: pointer;
-  font-size: 10px;
+  font-size: 15px;
   color: #6e6e6e; /* Adjust color */
   margin-left: 8px;
   margin-top: -66px;
@@ -1188,6 +1188,12 @@ input[type="password"]::-webkit-text-security {
   .my-globcontainer{
     max-width: 720px;
   }
+
+  .logo-profile{
+    width: 20%;
+   
+    
+  }
 }
 
 @media (max-width: 768px) {
@@ -1224,6 +1230,11 @@ input[type="password"]::-webkit-text-security {
   .carousel-inner {
     height: 135px;
   }
+  .logo-profile{
+    width:10%;
+    
+    
+  }
 }
 
 
@@ -1245,4 +1256,57 @@ input[type="password"]::-webkit-text-security {
 
 .for_the_indicators {
   display: none;
+}
+
+
+
+
+/* Default style for larger screens */
+.faris_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.faris_left, .faris_right {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Media query for screens smaller than 992px */
+@media (max-width: 992px) {
+  .faris_left, .faris_right {
+      width: 100%; /* Make each div 100% width */
+      flex-direction: column; /* Stack elements vertically */
+  }
+
+  .form-customiser {
+      width: 100%; /* Ensure form elements take full width */
+      margin-top: 10px;
+  }
+
+  .circle-container {
+      margin-right: 0; /* Adjust margin for responsiveness */
+      margin-bottom: 10px;
+  }
+}
+
+/* Media query for screens smaller than 768px */
+@media (max-width: 768px) {
+  .faris_left, .faris_right {
+      width: 100%; /* Each div takes full width */
+      padding: 10px; /* Add padding for spacing */
+  }
+
+  .form-customiser input,
+  .form-customiser select {
+      width: 100%; /* Make form inputs take full width */
+  }
+
+  .circle-container {
+      width: 80px; /* Smaller circle size */
+      height: 80px; /* Smaller circle size */
+  }
 }
