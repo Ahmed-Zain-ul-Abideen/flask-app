@@ -115,6 +115,13 @@ MAIL_DEFAULT_SENDER = os.getenv(
 
 app.config["MAIL_DEFAULT_SENDER"] = os.getenv("MAIL_DEFAULT_SENDER")
 mail = Mail(app)
+
+@app.before_request
+def check_cookie_consent():
+    if 'cookiesAccepted' not in request.cookies:
+        print("request.endpoint ",request.endpoint)
+        if request.endpoint not in ['index','static']:   
+            return redirect(url_for('index'))
 from schedule import Scheduler
 import  time
 import  threading
@@ -557,6 +564,8 @@ def customise_report():
     title_font_color = request.form.get("title_font_color")
     attribut_font_color = request.form.get("attribut_font_color")
     font_family = request.form.get("fontFamily")
+    logo = request.files.get("logo")
+    
 
     # Assuming you have a user session or a way to identify the user
     # user_id = session.get("user_id")  # Replace with your user identification logic
@@ -580,6 +589,17 @@ def customise_report():
         current_user.attribut_font_color = attribut_font_color
     if font_family:
         current_user.fontFamily = font_family
+
+    if logo:
+        user_id = current_user.id
+        filename, error = User.upload_user_image(logo, app.config, user_id)
+        if error:
+            flash("Upload Png file!")
+        
+        # if  current_user.user_image:
+        
+        # After saving the image, return the URL to the front-end
+        image_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
     # Commit the changes to the database
     db.session.commit()
@@ -1117,12 +1137,12 @@ def test_auth():
 @app.route("/outil")
 @log_execution_time
 def outil():
-    user = User.query.filter_by(name="OMOLA").first()
+    # user = User.query.filter_by(name="OMOLA").first()
 
-    if user:
-        print(f"User found: {user.name}, {user.email}")
-    else:
-        print("User not found flaskii")
+    # if user:
+    #     print(f"User found: {user.name}, {user.email}")
+    # else:
+    #     print("User not found flaskii")
     return render_template("outil.html")
 
 @app.route("/pricing")

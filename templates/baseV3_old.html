@@ -19,7 +19,7 @@
 
     <!-- Header and Navigation -->
     <header>
-        <nav style= "max-width:1140px; margin-left:auto; margin-right:auto;">
+        <nav>
             <div class="logo">
                 <a href="{{ url_for('index') }}">
                     <img src="{{ url_for('static', filename='contents/avocat/logo.png') }}" alt="Encheres Logo" class="logo-image">
@@ -31,7 +31,7 @@
           <ul class="NavMenu" id="myDIV">
             
             {% if current_user.is_superuser%}
-                <li  class="link   {% if request.endpoint == 'index' %}active{% endif %}"><a href="{{ url_for('index') }}">Accueil</a></li>
+                <li class="link   {% if request.endpoint == 'index' %}active{% endif %}"><a href="{{ url_for('index') }}">Accueil</a></li>
                 <li  class="link  {% if request.endpoint == 'backed' %}active{% endif %}"><a href="{{ url_for('backed') }}">Sauvegardée</a></li>
             {% else %}
                 <li class="link   {% if request.endpoint == 'outil' %}active{% endif %}"><a href="{{ url_for('outil') }}">Notre outil</a></li>
@@ -83,7 +83,11 @@
         {% block content %}
         {% endblock %}
 
-        
+        <!-- Cookie Consent Banner -->
+        <div id="cookie-consent-banner" style="display: none;">
+            <p>This site uses cookies to enhance your experience. By continuing to visit this site, you agree to our use of cookies.</p>
+            <button id="accept-cookies">Accept</button>
+        </div>
 
 
     </main>
@@ -111,12 +115,8 @@
         const dropdownLinks = document.querySelectorAll('#the_specsul a');
 
         // Check if cookies have been accepted
-        if (!document.cookie.includes('cookiesAccepted=true')) {
-            var myModal = new bootstrap.Modal(document.getElementById('cookieConsentModal'), {
-                backdrop: 'static',  // Prevent the modal from closing when clicking outside
-                keyboard: false      // Disable closing modal with the escape key
-            });
-            myModal.show();
+        if (!localStorage.getItem('cookiesAccepted')) {
+            banner.style.display = 'block';
 
             navbarLinks.forEach(link => {
                 link.classList.add('disabled-link');
@@ -127,25 +127,22 @@
                 link.style.pointerEvents = 'none';  // Disable clicking
                 link.style.opacity = '0.5';  // Optionally, dim the links to show they're disabled
             });
-
-            acceptButton.addEventListener('click', function() {
-                // Set a cookie for cookies accepted
-                document.cookie = "cookiesAccepted=true; path=/; max-age=" + 60 * 60 * 24 * 365; // Expires in 1 year
-
-                myModal.hide();
-                
-
-                navbarLinks.forEach(link => {
-                    link.classList.remove('disabled-link');
-                });
-
-                dropdownLinks.forEach(link => {
-                    link.classList.remove('disabled-link');  // Enable the <a> tags in the dropdown
-                    link.style.pointerEvents = 'auto';  // Re-enable clicking
-                    link.style.opacity = '1';  // Reset the opacity
-                });
-            });
         }
+
+        acceptButton.addEventListener('click', function() {
+            localStorage.setItem('cookiesAccepted', 'true');
+            banner.style.display = 'none';
+
+            navbarLinks.forEach(link => {
+                link.classList.remove('disabled-link');
+            });
+
+            dropdownLinks.forEach(link => {
+                link.classList.remove('disabled-link');  // Enable the <a> tags in the dropdown
+                link.style.pointerEvents = 'auto';  // Re-enable clicking
+                link.style.opacity = '1';  // Reset the opacity
+            });
+        });
     });
 
     
@@ -179,21 +176,15 @@
 
         // Handle the menu toggle
         var menubrop = document.getElementById('menubrop');
-        var myindictorsbut = document.getElementById('mysindic');   
-        var mysindicpr = document.getElementById('mysindicpr');
-        var mysindicnx = document.getElementById('mysindicnx');
+        var myindictorsbut = document.getElementById('mysindic');
         menubrop.addEventListener('change', function() {
             if (menubrop.checked) {
                 document.body.classList.add('no-scroll');
                 myindictorsbut.style.display = "none";
-                mysindicpr.style.display = "none";
-                mysindicnx.style.display = "none";
                 
             } else {
                 document.body.classList.remove('no-scroll');
                 myindictorsbut.style.display = "flex";
-                mysindicpr.style.display = "flex";
-                mysindicnx.style.display = "flex";
                 
             }
         });
