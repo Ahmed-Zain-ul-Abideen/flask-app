@@ -1178,6 +1178,10 @@ input[type="password"]::-webkit-text-security {
   .my-globcontainer {
     max-width: 960px;
   }
+
+  .carousel-indicators {
+    bottom: -8px;
+  }
 }
 
 @media (max-width: 992px) {
@@ -1190,10 +1194,55 @@ input[type="password"]::-webkit-text-security {
   .my-globcontainer {
     max-width: 540px;
   }
+
+  .carousel-indicators {
+    bottom: -12px;
+  }
 }
 
 @media (max-width: 576px) {
   .my-globcontainer {
     max-width: 100%;
   }
+
+  .carousel-indicators {
+    bottom: -12px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .carousel-indicators {
+    bottom: -8px;
+  }
+
+  .carousel-img {
+    height: auto;
+    object-fit: contain;      /* Maintain aspect ratio and ensure the image fits within the height */
+    width: auto;              /* Let the width adjust automatically based on the height */
+  }
+
+  .carousel-inner {
+    height: 135px;
+  }
+}
+
+
+@media screen and (max-width: 1168px) {
+  .carousel-indicators {
+    bottom: -8px;
+  }
+
+  .carousel-img {
+    height: auto;
+    object-fit: contain;      /* Maintain aspect ratio and ensure the image fits within the height */
+    width: auto;              /* Let the width adjust automatically based on the height */
+  }
+
+  .carousel-inner {
+    height: 135px;
+  }
+}
+
+.for_the_indicators {
+  display: none;
 }
