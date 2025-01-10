@@ -179,15 +179,21 @@
 
         // Handle the menu toggle
         var menubrop = document.getElementById('menubrop');
-        var myindictorsbut = document.getElementById('mysindic');
+        var myindictorsbut = document.getElementById('mysindic');   
+        var mysindicpr = document.getElementById('mysindicpr');
+        var mysindicnx = document.getElementById('mysindicnx');
         menubrop.addEventListener('change', function() {
             if (menubrop.checked) {
                 document.body.classList.add('no-scroll');
                 myindictorsbut.style.display = "none";
+                mysindicpr.style.display = "none";
+                mysindicnx.style.display = "none";
                 
             } else {
                 document.body.classList.remove('no-scroll');
                 myindictorsbut.style.display = "flex";
+                mysindicpr.style.display = "flex";
+                mysindicnx.style.display = "flex";
                 
             }
         });
