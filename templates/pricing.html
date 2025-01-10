@@ -3,8 +3,9 @@
 {% block title %}Pricing{% endblock %}
 
 {% block content %}
+<div style = "padding:20px;"><h2 style="text-align:center">Politique de Prix</h2></div>
     <div  >
-        <h2 style="text-align:center">Politique de Prix</h2>
+        
 
        <div class="columns_wrap">
         {% if  subs_flag %}
@@ -88,18 +89,36 @@
             </div>
         {%else%}
 
-        <div class="columns_alpha">
-            <ul class="price">
-                <li class="header" style="background-color:#111"> Current Package: {{current_user.subs_type}}</li>
-                <li class="grey">Total Reports: {{current_user.total_reports}}</li>
-                
-                <li>Downloaded Reports: {{current_user.downloaded_current}}</li>
-                <li class="grey">Remaining Reports: {{current_user.reports_count}}</li>
-                <li>Subscription Start Date: {{current_user.subs_start.strftime('%d-%m-%Y')}}</li>
-                <li class="grey">Subscription End Date: {{current_user.subscription_ends.strftime('%d-%m-%Y')}}</li>
-    
-            </ul>
-        </div>
+        <table style = "width:70%; border: 1px solid #111; margin: auto;">
+            <thead style = " background-color:#111 ; width : 100%; text-align:center;">
+                <tr style="background-color:#111; color:white; text-align:center;">
+                    <th style = "text-align: center;" colspan="2">Forfait actuel: {{current_user.subs_type}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background-color:#f5f5f5;">
+                    <td>Rapports totaux :</td>
+                    <td>{{current_user.total_reports}}</td>
+                </tr>
+                <tr>
+                    <td>Rapports téléchargés:</td>
+                    <td>{{current_user.downloaded_current}}</td>
+                </tr>
+                <tr style="background-color:#f5f5f5;">
+                    <td>Rapports restants :</td>
+                    <td>{{current_user.reports_count}}</td>
+                </tr>
+                <tr>
+                    <td>Date de début de l'abonnement:</td>
+                    <td>{{current_user.subs_start.strftime('%d-%m-%Y')}}</td>
+                </tr>
+                <tr style="background-color:#f5f5f5;">
+                    <td>Date de fin d'abonnement :</td>
+                    <td>{{current_user.subscription_ends.strftime('%d-%m-%Y')}}</td>
+                </tr>
+            </tbody>
+        </table>
+        
 
         {%endif%}
 
