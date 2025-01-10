@@ -115,6 +115,13 @@ MAIL_DEFAULT_SENDER = os.getenv(
 
 app.config["MAIL_DEFAULT_SENDER"] = os.getenv("MAIL_DEFAULT_SENDER")
 mail = Mail(app)
+
+@app.before_request
+def check_cookie_consent():
+    if 'cookiesAccepted' not in request.cookies:
+        print("request.endpoint ",request.endpoint)
+        if request.endpoint not in ['index','static']:   
+            return redirect(url_for('index'))
 from schedule import Scheduler
 import  time
 import  threading
@@ -1117,12 +1124,12 @@ def test_auth():
 @app.route("/outil")
 @log_execution_time
 def outil():
-    user = User.query.filter_by(name="OMOLA").first()
+    # user = User.query.filter_by(name="OMOLA").first()
 
-    if user:
-        print(f"User found: {user.name}, {user.email}")
-    else:
-        print("User not found flaskii")
+    # if user:
+    #     print(f"User found: {user.name}, {user.email}")
+    # else:
+    #     print("User not found flaskii")
     return render_template("outil.html")
 
 @app.route("/pricing")
