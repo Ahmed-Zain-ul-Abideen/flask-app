@@ -176,11 +176,16 @@
 
         // Handle the menu toggle
         var menubrop = document.getElementById('menubrop');
+        var myindictorsbut = document.getElementById('mysindic');
         menubrop.addEventListener('change', function() {
             if (menubrop.checked) {
                 document.body.classList.add('no-scroll');
+                myindictorsbut.style.display = "none";
+                
             } else {
                 document.body.classList.remove('no-scroll');
+                myindictorsbut.style.display = "flex";
+                
             }
         });
 

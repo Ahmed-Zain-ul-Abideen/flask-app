@@ -22,7 +22,7 @@
 
 
     .carousel-img {
-        height: 100%;
+        /* height: 100%; */
         object-fit: contain;      /* Maintain aspect ratio and ensure the image fits within the height */
         width: auto;              /* Let the width adjust automatically based on the height */
     }
@@ -36,18 +36,19 @@
         bottom: -32px;
     }
 
-    /* Set color of active dot */
-    .carousel-indicators .active {
-        background-color: #04aa6d;
+    #menubrop:checked + .NavMenu + #carouselExample .carousel-indicators {
+        display: none;
     }
+
+    
 </style>
 
 <div><h2 style="text-align:center;color: #04aa6d; font-weight: bold;">Accueil</h2></div>
 
 
 <div id="carouselExample" class="carousel slide  custom-carousel" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <div class="carousel-indicators"  id="mysindic">
+        <button style="background-color: #04aa6d;" type="button" data-bs-target="#carouselExample" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
         <button style="background-color: #04aa6d;" type="button" data-bs-target="#carouselExample" data-bs-slide-to="1" aria-label="Slide 2"></button>
         <button style="background-color: #04aa6d;" type="button" data-bs-target="#carouselExample" data-bs-slide-to="2" aria-label="Slide 3"></button>
         <button style="background-color: #04aa6d;" type="button" data-bs-target="#carouselExample" data-bs-slide-to="3" aria-label="Slide 4"></button>
