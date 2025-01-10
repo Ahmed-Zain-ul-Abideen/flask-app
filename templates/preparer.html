@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div><h2 style="text-align:center">Générer vos rapports</h2></div>
+<div style = "padding:20px;"><h2 style="text-align:center">Générer vos rapports</h2></div>
 {% if  cities == "none" %}
     <div id="rep-consent-banner">
         <p>quelque chose s'est mal passé, veuillez contacter l'administrateur.</p> 
@@ -23,92 +23,95 @@
         <div class="step">
             <h2 onclick="toggleDetails('feesSimulator')"><span class="toggle-icon">+</span> Customisez vos rapports</h2>
             <div class="details" id="feesSimulator">
-
-        <div style="display: flex; justify-content: center;">
-            <img id="orgimg" src="{{ url_for('static', filename='user_images/' + (user.user_image if  user.user_image else 'image-0.png')) }}" alt="User Logo" style="max-width: 300px; max-height: 300px;">
-        </div>
-
-        <div class="form-customiser" style="width: 50%; margin: 0 25% 0 25%;">
-            <label for="logo">Upload Logo:</label>
-            <input type="file" id="logo" name="logo" accept="image/*" onchange="uploadLogo()">   
-            <!-- <label for="logoLink">Or enter a logo URL:</label> -->
-            <!-- <input type="url" id="logoLink" name="logoLink" value="{{ user.logoLink }}" placeholder="Enter logo URL" disabled> -->
-            <!-- <input type="url" id="logoLink" name="logoLink" value="{{ user.logoLink }}" placeholder="Enter logo URL"> -->
-        </div>
-
-
         <form method="POST" enctype="multipart/form-data" action="{{ url_for('customise_report') }}">
             {{ form.hidden_tag() }}  <!-- This includes the CSRF token -->
-
-
-        <!-- <canvas id="colorCanvas" style="display:none; max-width: 300px; max-height: 300px;"></canvas> -->
-        <canvas id="colorCanvas" style="display:none; width: 50%; margin: 0 25% 0 25%;"></canvas>
-            <!-- Color pickers -->
-
-            
-            <div class="form-customiser">
-                <label for="bg_color">Couleur d'arrière plan</label>
-                <input type="color" id="bg_color" name="bg_color" value="{{ user.bg_color }}">
-            </div>
-
-            <div class="form-customiser">
-                <label for="bg_font_color">Couleur de la police à associer à l'arrière plan</label>
-                <input type="color" id="bg_font_color" name="bg_font_color" value="{{ user.bg_font_color }}">
-            </div>
-
-            <div class="form-customiser">
-                <label for="fontFamily">Font Family:</label>
-                <select id="fontFamily" name="fontFamily" onchange="updateFontPreview()">
-                    <option value="Arial" {% if user.fontFamily == 'Arial' %}selected{% endif %}>Arial</option>
-                    <option value="Times New Roman" {% if user.fontFamily == 'Times New Roman' %}selected{% endif %}>Times New Roman</option>
-                    <option value="Courier New" {% if user.fontFamily == 'Courier New' %}selected{% endif %}>Courier New</option>
-                    <option value="Georgia" {% if user.fontFamily == 'Georgia' %}selected{% endif %}>Georgia</option>
-                    <option value="Verdana" {% if user.fontFamily == 'Verdana' %}selected{% endif %}>Verdana</option>
-                    <option value="Cambria" {% if user.fontFamily == 'Cambria' %}selected{% endif %}>Cambria</option>
-                </select>
-            </div>
-
-            
-
-
-            <div class="form-customiser">
-                <label for="title_color">Couleur des titre:</label>
-                <input type="color" id="title_color" name="title_color" value="{{ user.title_color }}">
-            </div>
-            <div class="form-customiser">
-                <label for="title_font_color">Couleur de la police des titres:</label>
-                <input type="color" id="title_font_color" name="title_font_color" value="{{ user.title_font_color }}">
-            </div>
-
-            <div class="form-customiser">
-                <!-- <label for="fontPreview">Font Previews:</label> -->
-                <div id="fontPreview1" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
-                    Aperçu du style de l'arrière plan
+            <div class="faris_container">
+                <div class="faris_left">
+                    <!-- Circle for displaying the image with a green border -->
+                    <div class="circle-container" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden; 
+                                                        display: flex; justify-content: center; align-items: center; 
+                                                        border: 5px solid green; margin-right: 20px;">
+                        <img id="orgimg" src="{{ url_for('static', filename='user_images/' + (user.user_image if user.user_image else 'image-0.png')) }}" 
+                            alt="User Logo" 
+                            style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    
+                    <!-- Upload button -->
+                    <div class="form-customiser" style="width: auto;">
+                        <label for="logo">Upload Logo:</label>
+                        <input type="file" id="logo" name="logo" accept="image/*">   
+                    </div>
+                </div>
+                
+                <div class="faris_right">
+                    <div class="form-customiser">
+                        <label for="fontFamily">Font Family:</label>
+                        <select id="fontFamily" name="fontFamily" onchange="updateFontPreview()">
+                            <option value="Arial" {% if user.fontFamily == 'Arial' %}selected{% endif %}>Arial</option>
+                            <option value="Times New Roman" {% if user.fontFamily == 'Times New Roman' %}selected{% endif %}>Times New Roman</option>
+                            <option value="Courier New" {% if user.fontFamily == 'Courier New' %}selected{% endif %}>Courier New</option>
+                            <option value="Georgia" {% if user.fontFamily == 'Georgia' %}selected{% endif %}>Georgia</option>
+                            <option value="Verdana" {% if user.fontFamily == 'Verdana' %}selected{% endif %}>Verdana</option>
+                            <option value="Cambria" {% if user.fontFamily == 'Cambria' %}selected{% endif %}>Cambria</option>
+                        </select>
+                    </div>
                 </div>
             </div>
+        
 
-            
+            <!-- <canvas id="colorCanvas" style="display:none; max-width: 300px; max-height: 300px;"></canvas> -->
+            <canvas id="colorCanvas" style="display:none; width: 50%; margin: 0 25% 0 25%;"></canvas>
+                <!-- Color pickers -->
 
-
-            <div class="form-customiser">
-                <label for="attribut_color">Couleur des attributs:</label>
-                <input type="color" id="attribut_color" name="attribut_color" value="{{ user.attribut_color }}">
-            </div>
-            <div class="form-customiser">
-                <label for="attribut_font_color">Couleur de la police des attributs:</label>
-                <input type="color" id="attribut_font_color" name="attribut_font_color" value="{{ user.attribut_font_color }}">
-            </div>
-
-            <div class="form-customiser">
-                <div id="fontPreview2" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
-                    Aperçu du style des titres
-                </div><div id="fontPreview3" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
-                    Aperçu du style des attributs
+                <div class="form-customiser"  >
+                    <label for="bg_color">Couleur d'arrière plan</label>
+                    <input type="color" id="bg_color" name="bg_color" value="{{ user.bg_color }}">
                 </div>
-            </div>
+    
+                <div class="form-customiser" >
+                    <label for="bg_font_color">Couleur de la police à associer à l'arrière plan</label>
+                    <input type="color" id="bg_font_color" name="bg_font_color" value="{{ user.bg_font_color }}">
+                </div>
+    
+                <div class="form-customiser" >
+                    <!-- <label for="fontPreview">Font Previews:</label> -->
+                    <div id="fontPreview1" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
+                        Aperçu du style de l'arrière plan
+                    </div>
+                </div>
+
+                <div class="form-customiser" >
+                    <label for="title_color">Couleur des titre:</label>
+                    <input type="color" id="title_color" name="title_color" value="{{ user.title_color }}">
+                </div>
+    
+                <div class="form-customiser" >
+                    <label for="title_font_color">Couleur de la police des titres:</label>
+                    <input type="color" id="title_font_color" name="title_font_color" value="{{ user.title_font_color }}">
+                </div>
+    
+                <div class="form-customiser" >
+                    <div id="fontPreview2" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
+                        Aperçu du style des titres
+                    </div>
+                </div>
+
+                <div class="form-customiser" >
+                    <label for="attribut_color">Couleur des attributs:</label>
+                    <input type="color" id="attribut_color" name="attribut_color" value="{{ user.attribut_color }}">
+                </div>
+                <div class="form-customiser" >
+                    <label for="attribut_font_color">Couleur de la police des attributs:</label>
+                    <input type="color" id="attribut_font_color" name="attribut_font_color" value="{{ user.attribut_font_color }}">
+                </div>
+    
+                <div class="form-customiser" >
+                    <div id="fontPreview3" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
+                        Aperçu du style des attributs
+                    </div>
+                </div>
 
             
-
             <!-- <button type="button" onclick="enableInputs()">Edit Profile</button> -->
             <button type="submit">Update Profile</button>
             <button type="button" onclick="window.location.reload()">Cancel</button>

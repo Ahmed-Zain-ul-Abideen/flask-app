@@ -564,6 +564,8 @@ def customise_report():
     title_font_color = request.form.get("title_font_color")
     attribut_font_color = request.form.get("attribut_font_color")
     font_family = request.form.get("fontFamily")
+    logo = request.files.get("logo")
+    
 
     # Assuming you have a user session or a way to identify the user
     # user_id = session.get("user_id")  # Replace with your user identification logic
@@ -587,6 +589,17 @@ def customise_report():
         current_user.attribut_font_color = attribut_font_color
     if font_family:
         current_user.fontFamily = font_family
+
+    if logo:
+        user_id = current_user.id
+        filename, error = User.upload_user_image(logo, app.config, user_id)
+        if error:
+            flash("Upload Png file!")
+        
+        # if  current_user.user_image:
+        
+        # After saving the image, return the URL to the front-end
+        image_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
     # Commit the changes to the database
     db.session.commit()

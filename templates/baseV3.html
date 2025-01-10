@@ -19,7 +19,7 @@
 
     <!-- Header and Navigation -->
     <header>
-        <nav>
+        <nav style= "max-width:1140px; margin-left:auto; margin-right:auto;">
             <div class="logo">
                 <a href="{{ url_for('index') }}">
                     <img src="{{ url_for('static', filename='contents/avocat/logo.png') }}" alt="Encheres Logo" class="logo-image">
@@ -31,7 +31,7 @@
           <ul class="NavMenu" id="myDIV">
             
             {% if current_user.is_superuser%}
-                <li class="link   {% if request.endpoint == 'index' %}active{% endif %}"><a href="{{ url_for('index') }}">Accueil</a></li>
+                <li  class="link   {% if request.endpoint == 'index' %}active{% endif %}"><a href="{{ url_for('index') }}">Accueil</a></li>
                 <li  class="link  {% if request.endpoint == 'backed' %}active{% endif %}"><a href="{{ url_for('backed') }}">Sauvegardée</a></li>
             {% else %}
                 <li class="link   {% if request.endpoint == 'outil' %}active{% endif %}"><a href="{{ url_for('outil') }}">Notre outil</a></li>
