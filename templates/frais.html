@@ -3,9 +3,130 @@
 {% block title %}Frais{% endblock %}
 
 {% block content %}
-<!-- <div style = "padding:20px;"><h2 style="text-align:center">Simulation des frais</h2></div> -->
 <div class="step-container">
+    
+    
     <div style = "padding-top:20px;"><h2>Méthode de calcul</h2></div>
+    <!-- Simulateur de frais -->
+    <div class="step">
+        <h2 onclick="toggleDetails('feesSimulator')"><span class="toggle-icon">+</span> Simulez vos frais d'adjudication</h2>
+        <div class="details" id="feesSimulator">
+            <form id="fraisForm">
+                {{ form.hidden_tag() }}  <!-- This includes the CSRF token -->
+                <div class="form-group-faris">
+                    <label for="user_type">Type d'utilisateur :</label>
+                    <select id="user_type" name="user_type" required>
+                        <option value="particulier">Particulier</option>
+                        <option value="professionnel">Professionnel</option>
+                    </select>
+                </div>
+                <div class="form-group-faris">
+                    <!-- <label class="flashing" for="prix_adjudication"> -->
+                    <label for="prix_adjudication">
+                        <a target="_blank" href="/preparer">Prix d'adjudication</a>
+                        <span class="tooltip">?
+                            <span class="tooltiptext">Votre prix limite d'enchère (montant de l'enchère gagnante).</span>
+                        </span> :
+                    </label>
+                    <input class = "input-faris" type="number" id="prix_adjudication" name="prix_adjudication" required>
+                </div>
+                <div class="form-group-faris">
+                    <label for="frais_representation">Frais de représentation de l'avocat
+                        <span class="tooltip">?
+                            <span class="tooltiptext">Honoraires au titre de la représentation par l'avocat.</span>
+                        </span> :
+                    </label>
+                    <input class = "input-faris" type="number" id="frais_representation" name="frais_representation" required>
+                </div>
+                <div class="form-group-faris">
+                    <label for="frais_prealable">Frais préalables de saisie
+                        <span class="tooltip">?
+                            <span class="tooltiptext">Frais exposés par l’avocat poursuivant pour parvenir à la vente 
+                                (cf. cahier des conditions de vente)</span>
+                        </span> :
+                    </label>
+                    <input class = "input-faris" type="number" id="frais_prealable" name="frais_prealable" required>
+                </div>
+                <div class="form-group-faris">
+                    <label for="autres_frais">Autres frais de procédure
+                        <span class="tooltip">?
+                            <span class="tooltiptext">Frais supplémentaires liés à la procédure. Garder à zéro si montant inconnu.</span>
+                        </span> :
+                    </label>
+                    <input class = "input-faris" type="number" id="autres_frais" name="autres_frais" required>
+                </div>
+                <button type="submit">Calculer les frais</button>
+            </form>
+
+            <!-- <div id="results" style="display:none;">
+                <h2>Résultats</h2>
+                <p>Prix d'Adjudication : <span id="prix_adjudication"></span> €</p>
+                <p>+ Total des frais : <span id="total_frais"></span> €</p>
+                <p>     Émoluments TTC : <span id="emoluments"></span> €</p>
+                <p>         Émoluments Hors Taxe : <span id="emoluments_ht"></span> €</p>
+                <p>         TVA sur émolument : <span id="tva"></span> €</p>
+                
+                <p>     Droits d'enregistrement : <span id="droits_enregistrement"></span> €</p>
+                <p>     Frais de publication : <span id="frais_publication"></span> €</p>
+                <p>     Frais de radiation : <span id="frais_radiation"></span> €</p>
+                
+                <p>= Coût total de l'opération : <span id="cout_operation"></span> €</p>
+            </div> -->
+
+            <div id="results" style="display:none;">
+                <h2>Résultats</h2>
+                <p><strong>Prix d'Adjudication : <span id="prix_adjudication"></span> €</strong></p>
+                
+                <!-- <p>+ Total des frais :</p> -->
+                <p><strong>Total des frais : <span id="total_frais"></span> €</strong></p>
+                <ul>
+                    <li>Émoluments TTC : <span id="emoluments"></span> €</li>
+                    <ul>
+                        <li>Émoluments Hors Taxe : <span id="emoluments_ht"></span> €</li>
+                        <li>TVA sur émolument : <span id="tva"></span> €</li>
+                    </ul>
+                    <li>Droits d'enregistrement : <span id="droits_enregistrement"></span> €</li>
+                    <li>Frais de publication : <span id="frais_publication"></span> €</li>
+                    <li>Frais de radiation : <span id="frais_radiation"></span> €</li>
+                </ul>
+                
+                <p><strong>Coût total de l'opération : <span id="cout_operation"></span> €</strong></p>
+            </div>
+            
+            <!-- # ####################### FLASH MESSAGE ####################################### -->
+            <div id="flash-message" style="display:none;" class="flash-message">
+                <div class="message-header">
+                    <h2 style = "cursor: none; margin-top:-13px;">Résultats</h2>
+                    <span class="close-icon" >&#10006;</span>
+                </div>
+                <div class="message-content">
+                    <p><strong>Prix d'Adjudication : <span id="flash_prix_adjudication"></span> €</strong></p> <!-- Change ID -->
+                    
+                    <p><strong>Total des frais : <span id="flash_total_frais"></span> €</strong></p> <!-- Change ID -->
+                    <ul>
+                        <li>Émoluments TTC : <span id="flash_emoluments"></span> €</li> <!-- Change ID -->
+                        <ul>
+                            <li>Émoluments Hors Taxe : <span id="flash_emoluments_ht"></span> €</li> <!-- Change ID -->
+                            <li>TVA sur émolument : <span id="flash_tva"></span> €</li> <!-- Change ID -->
+                        </ul>
+                        <li>Droits d'enregistrement : <span id="flash_droits_enregistrement"></span> €</li> <!-- Change ID -->
+                        <li>Frais de publication : <span id="flash_frais_publication"></span> €</li> <!-- Change ID -->
+                        <li>Frais de radiation : <span id="flash_frais_radiation"></span> €</li> <!-- Change ID -->
+                    </ul>
+                    
+                    <p><strong>Coût total de l'opération : <span id="flash_cout_operation"></span> €</strong></p> <!-- Change ID -->
+                </div>
+            </div>
+            <!-- # ####################### END FLASH MESSAGE ####################################### -->
+            
+
+
+
+            <!-- <p>Utilisez notre outil de préparation qui intègre l'ensemble des frais pour modéliser la rentabilté.
+                <a target="_blank" href="/outil" class="cta">Découvrir notre outil</a> -->
+            </p>
+        </div>
+    </div>
     <!-- Répartition des frais et honoraires -->
     <div class="step">
         <h2 onclick="toggleDetails('fees')"><span class="toggle-icon">+</span> Répartition des frais et honoraires</h2>
@@ -16,7 +137,6 @@
                     <h3>Avant l'enchère (frais fixes)</h3>
                     <ul>
                         <li>
-                            
                             <div class="highlight_sub">
                                 <strong>Honoraires de l'avocat :</strong>
                                 <ul>
@@ -24,6 +144,7 @@
                                 </ul>
                             </div>
                         </li>
+                    
                         <li>
                             
                             <div class="highlight_sub">
@@ -116,127 +237,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Simulateur de frais -->
-    <div class="step">
-        <h2 onclick="toggleDetails('feesSimulator')"><span class="toggle-icon">+</span> Simulez vos frais d'adjudication</h2>
-        <div class="details" id="feesSimulator">
-            <form id="fraisForm">
-                {{ form.hidden_tag() }}  <!-- This includes the CSRF token -->
-                <div class="form-group">
-                    <label for="user_type">Type d'utilisateur :</label>
-                    <select id="user_type" name="user_type" required>
-                        <option value="particulier">Particulier</option>
-                        <option value="professionnel">Professionnel</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <!-- <label class="flashing" for="prix_adjudication"> -->
-                    <label for="prix_adjudication">
-                        <a target="_blank" href="/preparer">Prix d'adjudication</a>
-                        <span class="tooltip">?
-                            <span class="tooltiptext">Votre prix limite d'enchère (montant de l'enchère gagnante).</span>
-                        </span> :
-                    </label>
-                    <input type="number" id="prix_adjudication" name="prix_adjudication" required>
-                </div>
-                <div class="form-group">
-                    <label for="frais_representation">Frais de représentation de l'avocat
-                        <span class="tooltip">?
-                            <span class="tooltiptext">Honoraires au titre de la représentation par l'avocat.</span>
-                        </span> :
-                    </label>
-                    <input type="number" id="frais_representation" name="frais_representation" required>
-                </div>
-                <div class="form-group">
-                    <label for="frais_prealable">Frais préalables de saisie
-                        <span class="tooltip">?
-                            <span class="tooltiptext">Frais exposés par l’avocat poursuivant pour parvenir à la vente 
-                                (cf. cahier des conditions de vente)</span>
-                        </span> :
-                    </label>
-                    <input type="number" id="frais_prealable" name="frais_prealable" required>
-                </div>
-                <div class="form-group">
-                    <label for="autres_frais">Autres frais de procédure
-                        <span class="tooltip">?
-                            <span class="tooltiptext">Frais supplémentaires liés à la procédure. Garder à zéro si montant inconnu.</span>
-                        </span> :
-                    </label>
-                    <input type="number" id="autres_frais" name="autres_frais" required>
-                </div>
-                <button type="submit">Calculer les frais</button>
-            </form>
-
-            <!-- <div id="results" style="display:none;">
-                <h2>Résultats</h2>
-                <p>Prix d'Adjudication : <span id="prix_adjudication"></span> €</p>
-                <p>+ Total des frais : <span id="total_frais"></span> €</p>
-                <p>     Émoluments TTC : <span id="emoluments"></span> €</p>
-                <p>         Émoluments Hors Taxe : <span id="emoluments_ht"></span> €</p>
-                <p>         TVA sur émolument : <span id="tva"></span> €</p>
-                
-                <p>     Droits d'enregistrement : <span id="droits_enregistrement"></span> €</p>
-                <p>     Frais de publication : <span id="frais_publication"></span> €</p>
-                <p>     Frais de radiation : <span id="frais_radiation"></span> €</p>
-                
-                <p>= Coût total de l'opération : <span id="cout_operation"></span> €</p>
-            </div> -->
-
-            <div id="results" style="display:none;">
-                <h2>Résultats</h2>
-                <p><strong>Prix d'Adjudication : <span id="prix_adjudication"></span> €</strong></p>
-                
-                <!-- <p>+ Total des frais :</p> -->
-                <p><strong>Total des frais : <span id="total_frais"></span> €</strong></p>
-                <ul>
-                    <li>Émoluments TTC : <span id="emoluments"></span> €</li>
-                    <ul>
-                        <li>Émoluments Hors Taxe : <span id="emoluments_ht"></span> €</li>
-                        <li>TVA sur émolument : <span id="tva"></span> €</li>
-                    </ul>
-                    <li>Droits d'enregistrement : <span id="droits_enregistrement"></span> €</li>
-                    <li>Frais de publication : <span id="frais_publication"></span> €</li>
-                    <li>Frais de radiation : <span id="frais_radiation"></span> €</li>
-                </ul>
-                
-                <p><strong>Coût total de l'opération : <span id="cout_operation"></span> €</strong></p>
-            </div>
-            
-            <!-- # ####################### FLASH MESSAGE ####################################### -->
-            <div id="flash-message" style="display:none;" class="flash-message">
-                <div class="message-header">
-                    <h2 style = "cursor: none; margin-top:-13px;">Résultats</h2>
-                    <span class="close-icon" onclick="closeFlashMessage()">&#10006;</span>
-                </div>
-                <div class="message-content">
-                    <p><strong>Prix d'Adjudication : <span id="flash_prix_adjudication"></span> €</strong></p> <!-- Change ID -->
-                    
-                    <p><strong>Total des frais : <span id="flash_total_frais"></span> €</strong></p> <!-- Change ID -->
-                    <ul>
-                        <li>Émoluments TTC : <span id="flash_emoluments"></span> €</li> <!-- Change ID -->
-                        <ul>
-                            <li>Émoluments Hors Taxe : <span id="flash_emoluments_ht"></span> €</li> <!-- Change ID -->
-                            <li>TVA sur émolument : <span id="flash_tva"></span> €</li> <!-- Change ID -->
-                        </ul>
-                        <li>Droits d'enregistrement : <span id="flash_droits_enregistrement"></span> €</li> <!-- Change ID -->
-                        <li>Frais de publication : <span id="flash_frais_publication"></span> €</li> <!-- Change ID -->
-                        <li>Frais de radiation : <span id="flash_frais_radiation"></span> €</li> <!-- Change ID -->
-                    </ul>
-                    
-                    <p><strong>Coût total de l'opération : <span id="flash_cout_operation"></span> €</strong></p> <!-- Change ID -->
-                </div>
-            </div>
-            <!-- # ####################### END FLASH MESSAGE ####################################### -->
-            
-
-
-
-            <!-- <p>Utilisez notre outil de préparation qui intègre l'ensemble des frais pour modéliser la rentabilté.
-                <a target="_blank" href="/outil" class="cta">Découvrir notre outil</a> -->
-            </p>
-        </div>
-    </div>
 </div>
 
 <script>
@@ -290,7 +290,7 @@
             document.getElementById('results').style.display = 'block';
 
             // Show the flash message after the form is successfully processed
-            showFlashMessage();
+            
         })
         .catch(error => console.error('Error calculating fees:', error));
     });
@@ -315,5 +315,6 @@
 
 
 </script>
+
 
 {% endblock %}
