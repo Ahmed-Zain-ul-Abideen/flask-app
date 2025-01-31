@@ -255,7 +255,7 @@ def customise_workbook(current_user, report_path, report_dir, bucket_logo):
         style_name="title_style",
     )
 
-    wb = apply_custom_style_to_range(
+    wb = c1apply_custom_style_to_range(
         wb=wb,
         cell_list=attribute_cells_centered,  # Range to style
         font_family=current_user.fontFamily,
@@ -267,7 +267,7 @@ def customise_workbook(current_user, report_path, report_dir, bucket_logo):
         style_name="attribute_style_centered",
     )
 
-    wb = apply_custom_style_to_range(
+    wb = c2apply_custom_style_to_range(
         wb=wb,
         cell_list=attribute_cells_left,  # Range to style
         font_family=current_user.fontFamily,
@@ -279,7 +279,7 @@ def customise_workbook(current_user, report_path, report_dir, bucket_logo):
         style_name="attribute_style_left",
     )
 
-    wb = apply_custom_style_to_range(
+    wb = c3apply_custom_style_to_range(
         wb=wb,
         cell_list=background,  # Range to style
         font_family=current_user.fontFamily,
@@ -291,7 +291,7 @@ def customise_workbook(current_user, report_path, report_dir, bucket_logo):
         style_name="bacground_style",
     )
 
-    wb = apply_custom_style_to_range(
+    wb = c4apply_custom_style_to_range(
         wb=wb,
         cell_list=text_cells,  # Range to style
         font_family=current_user.fontFamily,
@@ -303,7 +303,7 @@ def customise_workbook(current_user, report_path, report_dir, bucket_logo):
         style_name="text_style",
     )
 
-    wb = apply_custom_style_to_range(
+    wb = c5apply_custom_style_to_range(
         wb=wb,
         cell_list=num_cells_euro,  # Range to style
         font_family=current_user.fontFamily,
@@ -316,7 +316,7 @@ def customise_workbook(current_user, report_path, report_dir, bucket_logo):
         number_format="# ##0 €",
     )
 
-    wb = apply_custom_style_to_range(
+    wb = c6apply_custom_style_to_range(
         wb=wb,
         cell_list=num_cells_percent,  # Range to style
         font_family=current_user.fontFamily,
@@ -329,7 +329,7 @@ def customise_workbook(current_user, report_path, report_dir, bucket_logo):
         number_format="0%",
     )
 
-    wb = apply_custom_style_to_range(
+    wb = c7apply_custom_style_to_range(
         wb=wb,
         cell_list=comments,  # Range to style
         font_family=current_user.fontFamily,
@@ -425,4 +425,470 @@ def add_user_logo_updated(wb, current_user):
 
     # Set the height of row 5 to 40 points
     ws.row_dimensions[10].height = 30  # 40 points
+    return wb
+
+
+
+
+
+@log_execution_time
+def c1apply_custom_style_to_range(
+    wb,
+    cell_list,
+    font_family,
+    font_color,
+    font_size,
+    bg_color,
+    alignment,
+    bold,
+    style_name,
+    number_format=None,
+):
+    """
+    Apply a custom style to a specified range of cells.
+    Parameters:
+        - wb: Workbook object
+        - ws_name: Name of the worksheet
+        - cell_range: Range of cells (e.g., 'F6:N6')
+        - font_family: Font family name (e.g., 'Arial')
+        - font_color: Font color in hex (e.g., 'FFFFFF' for white)
+        - bg_color: Background color in hex (e.g., '0000FF' for blue)
+    """
+
+    unlocked_cells_list = [
+        ("SCORING", ["H10", "I10"]),
+        ("SIMULATEUR_2", ["D3", "D4", "D5", "D8", "D9", "G4", "G5", "G6", "G7"]),
+    ]
+
+    # Define the custom style
+    custom_style = NamedStyle(name=style_name)
+    # if number_format:
+    #     custom_style.font = Font(name=font_family, size=12, color=f"FF{font_color}", bold=bold, number_format=number_format)  # aRGB format
+    # else:
+    custom_style.font = Font(
+        name=font_family, size=font_size, color=f"FF{font_color}", bold=bold
+    )  # aRGB format
+
+    custom_style.fill = PatternFill(
+        start_color=f"FF{bg_color}", end_color=f"FF{bg_color}", fill_type="solid"
+    )
+    custom_style.alignment = alignment
+
+    # Register the style if it doesn't already exist
+    if style_name not in wb.named_styles:
+        wb.add_named_style(custom_style)
+
+    # Iterate through each cell in the specified range
+    for info in cell_list:
+        # Select the worksheet
+        ws = wb[info[0]]
+        cell_range = info[1]
+        unlocked_cells = list(filter(lambda s: s[0] == info[0], unlocked_cells_list))
+        if unlocked_cells:
+            unlocked_cells = unlocked_cells[0][1]
+            # print(unlocked_cells)
+        for row in ws[cell_range]:
+            for cell in row:
+                cell.style = style_name  # Apply the custom style
+                if unlocked_cells and (cell.coordinate in unlocked_cells):
+                    cell.protection = Protection(locked=False)
+                if number_format:
+                    cell.number_format = number_format  # Apply the number format
+    return wb
+
+
+@log_execution_time
+def c2apply_custom_style_to_range(
+    wb,
+    cell_list,
+    font_family,
+    font_color,
+    font_size,
+    bg_color,
+    alignment,
+    bold,
+    style_name,
+    number_format=None,
+):
+    """
+    Apply a custom style to a specified range of cells.
+    Parameters:
+        - wb: Workbook object
+        - ws_name: Name of the worksheet
+        - cell_range: Range of cells (e.g., 'F6:N6')
+        - font_family: Font family name (e.g., 'Arial')
+        - font_color: Font color in hex (e.g., 'FFFFFF' for white)
+        - bg_color: Background color in hex (e.g., '0000FF' for blue)
+    """
+
+    unlocked_cells_list = [
+        ("SCORING", ["H10", "I10"]),
+        ("SIMULATEUR_2", ["D3", "D4", "D5", "D8", "D9", "G4", "G5", "G6", "G7"]),
+    ]
+
+    # Define the custom style
+    custom_style = NamedStyle(name=style_name)
+    # if number_format:
+    #     custom_style.font = Font(name=font_family, size=12, color=f"FF{font_color}", bold=bold, number_format=number_format)  # aRGB format
+    # else:
+    custom_style.font = Font(
+        name=font_family, size=font_size, color=f"FF{font_color}", bold=bold
+    )  # aRGB format
+
+    custom_style.fill = PatternFill(
+        start_color=f"FF{bg_color}", end_color=f"FF{bg_color}", fill_type="solid"
+    )
+    custom_style.alignment = alignment
+
+    # Register the style if it doesn't already exist
+    if style_name not in wb.named_styles:
+        wb.add_named_style(custom_style)
+
+    # Iterate through each cell in the specified range
+    for info in cell_list:
+        # Select the worksheet
+        ws = wb[info[0]]
+        cell_range = info[1]
+        unlocked_cells = list(filter(lambda s: s[0] == info[0], unlocked_cells_list))
+        if unlocked_cells:
+            unlocked_cells = unlocked_cells[0][1]
+            # print(unlocked_cells)
+        for row in ws[cell_range]:
+            for cell in row:
+                cell.style = style_name  # Apply the custom style
+                if unlocked_cells and (cell.coordinate in unlocked_cells):
+                    cell.protection = Protection(locked=False)
+                if number_format:
+                    cell.number_format = number_format  # Apply the number format
+    return wb
+
+
+@log_execution_time
+def c3apply_custom_style_to_range(
+    wb,
+    cell_list,
+    font_family,
+    font_color,
+    font_size,
+    bg_color,
+    alignment,
+    bold,
+    style_name,
+    number_format=None,
+):
+    """
+    Apply a custom style to a specified range of cells.
+    Parameters:
+        - wb: Workbook object
+        - ws_name: Name of the worksheet
+        - cell_range: Range of cells (e.g., 'F6:N6')
+        - font_family: Font family name (e.g., 'Arial')
+        - font_color: Font color in hex (e.g., 'FFFFFF' for white)
+        - bg_color: Background color in hex (e.g., '0000FF' for blue)
+    """
+
+    unlocked_cells_list = [
+        ("SCORING", ["H10", "I10"]),
+        ("SIMULATEUR_2", ["D3", "D4", "D5", "D8", "D9", "G4", "G5", "G6", "G7"]),
+    ]
+
+    # Define the custom style
+    custom_style = NamedStyle(name=style_name)
+    # if number_format:
+    #     custom_style.font = Font(name=font_family, size=12, color=f"FF{font_color}", bold=bold, number_format=number_format)  # aRGB format
+    # else:
+    custom_style.font = Font(
+        name=font_family, size=font_size, color=f"FF{font_color}", bold=bold
+    )  # aRGB format
+
+    custom_style.fill = PatternFill(
+        start_color=f"FF{bg_color}", end_color=f"FF{bg_color}", fill_type="solid"
+    )
+    custom_style.alignment = alignment
+
+    # Register the style if it doesn't already exist
+    if style_name not in wb.named_styles:
+        wb.add_named_style(custom_style)
+
+    # Iterate through each cell in the specified range
+    for info in cell_list:
+        # Select the worksheet
+        ws = wb[info[0]]
+        cell_range = info[1]
+        unlocked_cells = list(filter(lambda s: s[0] == info[0], unlocked_cells_list))
+        if unlocked_cells:
+            unlocked_cells = unlocked_cells[0][1]
+            # print(unlocked_cells)
+        for row in ws[cell_range]:
+            for cell in row:
+                cell.style = style_name  # Apply the custom style
+                if unlocked_cells and (cell.coordinate in unlocked_cells):
+                    cell.protection = Protection(locked=False)
+                if number_format:
+                    cell.number_format = number_format  # Apply the number format
+    return wb
+
+
+
+@log_execution_time
+def c4apply_custom_style_to_range(
+    wb,
+    cell_list,
+    font_family,
+    font_color,
+    font_size,
+    bg_color,
+    alignment,
+    bold,
+    style_name,
+    number_format=None,
+):
+    """
+    Apply a custom style to a specified range of cells.
+    Parameters:
+        - wb: Workbook object
+        - ws_name: Name of the worksheet
+        - cell_range: Range of cells (e.g., 'F6:N6')
+        - font_family: Font family name (e.g., 'Arial')
+        - font_color: Font color in hex (e.g., 'FFFFFF' for white)
+        - bg_color: Background color in hex (e.g., '0000FF' for blue)
+    """
+
+    unlocked_cells_list = [
+        ("SCORING", ["H10", "I10"]),
+        ("SIMULATEUR_2", ["D3", "D4", "D5", "D8", "D9", "G4", "G5", "G6", "G7"]),
+    ]
+
+    # Define the custom style
+    custom_style = NamedStyle(name=style_name)
+    # if number_format:
+    #     custom_style.font = Font(name=font_family, size=12, color=f"FF{font_color}", bold=bold, number_format=number_format)  # aRGB format
+    # else:
+    custom_style.font = Font(
+        name=font_family, size=font_size, color=f"FF{font_color}", bold=bold
+    )  # aRGB format
+
+    custom_style.fill = PatternFill(
+        start_color=f"FF{bg_color}", end_color=f"FF{bg_color}", fill_type="solid"
+    )
+    custom_style.alignment = alignment
+
+    # Register the style if it doesn't already exist
+    if style_name not in wb.named_styles:
+        wb.add_named_style(custom_style)
+
+    # Iterate through each cell in the specified range
+    for info in cell_list:
+        # Select the worksheet
+        ws = wb[info[0]]
+        cell_range = info[1]
+        unlocked_cells = list(filter(lambda s: s[0] == info[0], unlocked_cells_list))
+        if unlocked_cells:
+            unlocked_cells = unlocked_cells[0][1]
+            # print(unlocked_cells)
+        for row in ws[cell_range]:
+            for cell in row:
+                cell.style = style_name  # Apply the custom style
+                if unlocked_cells and (cell.coordinate in unlocked_cells):
+                    cell.protection = Protection(locked=False)
+                if number_format:
+                    cell.number_format = number_format  # Apply the number format
+    return wb
+
+
+@log_execution_time
+def c5apply_custom_style_to_range(
+    wb,
+    cell_list,
+    font_family,
+    font_color,
+    font_size,
+    bg_color,
+    alignment,
+    bold,
+    style_name,
+    number_format=None,
+):
+    """
+    Apply a custom style to a specified range of cells.
+    Parameters:
+        - wb: Workbook object
+        - ws_name: Name of the worksheet
+        - cell_range: Range of cells (e.g., 'F6:N6')
+        - font_family: Font family name (e.g., 'Arial')
+        - font_color: Font color in hex (e.g., 'FFFFFF' for white)
+        - bg_color: Background color in hex (e.g., '0000FF' for blue)
+    """
+
+    unlocked_cells_list = [
+        ("SCORING", ["H10", "I10"]),
+        ("SIMULATEUR_2", ["D3", "D4", "D5", "D8", "D9", "G4", "G5", "G6", "G7"]),
+    ]
+
+    # Define the custom style
+    custom_style = NamedStyle(name=style_name)
+    # if number_format:
+    #     custom_style.font = Font(name=font_family, size=12, color=f"FF{font_color}", bold=bold, number_format=number_format)  # aRGB format
+    # else:
+    custom_style.font = Font(
+        name=font_family, size=font_size, color=f"FF{font_color}", bold=bold
+    )  # aRGB format
+
+    custom_style.fill = PatternFill(
+        start_color=f"FF{bg_color}", end_color=f"FF{bg_color}", fill_type="solid"
+    )
+    custom_style.alignment = alignment
+
+    # Register the style if it doesn't already exist
+    if style_name not in wb.named_styles:
+        wb.add_named_style(custom_style)
+
+    # Iterate through each cell in the specified range
+    for info in cell_list:
+        # Select the worksheet
+        ws = wb[info[0]]
+        cell_range = info[1]
+        unlocked_cells = list(filter(lambda s: s[0] == info[0], unlocked_cells_list))
+        if unlocked_cells:
+            unlocked_cells = unlocked_cells[0][1]
+            # print(unlocked_cells)
+        for row in ws[cell_range]:
+            for cell in row:
+                cell.style = style_name  # Apply the custom style
+                if unlocked_cells and (cell.coordinate in unlocked_cells):
+                    cell.protection = Protection(locked=False)
+                if number_format:
+                    cell.number_format = number_format  # Apply the number format
+    return wb
+
+
+@log_execution_time
+def c6apply_custom_style_to_range(
+    wb,
+    cell_list,
+    font_family,
+    font_color,
+    font_size,
+    bg_color,
+    alignment,
+    bold,
+    style_name,
+    number_format=None,
+):
+    """
+    Apply a custom style to a specified range of cells.
+    Parameters:
+        - wb: Workbook object
+        - ws_name: Name of the worksheet
+        - cell_range: Range of cells (e.g., 'F6:N6')
+        - font_family: Font family name (e.g., 'Arial')
+        - font_color: Font color in hex (e.g., 'FFFFFF' for white)
+        - bg_color: Background color in hex (e.g., '0000FF' for blue)
+    """
+
+    unlocked_cells_list = [
+        ("SCORING", ["H10", "I10"]),
+        ("SIMULATEUR_2", ["D3", "D4", "D5", "D8", "D9", "G4", "G5", "G6", "G7"]),
+    ]
+
+    # Define the custom style
+    custom_style = NamedStyle(name=style_name)
+    # if number_format:
+    #     custom_style.font = Font(name=font_family, size=12, color=f"FF{font_color}", bold=bold, number_format=number_format)  # aRGB format
+    # else:
+    custom_style.font = Font(
+        name=font_family, size=font_size, color=f"FF{font_color}", bold=bold
+    )  # aRGB format
+
+    custom_style.fill = PatternFill(
+        start_color=f"FF{bg_color}", end_color=f"FF{bg_color}", fill_type="solid"
+    )
+    custom_style.alignment = alignment
+
+    # Register the style if it doesn't already exist
+    if style_name not in wb.named_styles:
+        wb.add_named_style(custom_style)
+
+    # Iterate through each cell in the specified range
+    for info in cell_list:
+        # Select the worksheet
+        ws = wb[info[0]]
+        cell_range = info[1]
+        unlocked_cells = list(filter(lambda s: s[0] == info[0], unlocked_cells_list))
+        if unlocked_cells:
+            unlocked_cells = unlocked_cells[0][1]
+            # print(unlocked_cells)
+        for row in ws[cell_range]:
+            for cell in row:
+                cell.style = style_name  # Apply the custom style
+                if unlocked_cells and (cell.coordinate in unlocked_cells):
+                    cell.protection = Protection(locked=False)
+                if number_format:
+                    cell.number_format = number_format  # Apply the number format
+    return wb
+
+
+@log_execution_time
+def c7apply_custom_style_to_range(
+    wb,
+    cell_list,
+    font_family,
+    font_color,
+    font_size,
+    bg_color,
+    alignment,
+    bold,
+    style_name,
+    number_format=None,
+):
+    """
+    Apply a custom style to a specified range of cells.
+    Parameters:
+        - wb: Workbook object
+        - ws_name: Name of the worksheet
+        - cell_range: Range of cells (e.g., 'F6:N6')
+        - font_family: Font family name (e.g., 'Arial')
+        - font_color: Font color in hex (e.g., 'FFFFFF' for white)
+        - bg_color: Background color in hex (e.g., '0000FF' for blue)
+    """
+
+    unlocked_cells_list = [
+        ("SCORING", ["H10", "I10"]),
+        ("SIMULATEUR_2", ["D3", "D4", "D5", "D8", "D9", "G4", "G5", "G6", "G7"]),
+    ]
+
+    # Define the custom style
+    custom_style = NamedStyle(name=style_name)
+    # if number_format:
+    #     custom_style.font = Font(name=font_family, size=12, color=f"FF{font_color}", bold=bold, number_format=number_format)  # aRGB format
+    # else:
+    custom_style.font = Font(
+        name=font_family, size=font_size, color=f"FF{font_color}", bold=bold
+    )  # aRGB format
+
+    custom_style.fill = PatternFill(
+        start_color=f"FF{bg_color}", end_color=f"FF{bg_color}", fill_type="solid"
+    )
+    custom_style.alignment = alignment
+
+    # Register the style if it doesn't already exist
+    if style_name not in wb.named_styles:
+        wb.add_named_style(custom_style)
+
+    # Iterate through each cell in the specified range
+    for info in cell_list:
+        # Select the worksheet
+        ws = wb[info[0]]
+        cell_range = info[1]
+        unlocked_cells = list(filter(lambda s: s[0] == info[0], unlocked_cells_list))
+        if unlocked_cells:
+            unlocked_cells = unlocked_cells[0][1]
+            # print(unlocked_cells)
+        for row in ws[cell_range]:
+            for cell in row:
+                cell.style = style_name  # Apply the custom style
+                if unlocked_cells and (cell.coordinate in unlocked_cells):
+                    cell.protection = Protection(locked=False)
+                if number_format:
+                    cell.number_format = number_format  # Apply the number format
     return wb
