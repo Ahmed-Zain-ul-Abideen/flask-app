@@ -1,8 +1,8 @@
-"""user image these all
+"""als newly
 
-Revision ID: 44777edb4eb8
+Revision ID: 3ac56a4bcf73
 Revises: 
-Create Date: 2025-01-09 13:58:24.707981
+Create Date: 2025-01-30 16:23:30.569472
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '44777edb4eb8'
+revision = '3ac56a4bcf73'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -37,13 +37,13 @@ def upgrade():
     sa.Column('email', sa.String(length=120), nullable=False),
     sa.Column('website', sa.String(length=120), nullable=True),
     sa.Column('logo', sa.String(length=120), nullable=True),
-    sa.Column('bg_color', sa.String(length=7), nullable=True),
-    sa.Column('bg_font_color', sa.String(length=7), nullable=True),
-    sa.Column('title_color', sa.String(length=7), nullable=True),
-    sa.Column('title_font_color', sa.String(length=7), nullable=True),
-    sa.Column('attribut_color', sa.String(length=7), nullable=True),
-    sa.Column('attribut_font_color', sa.String(length=7), nullable=True),
-    sa.Column('fontFamily', sa.String(length=50), nullable=True),
+    sa.Column('bg_color', sa.String(length=7), server_default='#9CABB4', nullable=True),
+    sa.Column('bg_font_color', sa.String(length=7), server_default='#73a1b2', nullable=True),
+    sa.Column('title_color', sa.String(length=7), server_default='#E3C1B4', nullable=True),
+    sa.Column('title_font_color', sa.String(length=7), server_default='#44576D', nullable=True),
+    sa.Column('attribut_color', sa.String(length=7), server_default='#768A96', nullable=True),
+    sa.Column('attribut_font_color', sa.String(length=7), server_default='#610C27', nullable=True),
+    sa.Column('fontFamily', sa.String(length=50), server_default='Arial', nullable=True),
     sa.Column('password_hash', sa.String(length=255), nullable=False),
     sa.Column('subscription_status', sa.String(length=50), nullable=True),
     sa.Column('consumed_reports', sa.Integer(), server_default='0', nullable=True),
@@ -58,10 +58,10 @@ def upgrade():
     sa.Column('verif_code', sa.String(length=500), nullable=True),
     sa.Column('is_subscribed', sa.Boolean(), nullable=True),
     sa.Column('subscription_ends', sa.DateTime(), nullable=True),
-    sa.Column('reports_count', sa.Integer(), nullable=True),
+    sa.Column('reports_count', sa.Integer(), server_default='1', nullable=True),
     sa.Column('code_timer', sa.DateTime(), nullable=True),
     sa.Column('token_reset_pass', sa.Text(), nullable=True),
-    sa.Column('subs_type', sa.String(length=500), nullable=True),
+    sa.Column('subs_type', sa.String(length=500), server_default='free', nullable=True),
     sa.Column('subs_start', sa.DateTime(), nullable=True),
     sa.Column('downloaded_current', sa.Integer(), nullable=True),
     sa.Column('downloaded_history', sa.Integer(), nullable=True),
