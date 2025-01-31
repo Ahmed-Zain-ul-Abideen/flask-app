@@ -45,16 +45,16 @@
                     <i class="fas fa-user-circle"></i>
                 </span> 
                 </a>
-              <ul id="the_specsul">
+              <ul id="the_specsul" style="background-color: #666;">
                 {% if is_authenticated %}
-                    <li><a href="{{ url_for('logout') }}">Se déconnecter</a></li>
-                    <li><a href="{{ url_for('profile') }}">Profile</a></li>
-                    <li><a href="{{ url_for('mes_rapports') }}">Mes Rapports</a></li>
+                    <li><a    style="color: white;" href="{{ url_for('logout') }}">Se déconnecter</a></li>
+                    <li><a    style="color: white;" href="{{ url_for('profile') }}">Profile</a></li>
+                    <li><a    style="color: white;" href="{{ url_for('mes_rapports') }}">Mes Rapports</a></li>
                     
                 {% else %}
-                    <li><a href="{{ url_for('connexion') }}">Se connecter</a></li>
-                    <li><a href="{{ url_for('inscription') }}">S'inscrire</a></li>
-                    <li><a href="{{ url_for('reinitialisation') }}">Réinitialiser</a></li>
+                    <li><a    style="color: white;"  href="{{ url_for('connexion') }}">Se connecter</a></li>
+                    <li><a    style="color: white;"  href="{{ url_for('inscription') }}">S'inscrire</a></li>
+                    <li><a    style="color: white;"  href="{{ url_for('reinitialisation') }}">Réinitialiser</a></li>
                 {% endif %}
               </ul>
             </li>
@@ -103,10 +103,43 @@
 
 </body>
 
+<script>
+    window.onload =function() {
+        console.log("DOM fully loaded and parsed"); // Debugging step
 
+        let colorPickers = document.querySelectorAll('input[type="color"]');
+        
+        if (colorPickers.length === 0) {
+            console.warn("No color input elements found");
+            return; // Exit if no color inputs exist
+        }
+
+        colorPickers.forEach(picker => {
+            picker.addEventListener('click', function(event) {
+                console.log("picker is clicked"); // Check if this appears in console
+
+                let form = document.getElementById("customizesform");
+                if (!form) {
+                    console.warn("customizesform not found");
+                    return;
+                }
+
+                let formBounds = form.getBoundingClientRect();
+                let pickerBounds = event.target.getBoundingClientRect();
+
+                if (pickerBounds.top < formBounds.top) {
+                    event.target.style.position = "absolute";
+                    event.target.style.top = `${formBounds.top + 10}px`;
+                }
+            });
+        });
+    };
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        console.log("Doc load in base html");
+        
         const banner = document.getElementById('cookie-consent-banner');
         const acceptButton = document.getElementById('accept-cookies');
         const navbarLinks = document.querySelectorAll('.link');
