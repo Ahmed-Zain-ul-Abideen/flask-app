@@ -277,7 +277,7 @@ header nav {
 
 
 /* Hide the dropdown initially */
-ul ul {
+nav ul ul {
   display: none;
   position: absolute;
   background-color: white;
@@ -288,7 +288,7 @@ ul ul {
   margin-top: 0;
 }
 
-li:hover > ul {
+nav li:hover > ul {
   display: flex; /* Show the dropdown when hovering over the parent */
   flex-direction: column;
 

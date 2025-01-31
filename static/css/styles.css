@@ -802,42 +802,60 @@ ul {
 
   /* # ####################### END FLASH MESSAGE ####################################### */
 
-  .alert-container {
-    position: fixed;
-    top: 20%;
-    left: 50%;
-    transform: translateX(-50%); /* Center horizontally */
-    z-index: 1000;
-    transition: opacity 0.5s ease;
+  
+
+
+ /* Container for the alert, centered in the middle of the page */
+.alert-container {
+  position: fixed;
+  top: 20%; /* Position it vertically at the center of the page */
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center it horizontally and vertically */
+  z-index: 1000;
+  width: 80%; /* Adjust the width */
+  max-width: 500px; /* Limit the maximum width */
+  display: flex;
+  justify-content: center; /* Align text in the center */
 }
+
+/* Styling for each individual alert message */
 .alert {
-    margin: 10px;
-    padding: 15px;
-    border-radius: 5px;
-    opacity: 1;
-    animation: fadeIn 0.5s, fadeOut 29.5s forwards; /* Fade in and out */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for pop-up effect */
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 5px;
+  width: 100%; /* Ensure the alert takes up full width of the container */
+  text-align: center; /* Center the text inside the alert */
+  opacity: 1;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.5s, fadeOut 29.5s forwards;
 }
+
+/* Fade-in animation */
 @keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(-20px); }
-    100% { opacity: 1; transform: translateY(0); }
+  0% { opacity: 0; transform: translateY(-20px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
+
+/* Fade-out animation */
 @keyframes fadeOut {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
+  0% { opacity: 1; }
+  100% { opacity: 0; }
 }
-.alert.success {
-    background-color: #d4edda; /* Light green */
-    color: #155724; /* Dark green */
+
+
+
+/* Error alert styling */
+.alert-error {
+  background-color: #d14e4e !important;
+  color: #f8f8f8 !important;
 }
-.alert.error {
-    background-color: #f8d7da; /* Light red */
-    color: #721c24; /* Dark red */
+
+/* Info alert styling */
+.alert-info {
+  background-color: #333333 !important;  /* Dark grey background */
+  color: #fff !important;                /* White text for contrast */
 }
-.alert.info {
-    background-color: #cce5ff; /* Light blue */
-    color: #004085; /* Dark blue */
-}
+
 
 
 /* ############################## LOADER ############################"" */
@@ -880,6 +898,20 @@ ul {
   margin-bottom: 5px; /* Space between label and input */
 }
 
+.form-group-faris {
+  /* display: flex;
+  flex-direction: column;
+  margin-bottom: 15px; */
+
+  display: inline-block;
+  align-items: center;
+  margin: 0 2% 0 2%;
+  width:100%
+}
+
+.form-group-faris label {
+  margin-bottom: 5px; /* Space between label and input */
+}
 /* ######################## PROFILE ################### */
 .form-profile {
   /* display: flex;
@@ -1278,4 +1310,9 @@ input[type="password"]::-webkit-text-security {
       width: 80px; /* Smaller circle size */
       height: 80px; /* Smaller circle size */
   }
+}
+
+.input-faris{
+
+  max-width: 500px;
 }
