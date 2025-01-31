@@ -4,42 +4,74 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr"></script>
+
+<style>
+    input[type="color"] {
+        position: relative;
+        z-index: 10;
+        max-height: 40px; /* Ensuring it doesn't push elements up */
+        overflow: hidden;
+    }
+
+    #customizesform {
+        overflow: hidden;
+        position: relative;
+    }
+</style>
+
 <div style = "padding:20px;"><h2 style="text-align:center">Générer vos rapports</h2></div>
 {% if  cities == "none" %}
     <div id="rep-consent-banner">
         <p>quelque chose s'est mal passé, veuillez contacter l'administrateur.</p> 
     </div>
-{%else%} 
+{%else%}
+
+    <div id="rep-consent-banner_endone"  style="display: none;padding-bottom: 4rem;">
+        <p>Vous avez atteint votre limite de téléchargement de rapports.Veuillez souscrire à un nouvel abonnement.</p>
+        <button id="accept-mes_endone">Très bien</button>
+    </div>
 
     {% if  rep_count %}
         <div id="rep-consent-banner">
-            <p>Vous avez atteint votre limite de téléchargement de rapports.</p>
-            <button id="accept-mes">d'accord</button>
+            <p>Vous avez atteint votre limite de téléchargement de rapports.Veuillez souscrire à un nouvel abonnement.</p>
+            <button id="accept-mes">Très bien</button>
         </div>
     {%else%}
     
 
 
-        <div class="step">
+        <div class="step"  id="the_step">
             <h2 onclick="toggleDetails('feesSimulator')"><span class="toggle-icon">+</span> Customisez vos rapports</h2>
             <div class="details" id="feesSimulator">
-        <form method="POST" enctype="multipart/form-data" action="{{ url_for('customise_report') }}">
+        <p>Vous pouvez customiser vos rapports en ajoutant une image, en sélectionnant les couleurs dans cette image à l’aide du color picker et en modifiant la police du text</p>
+        <div style="display: flex; justify-content: center;">
+            <img id="orgimg" src="{{ url_for('static', filename='user_images/' + (user.user_image if  user.user_image else 'image-0.png')) }}" alt="User Logo" style="max-width: 300px; max-height: 300px;">
+        </div>
+
+        <div id="logowrapdiv" class="form-customiser" style="width: 50%; margin: 0 25% 0 25%;">
+            <label for="logo">Upload Logo:</label>
+            <input type="file" id="logo" name="logo" accept="image/*" onchange="uploadLogo()">
+        </div>
+        <canvas id="colorCanvas" style="display:none; width: 50%; margin: 0 25% 0 25%;"></canvas>
+        <form method="POST" enctype="multipart/form-data" action="{{ url_for('customise_report') }}"  id="customizesform">
             {{ form.hidden_tag() }}  <!-- This includes the CSRF token -->
             <div class="faris_container">
                 <div class="faris_left">
                     <!-- Circle for displaying the image with a green border -->
-                    <div class="circle-container" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden; 
+                    <!-- <div class="circle-container" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden; 
                                                         display: flex; justify-content: center; align-items: center; 
                                                         border: 5px solid green; margin-right: 20px;">
                         <img id="orgimg" src="{{ url_for('static', filename='user_images/' + (user.user_image if user.user_image else 'image-0.png')) }}" 
                             alt="User Logo" 
                             style="width: 100%; height: 100%; object-fit: cover;">
-                    </div>
+                    </div> -->
                     
                     <!-- Upload button -->
                     <div class="form-customiser" style="width: auto;">
-                        <label for="logo">Upload Logo:</label>
-                        <input type="file" id="logo" name="logo" accept="image/*">   
+                        <!-- <label for="logo">Upload Logo:</label>
+                        <input type="file" id="logo" name="logo" accept="image/*">    -->
                     </div>
                 </div>
                 
@@ -60,7 +92,7 @@
         
 
             <!-- <canvas id="colorCanvas" style="display:none; max-width: 300px; max-height: 300px;"></canvas> -->
-            <canvas id="colorCanvas" style="display:none; width: 50%; margin: 0 25% 0 25%;"></canvas>
+            
                 <!-- Color pickers -->
 
                 <div class="form-customiser"  >
@@ -75,7 +107,7 @@
     
                 <div class="form-customiser" >
                     <!-- <label for="fontPreview">Font Previews:</label> -->
-                    <div id="fontPreview1" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
+                    <div id="fontPreview1" style="font-size: 12px; border: 1px solid #ccc;padding: 10px;font-family: {{user.fontFamily}};background-color: {{user.bg_color}};color: {{user.bg_font_color}};">
                         Aperçu du style de l'arrière plan
                     </div>
                 </div>
@@ -91,7 +123,7 @@
                 </div>
     
                 <div class="form-customiser" >
-                    <div id="fontPreview2" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
+                    <div id="fontPreview2" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;font-family: {{user.fontFamily}};background-color: {{user.title_color}};color: {{user.title_font_color}};">
                         Aperçu du style des titres
                     </div>
                 </div>
@@ -106,7 +138,7 @@
                 </div>
     
                 <div class="form-customiser" >
-                    <div id="fontPreview3" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;">
+                    <div id="fontPreview3" style="font-size: 12px; border: 1px solid #ccc; padding: 10px;font-family: {{user.fontFamily}};background-color: {{user.attribut_color}};color: {{user.attribut_font_color}};">
                         Aperçu du style des attributs
                     </div>
                 </div>
@@ -121,14 +153,14 @@
 
         <form method="POST" action="{{ url_for('preparer') }}" id="report-form">
             {{ form.hidden_tag() }}  <!-- This includes the CSRF token -->
-            <label for="city">Select City:</label>
+            <label for="city">Sélectionner ou renseigner une ville :</label>
             <!-- <select name="city" id="city">
                 {% for city in cities %}
                     <option value="{{ city }}">{{ city }}</option>
                 {% endfor %}
             </select> -->
 
-            <input list="cities" name="city" id="city" placeholder="Type or select a city" required>
+            <input list="cities" name="city" id="city" placeholder="Sélectionner ou renseigner une ville" required>
             <datalist id="cities">
                 {% for city in cities %}
                     <option value="{{ city }}">{{ city }}</option>
@@ -137,16 +169,16 @@
 
             <br><br>
             
-            <label for="property_type">Select Property Type:</label>
+            <label for="property_type">Sélectionner un type de bien:</label>
             <select name="property_type" id="property_type">
                 <option value="Appartement">Appartement</option>
                 <option value="Maison">Maison</option>
             </select>
             <br><br>
             
-            <div class="loader" style="display: none;"></div>
+            <div class="loader" id="generatereportbuttonloader" style="display: none;"></div>
             
-            <button type="submit" id="genrep-button">Generate Report</button>
+            <button type="submit" id="genrep-button">Générer un rapport</button>
         </form>
 
 
@@ -155,16 +187,107 @@
 
     {%endif%}
 {%endif%}
+
+<script>
+    document.getElementById('bg_font_color').addEventListener('click', function(event) {
+        let colorInput = this;
+
+        // Temporarily move the input to the left of the screen
+        colorInput.style.position = 'fixed';
+        colorInput.style.left = '0px';
+        colorInput.style.bottom = '10px'; // Keep it near the bottom for visibility
+        colorInput.style.zIndex = '9999';
+
+        // Function to reset input position
+        function resetPosition() {
+            colorInput.style.position = '';
+            colorInput.style.left = '';
+            colorInput.style.bottom = '';
+            colorInput.style.zIndex = '';
+
+            // Remove event listeners to prevent unnecessary checks
+            document.removeEventListener('keydown', handleEscape);
+            document.removeEventListener('click', handleOutsideClick);
+        }
+
+        // Listen for Escape key to reset
+        function handleEscape(event) {
+            if (event.key === "Escape") {
+                resetPosition();
+            }
+        }
+
+        // Listen for outside click to reset
+        function handleOutsideClick(event) {
+            if (!colorInput.contains(event.target)) {
+                resetPosition();
+            }
+        }
+
+        // Attach event listeners
+        document.addEventListener('keydown', handleEscape);
+        document.addEventListener('click', handleOutsideClick);
+    });
+</script>
+<script>
+    const pickr = Pickr.create({
+        el: '#color-picker',
+        theme: 'classic', // or 'monolith', 'nano'
+        default: '{{ user.bg_font_color }}',
+        position: 'bottom-middle', // Ensures it appears at the bottom
+        components: {
+            preview: true,
+            opacity: true,
+            hue: true,
+            interaction: {
+                input: true,
+                save: true
+            }
+        }
+    });
+
+    pickr.on('change', (color) => {
+        document.getElementById('bg_font_color').value = color.toHEXA().toString();
+    });
+
+    // Update input value on color change
+    pickr.on('save', (color) => {
+        console.log("picker saved");
+        
+        document.getElementById('bg_font_color').value = color.toHEXA().toString();
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const  accept_mes_endone  = document.getElementById('accept-mes_endone');
+        accept_mes_endone.addEventListener('click', function() { 
+            window.location.href = "/pricing";
+        });
+    });
+</script>
 {% if  rep_count %}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                window.location.href = "/pricing";  // Redirect to /pricing
+            }, 5000);  // 5000ms = 5 seconds
+            // const banner = document.getElementById('rep-consent-banner');
+            // const acceptButton = document.getElementById('accept-mes');
+
+            
+
+            // acceptButton.addEventListener('click', function() { 
+            //     banner.style.display = 'none';
+            // });
+        });
+        document.addEventListener('DOMContentLoaded', function() { 
             const banner = document.getElementById('rep-consent-banner');
             const acceptButton = document.getElementById('accept-mes');
 
             
 
             acceptButton.addEventListener('click', function() { 
-                banner.style.display = 'none';
+                window.location.href = "/pricing";
             });
         });
     </script>
@@ -179,11 +302,12 @@
                         const form = document.getElementById('report-form');
                         const downloadButton = document.getElementById('download-button');
                         const messageContainer = document.getElementById('message-container');
-                        const loader = document.querySelector('.loader');  // Reference to the loader
+                        const loader = document.getElementById('generatereportbuttonloader');  // Reference to the loader
                         const genrepButton = document.getElementById('genrep-button');
 
                         form.addEventListener('submit', function(event) {
                             event.preventDefault(); // Prevent default form submission
+                            genrepButton.style.display = 'none';
                             loader.style.display = 'block';  // Show the loader
                 
                             const formData = new FormData(form);
@@ -216,10 +340,19 @@
 
                                     if (data.reports_count_flag === "false") {
                                         console.log("Reports count flag is false");
-                                        genrepButton.style.display = 'none'; // Hide the "Generate Report" button
+                                        const  the_step =  document.getElementById('the_step');
+                                        the_step.style.display = 'none';
+                                        const  the_form =  document.getElementById('report-form');
+                                        the_form.style.display = 'none';
+                                        const  the_mesgehere =  document.getElementById('rep-consent-banner_endone');
+                                        the_mesgehere.style.display = 'block';
+                                        // genrepButton.style.display = 'none'; // Hide the "Generate Report" button
                                     } else {
                                         console.log("Reports count flag is true");
+                                        genrepButton.style.display = 'inline';
                                     }
+                                } else {
+                                    genrepButton.style.display = 'inline';
                                 }
                                 // ---------------------- END TEST
                             })
@@ -233,6 +366,9 @@
                         downloadButton.addEventListener('click', function() {
                             const reportName = this.getAttribute('data-report-name');
                             const downloadUrl = `{{ url_for('download', report_name='') }}${reportName}`;
+                            downloadButton.style.display = 'none';
+                            const downloadbuttonloader = document.getElementById('downloadbuttonloader');
+                            downloadbuttonloader.style.display = 'block';
                 
                             fetch(downloadUrl)
                                 .then(response => {
@@ -254,9 +390,11 @@
                 
                                     // Remove the message and button after download
                                     messageContainer.innerHTML = '';
-                                    downloadButton.style.display = 'none';
+                                    downloadbuttonloader.style.display = 'none';
+                                    // downloadButton.style.display = 'none';
                                 })
                                 .catch(error => console.error('Error downloading the file:', error));
+                                
                         });
                     });
 
@@ -368,7 +506,9 @@
     function loadLogoToCanvas(url) {
         const canvas = document.getElementById('colorCanvas');
         const theabuserImage = document.getElementById('orgimg');
-        theabuserImage.style.display = 'none'; 
+        theabuserImage.style.display = 'none';
+        const logowrapdivvar = document.getElementById('logowrapdiv');
+        logowrapdivvar.style.display = 'none'; 
         const ctx = canvas.getContext('2d');
         const img = new Image();
         img.src = url;
@@ -419,6 +559,6 @@
 
         
         </script>
-
+    <div class="loader" id="downloadbuttonloader" style="display: none;justify-self: center;"></div>
 {%endif%}
 {% endblock %}

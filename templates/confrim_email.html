@@ -124,11 +124,11 @@
                             </tr>
                             <tr>
                                 <td class="column">
-                                    <h1 class="heading_block">BONJOUR MONSIEUR. </h1>
 
                                     {% if flag_password_reset%}
+                                        <h1 class="heading_block">L’Enchérisseur Avisé. </h1>
                                         <p class="paragraph_block">
-                                            Nous sommes toujours là pour vous aider. Veuillez réinitialiser votre mot de passe en cliquant sur le bouton ci-dessous..
+                                            Veuillez réinitialiser votre mot de passe en cliquant sur le bouton ci-dessous..
                                         </p>
                                         <div class="button_block" align="center">
                                             <a href="{{ link }}" target="_blank">Réinitialiser le mot de passe</a>
@@ -137,9 +137,11 @@
 
                                     {% if flag_confirm_email%}
                                         {% if flag_confirm_email == "121" %}
+                                            <!-- <h1 class="heading_block">L’Enchérisseur Avisé. </h1> -->
                                         {%else%}
+                                            <h1 class="heading_block">Bien venue sur L’enchérisseur Avisé. </h1>
                                             <p class="paragraph_block">
-                                                Nous sommes toujours là pour vous aider. Veuillez vérifier votre adresse e-mail en cliquant sur le bouton ci-dessous.
+                                                Veuillez valider votre adresse e-mail en cliquant sur le bouton ci-dessous.
                                             </p>
                                             <div class="button_block" align="center">
                                                 <a href="{{ link }}" target="_blank">Confirmez votre email</a>
@@ -148,6 +150,7 @@
                                     {% endif%}
 
                                     {% if flag_confirm_email == "121" %}
+                                        <h1 class="heading_block">L’Enchérisseur Avisé. </h1>
                                         <p class="paragraph_block">
                                             {{ link }}
                                         </p>
