@@ -279,67 +279,67 @@ def customise_workbook(current_user, report_path, report_dir, bucket_logo):
         style_name="attribute_style_left",
     )
 
-    wb = c3apply_custom_style_to_range(
-        wb=wb,
-        cell_list=background,  # Range to style
-        font_family=current_user.fontFamily,
-        font_color=current_user.bg_color[1:],  # White font
-        font_size=12,
-        bg_color=current_user.bg_color[1:],
-        alignment=Alignment(horizontal="center", vertical="center"),
-        bold=1,
-        style_name="bacground_style",
-    )
+    # wb = c3apply_custom_style_to_range(
+    #     wb=wb,
+    #     cell_list=background,  # Range to style
+    #     font_family=current_user.fontFamily,
+    #     font_color=current_user.bg_color[1:],  # White font
+    #     font_size=12,
+    #     bg_color=current_user.bg_color[1:],
+    #     alignment=Alignment(horizontal="center", vertical="center"),
+    #     bold=1,
+    #     style_name="bacground_style",
+    # )
 
-    wb = c4apply_custom_style_to_range(
-        wb=wb,
-        cell_list=text_cells,  # Range to style
-        font_family=current_user.fontFamily,
-        font_color=current_user.bg_color[1:],  # White font
-        font_size=11,
-        bg_color="ffffff",
-        alignment=Alignment(horizontal="center", vertical="center"),
-        bold=1,
-        style_name="text_style",
-    )
+    # wb = c4apply_custom_style_to_range(
+    #     wb=wb,
+    #     cell_list=text_cells,  # Range to style
+    #     font_family=current_user.fontFamily,
+    #     font_color=current_user.bg_color[1:],  # White font
+    #     font_size=11,
+    #     bg_color="ffffff",
+    #     alignment=Alignment(horizontal="center", vertical="center"),
+    #     bold=1,
+    #     style_name="text_style",
+    # )
 
-    wb = c5apply_custom_style_to_range(
-        wb=wb,
-        cell_list=num_cells_euro,  # Range to style
-        font_family=current_user.fontFamily,
-        font_color=current_user.bg_color[1:],  # White font
-        font_size=11,
-        bg_color="ffffff",
-        alignment=Alignment(horizontal="center", vertical="center"),
-        bold=1,
-        style_name="num_euro_style",
-        number_format="# ##0 €",
-    )
+    # wb = c5apply_custom_style_to_range(
+    #     wb=wb,
+    #     cell_list=num_cells_euro,  # Range to style
+    #     font_family=current_user.fontFamily,
+    #     font_color=current_user.bg_color[1:],  # White font
+    #     font_size=11,
+    #     bg_color="ffffff",
+    #     alignment=Alignment(horizontal="center", vertical="center"),
+    #     bold=1,
+    #     style_name="num_euro_style",
+    #     number_format="# ##0 €",
+    # )
 
-    wb = c6apply_custom_style_to_range(
-        wb=wb,
-        cell_list=num_cells_percent,  # Range to style
-        font_family=current_user.fontFamily,
-        font_color=current_user.bg_color[1:],  # White font
-        font_size=11,
-        bg_color="ffffff",
-        alignment=Alignment(horizontal="center", vertical="center"),
-        bold=1,
-        style_name="num_percent_style",
-        number_format="0%",
-    )
+    # wb = c6apply_custom_style_to_range(
+    #     wb=wb,
+    #     cell_list=num_cells_percent,  # Range to style
+    #     font_family=current_user.fontFamily,
+    #     font_color=current_user.bg_color[1:],  # White font
+    #     font_size=11,
+    #     bg_color="ffffff",
+    #     alignment=Alignment(horizontal="center", vertical="center"),
+    #     bold=1,
+    #     style_name="num_percent_style",
+    #     number_format="0%",
+    # )
 
-    wb = c7apply_custom_style_to_range(
-        wb=wb,
-        cell_list=comments,  # Range to style
-        font_family=current_user.fontFamily,
-        font_color="828282",  # White font
-        font_size=11,
-        bg_color="ffffff",
-        alignment=Alignment(horizontal="left", vertical="center"),
-        bold=0,
-        style_name="comment_style",
-    )
+    # wb = c7apply_custom_style_to_range(
+    #     wb=wb,
+    #     cell_list=comments,  # Range to style
+    #     font_family=current_user.fontFamily,
+    #     font_color="828282",  # White font
+    #     font_size=11,
+    #     bg_color="ffffff",
+    #     alignment=Alignment(horizontal="left", vertical="center"),
+    #     bold=0,
+    #     style_name="comment_style",
+    # )
 
     for ws in wb.worksheets:
         # Enable worksheet protection
