@@ -7,6 +7,7 @@ import Report_generator as rg
 import db_models
 from utility import log_execution_time
 #from .Report_Customiser import upload_logo, customise_workbook
+import   Report_Customizer_updated   as  rcus
 import random
 import string
 import os
@@ -1042,7 +1043,7 @@ def download(report_name):
     logging.debug(f"Report path: {report_path}")
     if os.path.exists(report_path):
         # add_user_logo(current_user, REPORT_DIR, report_path, bucket_logo)
-        # customise_workbook(current_user, report_path, REPORT_DIR, bucket_logo)
+        rcus.customise_workbook(current_user, report_path, REPORT_DIR,  "dummy")
 
         return send_file(report_path, as_attachment=True)
     else:
@@ -1198,9 +1199,10 @@ def pricing():
                 context = {"user_reports":user_reports,"free_flag": False,"subs_flag":subs_flag}
                 return render_template("pricing.html", **context)
         else:
-            flash("Connectez-vous d'abord pour terminer cette action","error")
-            context = {"user_reports":None,"free_flag": True,"subs_flag":True}
-            return render_template("pricing.html", **context)
+            return  redirect(url_for('connexion'))
+            # flash("Connectez-vous d'abord pour terminer cette action","error")
+            # context = {"user_reports":None,"free_flag": True,"subs_flag":True}
+            # return render_template("pricing.html", **context)
 
 
     # else:
@@ -1266,22 +1268,24 @@ def pricing():
                 
 
         else:
-            flash("Connectez-vous d'abord pour terminer cette action","error")
+            return  redirect(url_for('connexion'))
+            # flash("Connectez-vous d'abord pour terminer cette action","error")
 
     elif not userz:
         if   current_user.is_authenticated:
             flash("Une erreur s'est produite lors du paiement","error")
         else:
-            flash("Connectez-vous d'abord pour terminer cette action","error")
+            return  redirect(url_for('connexion'))
+            #flash("Connectez-vous d'abord pour terminer cette action","error")
     else:
         pass
 
 
-    if current_user.is_authenticated:
-        user_reports = ReportsLog.query.filter_by(user_id=current_user.id).all()
-        # print("user_reports",user_reports)
-    else:
-        user_reports = None
+    # if current_user.is_authenticated:
+    #     user_reports = ReportsLog.query.filter_by(user_id=current_user.id).all()
+    #     # print("user_reports",user_reports)
+    # else:
+    user_reports = None
     free_flag = True
     subs_flag = True
     if current_user.is_authenticated:
@@ -1597,6 +1601,7 @@ def connexion():
                     # flash("Connexion réussie.", "success")
                     return render_template(
                         "frais.html",
+                        form=form
                         # success_message="Connexion réussie.",
                     )
                 else:
