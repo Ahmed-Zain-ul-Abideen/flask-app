@@ -105,7 +105,17 @@
 
 <script>
     window.onload =function() {
-        console.log("DOM fully loaded and parsed"); // Debugging step
+        console.log("DOM fully loaded and parsed in base v3"); // Debugging step
+
+        document.querySelector('#the_specsul').addEventListener('mouseenter', function() {
+            console.log("Mouse entered on profile dropdown");
+            document.querySelector('.carousel').style.pointerEvents = 'none';
+        });
+
+        document.querySelector('#the_specsul').addEventListener('mouseleave', function() {
+            console.log("Mouse leaved on profile dropdown");
+            document.querySelector('.carousel').style.pointerEvents = 'auto';
+        });
 
         let colorPickers = document.querySelectorAll('input[type="color"]');
         
