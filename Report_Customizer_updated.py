@@ -1,5 +1,6 @@
 from utility import log_execution_time
 import logging
+import os
 
 from openpyxl import load_workbook  # Workbook
 from openpyxl.drawing.image import Image as XLImage
@@ -366,10 +367,13 @@ def add_user_logo_updated(wb, current_user):
         # Extract the image filename
         # image_filename = current_user.user_image.split("/")[-1]
         logo_path = 'static/user_images/' + current_user.user_image
-        logging.debug(f"LOGO PATH: {logo_path}") 
+        logging.debug(f"LOGO PATH: {logo_path}")
+        if  not  os.path.exists(logo_path):
+            logo_path = 'static/images/image-0.png'
+             
         image = XLImage(logo_path)
     else:
-        logo_path =  'static/user_images/image-0.png'
+        logo_path =  'static/images/image-0.png'
         image = XLImage(logo_path)
 
     image = reshape_image(image, max_width=175, max_height=175)
