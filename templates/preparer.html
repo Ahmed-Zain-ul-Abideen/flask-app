@@ -47,7 +47,7 @@
             <div class="details" id="feesSimulator">
         <p>Vous pouvez customiser vos rapports en ajoutant une image, en sélectionnant les couleurs dans cette image à l’aide du color picker et en modifiant la police du text</p>
         <div style="display: flex; justify-content: center;">
-            <img id="orgimg" src="{{ url_for('static', filename='user_images/' + (user.user_image if  user.user_image else 'image-0.png')) }}" alt="User Logo" style="max-width: 300px; max-height: 300px;">
+            <img id="orgimg" src="{{ url_for('static', filename='user_images/' + user.user_image) if user_image_flag else url_for('static', filename='images/image-0.png') }}" alt="User Logo" style="max-width: 300px; max-height: 300px;">
         </div>
 
         <div id="logowrapdiv" class="form-customiser" style="width: 50%; margin: 0 25% 0 25%;">

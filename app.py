@@ -609,9 +609,10 @@ def customise_report():
     #     flash("User not found!")
 
     # Redirect to a different page or render a template
-    return render_template(
-        "preparer.html", cities=cities, report_available=False, user=current_user, form = form
-    )
+    return  redirect(url_for('preparer'))
+    # return render_template(
+    #     "preparer.html", cities=cities, report_available=False, user=current_user, form = form
+    # )
 
 @app.route("/preparer", methods=["GET", "POST"])
 @login_required
@@ -887,8 +888,17 @@ def preparer():
     # else:
     #     flash(no_report,"error")
     #print("preparer rep_count",rep_count)
+    # Define the expected path of the user image
+    if  current_user.user_image:
+        user_image_path = os.path.join(app.static_folder, "user_images", current_user.user_image)
+
+        # Check if the image exists; if not, set user_image to None
+        user_image_flag =  os.path.exists(user_image_path)
+    else:
+        user_image_flag = False
+
     return render_template(
-        "preparer.html", cities=cities, report_available=False, user=current_user,form=form,
+        "preparer.html", cities=cities,user_image_flag=user_image_flag, report_available=False, user=current_user,form=form,
         rep_count=rep_count
     )
     
@@ -1568,10 +1578,19 @@ def connexion():
                     rep_count = False
                     if  db.session.query(db_models.User.query.filter(db_models.User.id==current_user.id).filter(db_models.User.reports_count==0).exists()).scalar():
                         rep_count = True
+
+                    if  current_user.user_image:
+                        user_image_path = os.path.join(app.static_folder, "user_images", current_user.user_image)
+
+                        # Check if the image exists; if not, set user_image to None
+                        user_image_flag =  os.path.exists(user_image_path)
+                    else:
+                        user_image_flag = False
+
                     return render_template(
                         "preparer.html",
                         cities=cities,
-                        # success_message="Connexion réussie.",
+                        user_image_flag = user_image_flag,
                         user=current_user,
                         form=form,
                         rep_count=rep_count,
