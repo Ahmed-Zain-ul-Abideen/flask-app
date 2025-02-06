@@ -1316,3 +1316,8 @@ input[type="password"]::-webkit-text-security {
 
   max-width: 500px;
 }
+
+.top_headings{
+  font-size: 20px;
+  color: #04AA6d ;
+}

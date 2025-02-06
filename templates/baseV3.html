@@ -45,16 +45,16 @@
                     <i class="fas fa-user-circle"></i>
                 </span> 
                 </a>
-              <ul id="the_specsul" style="background-color: #666;">
+              <ul id="the_specsul" style="background-color: #666;border-bottom: none;">
                 {% if is_authenticated %}
-                    <li><a    style="color: white;" href="{{ url_for('logout') }}">Se déconnecter</a></li>
-                    <li><a    style="color: white;" href="{{ url_for('profile') }}">Profile</a></li>
-                    <li><a    style="color: white;" href="{{ url_for('mes_rapports') }}">Mes Rapports</a></li>
+                    <li><a    style="text-align: left;color: white;border-left: none;font-size: 10px;padding-left: 0px;padding-right: 0px;" href="{{ url_for('logout') }}">Se déconnecter</a></li>
+                    <li><a    style="text-align: left;color: white;border-left: none;font-size: 10px;padding-left: 0px;padding-right: 0px;" href="{{ url_for('profile') }}">Profile</a></li>
+                    <li><a    style="text-align: left;color: white;border-left: none;font-size: 10px;padding-left: 0px;padding-right: 0px;" href="{{ url_for('mes_rapports') }}">Mes Rapports</a></li>
                     
                 {% else %}
-                    <li><a    style="color: white;"  href="{{ url_for('connexion') }}">Se connecter</a></li>
-                    <li><a    style="color: white;"  href="{{ url_for('inscription') }}">S'inscrire</a></li>
-                    <li><a    style="color: white;"  href="{{ url_for('reinitialisation') }}">Réinitialiser</a></li>
+                    <li><a    style="text-align: left;color: white;border-left: none;font-size: 12px;padding-left: 0px;padding-right: 0px;"  href="{{ url_for('connexion') }}">Se connecter</a></li>
+                    <li><a    style="text-align: left;color: white;border-left: none;font-size: 12px;padding-left: 0px;padding-right: 0px;"  href="{{ url_for('inscription') }}">S'inscrire</a></li>
+                    <li><a    style="text-align: left;color: white;border-left: none;font-size: 12px;padding-left: 0px;padding-right: 0px;"  href="{{ url_for('reinitialisation') }}">Réinitialiser</a></li>
                 {% endif %}
               </ul>
             </li>
