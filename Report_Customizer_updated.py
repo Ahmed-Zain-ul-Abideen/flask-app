@@ -567,49 +567,49 @@ def c2apply_custom_style_to_range(
                 if number_format:
                     cell.number_format = number_format  # Apply the number format
        
-    cell_list=background  # Range to style
-    font_family=font_family
-    font_color=back_bg  # White font
-    font_size=12
-    bg_color=back_bg
-    alignment=Alignment(horizontal="center", vertical="center")
-    bold=1
-    style_name="bacground_style"
+    # cell_list=background  # Range to style
+    # font_family=font_family
+    # font_color=back_bg  # White font
+    # font_size=12
+    # bg_color=back_bg
+    # alignment=Alignment(horizontal="center", vertical="center")
+    # bold=1
+    # style_name="bacground_style"
 
-    # Define the custom style
-    custom_style = NamedStyle(name=style_name)
-    # if number_format:
-    #     custom_style.font = Font(name=font_family, size=12, color=f"FF{font_color}", bold=bold, number_format=number_format)  # aRGB format
-    # else:
-    custom_style.font = Font(
-        name=font_family, size=font_size, color=f"FF{font_color}", bold=bold
-    )  # aRGB format
+    # # Define the custom style
+    # custom_style = NamedStyle(name=style_name)
+    # # if number_format:
+    # #     custom_style.font = Font(name=font_family, size=12, color=f"FF{font_color}", bold=bold, number_format=number_format)  # aRGB format
+    # # else:
+    # custom_style.font = Font(
+    #     name=font_family, size=font_size, color=f"FF{font_color}", bold=bold
+    # )  # aRGB format
 
-    custom_style.fill = PatternFill(
-        start_color=f"FF{bg_color}", end_color=f"FF{bg_color}", fill_type="solid"
-    )
-    custom_style.alignment = alignment
+    # custom_style.fill = PatternFill(
+    #     start_color=f"FF{bg_color}", end_color=f"FF{bg_color}", fill_type="solid"
+    # )
+    # custom_style.alignment = alignment
 
-    # Register the style if it doesn't already exist
-    if style_name not in wb.named_styles:
-        wb.add_named_style(custom_style)
+    # # Register the style if it doesn't already exist
+    # if style_name not in wb.named_styles:
+    #     wb.add_named_style(custom_style)
 
-    # Iterate through each cell in the specified range
-    for info in cell_list:
-        # Select the worksheet
-        ws = wb[info[0]]
-        cell_range = info[1]
-        unlocked_cells = list(filter(lambda s: s[0] == info[0], unlocked_cells_list))
-        if unlocked_cells:
-            unlocked_cells = unlocked_cells[0][1]
-            # print(unlocked_cells)
-        for row in ws[cell_range]:
-            for cell in row:
-                cell.style = style_name  # Apply the custom style
-                if unlocked_cells and (cell.coordinate in unlocked_cells):
-                    cell.protection = Protection(locked=False)
-                if number_format:
-                    cell.number_format = number_format  # Apply the number format
+    # # Iterate through each cell in the specified range
+    # for info in cell_list:
+    #     # Select the worksheet
+    #     ws = wb[info[0]]
+    #     cell_range = info[1]
+    #     unlocked_cells = list(filter(lambda s: s[0] == info[0], unlocked_cells_list))
+    #     if unlocked_cells:
+    #         unlocked_cells = unlocked_cells[0][1]
+    #         # print(unlocked_cells)
+    #     for row in ws[cell_range]:
+    #         for cell in row:
+    #             cell.style = style_name  # Apply the custom style
+    #             if unlocked_cells and (cell.coordinate in unlocked_cells):
+    #                 cell.protection = Protection(locked=False)
+    #             if number_format:
+    #                 cell.number_format = number_format  # Apply the number format
     
     return wb
 
