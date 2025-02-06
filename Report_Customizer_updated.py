@@ -281,17 +281,17 @@ def customise_workbook(current_user, report_path, report_dir, bucket_logo):
         back_bg = current_user.bg_color[1:]
     )
 
-    # wb = c3apply_custom_style_to_range(
-    #     wb=wb,
-    #     cell_list=background,  # Range to style
-    #     font_family=current_user.fontFamily,
-    #     font_color=current_user.bg_color[1:],  # White font
-    #     font_size=12,
-    #     bg_color=current_user.bg_color[1:],
-    #     alignment=Alignment(horizontal="center", vertical="center"),
-    #     bold=1,
-    #     style_name="bacground_style",
-    # )
+    wb = c3apply_custom_style_to_range(
+        wb=wb,
+        cell_list=background,  # Range to style
+        font_family=current_user.fontFamily,
+        font_color=current_user.bg_color[1:],  # White font
+        font_size=12,
+        bg_color=current_user.bg_color[1:],
+        alignment=Alignment(horizontal="center", vertical="center"),
+        bold=1,
+        style_name="bacground_style",
+    )
 
     # wb = c4apply_custom_style_to_range(
     #     wb=wb,
