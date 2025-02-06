@@ -1,5 +1,6 @@
 from utility import log_execution_time
 import logging
+import os
 
 from openpyxl import load_workbook  # Workbook
 from openpyxl.drawing.image import Image as XLImage
@@ -277,6 +278,7 @@ def customise_workbook(current_user, report_path, report_dir, bucket_logo):
         alignment=Alignment(horizontal="left", vertical="center"),
         bold=1,
         style_name="attribute_style_left",
+        back_bg = current_user.bg_color[1:]
     )
 
     # wb = c3apply_custom_style_to_range(
@@ -366,10 +368,13 @@ def add_user_logo_updated(wb, current_user):
         # Extract the image filename
         # image_filename = current_user.user_image.split("/")[-1]
         logo_path = 'static/user_images/' + current_user.user_image
-        logging.debug(f"LOGO PATH: {logo_path}") 
+        logging.debug(f"LOGO PATH: {logo_path}")
+        if  not  os.path.exists(logo_path):
+            logo_path = 'static/images/image-0.png'
+             
         image = XLImage(logo_path)
     else:
-        logo_path =  'static/user_images/image-0.png'
+        logo_path =  'static/images/image-0.png'
         image = XLImage(logo_path)
 
     image = reshape_image(image, max_width=175, max_height=175)
@@ -508,6 +513,7 @@ def c2apply_custom_style_to_range(
     alignment,
     bold,
     style_name,
+    back_bg,
     number_format=None,
 ):
     """
@@ -560,6 +566,51 @@ def c2apply_custom_style_to_range(
                     cell.protection = Protection(locked=False)
                 if number_format:
                     cell.number_format = number_format  # Apply the number format
+       
+    cell_list=background  # Range to style
+    font_family=font_family
+    font_color=back_bg  # White font
+    font_size=12
+    bg_color=back_bg
+    alignment=Alignment(horizontal="center", vertical="center")
+    bold=1
+    style_name="bacground_style"
+
+    # Define the custom style
+    custom_style = NamedStyle(name=style_name)
+    # if number_format:
+    #     custom_style.font = Font(name=font_family, size=12, color=f"FF{font_color}", bold=bold, number_format=number_format)  # aRGB format
+    # else:
+    custom_style.font = Font(
+        name=font_family, size=font_size, color=f"FF{font_color}", bold=bold
+    )  # aRGB format
+
+    custom_style.fill = PatternFill(
+        start_color=f"FF{bg_color}", end_color=f"FF{bg_color}", fill_type="solid"
+    )
+    custom_style.alignment = alignment
+
+    # Register the style if it doesn't already exist
+    if style_name not in wb.named_styles:
+        wb.add_named_style(custom_style)
+
+    # Iterate through each cell in the specified range
+    for info in cell_list:
+        # Select the worksheet
+        ws = wb[info[0]]
+        cell_range = info[1]
+        unlocked_cells = list(filter(lambda s: s[0] == info[0], unlocked_cells_list))
+        if unlocked_cells:
+            unlocked_cells = unlocked_cells[0][1]
+            # print(unlocked_cells)
+        for row in ws[cell_range]:
+            for cell in row:
+                cell.style = style_name  # Apply the custom style
+                if unlocked_cells and (cell.coordinate in unlocked_cells):
+                    cell.protection = Protection(locked=False)
+                if number_format:
+                    cell.number_format = number_format  # Apply the number format
+    
     return wb
 
 
