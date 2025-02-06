@@ -20,7 +20,7 @@
     var clientSecret = '{{ clsk }}';  // Client secret from the PaymentIntent
 
     var elements = stripe.elements();
-    var card = elements.create('card');
+    var card = elements.create('card',{ hidePostalCode: true });
     card.mount('#card-element');
     var  package = "{{ package }}";
 

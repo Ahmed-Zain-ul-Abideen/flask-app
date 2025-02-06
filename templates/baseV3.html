@@ -18,7 +18,7 @@
 <body>
 
     <!-- Header and Navigation -->
-    <header>
+    <header  style="z-index: 9999;">
         <nav style= "max-width:1140px; margin-left:auto; margin-right:auto;">
             <div class="logo">
                 <a href="{{ url_for('index') }}">
@@ -40,7 +40,7 @@
                 <li class="link   {% if request.endpoint == 'preparer' %}active{% endif %}"><a href="{{ url_for('preparer') }}">Générer vos rapports</a></li>
                 <li  class="link  {% if request.endpoint == 'contact' %}active{% endif %}"><a href="{{ url_for('contact') }}">Contact</a></li>
             {% endif %}
-            <li><a href="javascript:void(0)" for="droplist1" class="toggle" style="color: #fff;">PROFILE 
+            <li id="wrapded_li"><a href="javascript:void(0)" for="droplist1" class="toggle" style="color: #fff;">PROFILE 
                 <span class="profile-icon {% if is_authenticated %}logged-in{% endif %}">
                     <i class="fas fa-user-circle"></i>
                 </span> 
@@ -113,7 +113,19 @@
         });
 
         document.querySelector('#the_specsul').addEventListener('mouseleave', function() {
-            console.log("Mouse leaved on profile dropdown");
+            console.log("Mouse leaved of profile dropdown");
+            document.querySelector('.carousel').style.pointerEvents = 'auto';
+        });
+
+        //wrapded_li
+
+        document.querySelector('#wrapded_li').addEventListener('mouseenter', function() {
+            console.log("Mouse entered on wrapded_li");
+            document.querySelector('.carousel').style.pointerEvents = 'none';
+        });
+
+        document.querySelector('#wrapded_li').addEventListener('mouseleave', function() {
+            console.log("Mouse leaved of  wrapded_li");
             document.querySelector('.carousel').style.pointerEvents = 'auto';
         });
 

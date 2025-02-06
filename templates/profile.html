@@ -40,7 +40,7 @@
 
     <button type="button" onclick="enableInputs()">Editer Votre Profile</button>
 
-    <form method="POST" enctype="multipart/form-data" action="{{ url_for('profile') }}" id="profile">
+    <form method="POST" enctype="multipart/form-data" action="{{ url_for('profile') }}" id="profile"  style="margin-left: 0px;margin-right: 0px;">
         <p class="error_msg" id="error-message-script" style="display: none;">Pour modifier l'adresse e-mail et le numéro de téléphone, contactez l'administrateur.</p>
         {{ form.hidden_tag() }}  <!-- This includes the CSRF token -->
         <div class="form-profile">

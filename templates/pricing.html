@@ -10,13 +10,13 @@
        <div class="columns_wrap">
         {% if  subs_flag %}
             <div class="columns">
-                <ul class="price">
+                <ul class="price"  style="min-height: 307.2px;">
                     {% if free_flag %}
                         <li class="header" style="background-color:#04AA6D">Essai</li>
                         <li class="grey">0 €</li>
                         <li>1 rapport offert</li>
-                        <li class="grey">
-                            <a href="{{ url_for('pricing', free_report='121') }}" class="buttonPric" style="background-color:#04AA6D; color: white;">Commander</a> 
+                        <li class="grey"  style="min-height: 80.8px;">
+                            <a href="{{ url_for('pricing', free_report='121') }}" class="buttonPricadjust" style="background-color:#04AA6D; color: white;">Commander</a> 
                         </li>
                     {% else %}
 
@@ -27,7 +27,7 @@
                         {% else %}
                             <li>Downloaded Reports:0</li>
                         {% endif %}
-                        <li class="grey"></li>
+                        <li class="grey"  style="min-height: 80.8px;"></li>
 
 
                     {% endif %}
@@ -46,7 +46,7 @@
 
                     <li class="grey">
                         
-                            <a href="{{ url_for('paym_form', package='3') }}" class="buttonPric">Commander</a>
+                            <a href="{{ url_for('paym_form', package='3') }}" class="buttonPricadjust">Commander</a>
                         
                     </li>
                 </ul>
@@ -64,7 +64,7 @@
 
                     <li class="grey">
                         
-                            <a href="{{ url_for('paym_form', package='6') }}" class="buttonPric">Commander</a>
+                            <a href="{{ url_for('paym_form', package='6') }}" class="buttonPricadjust">Commander</a>
                         
                     </li>
                 </ul>
@@ -82,7 +82,7 @@
 
                     <li class="grey">
                         
-                            <a href="{{ url_for('paym_form', package='12') }}" class="buttonPric">Commander</a>
+                            <a href="{{ url_for('paym_form', package='12') }}" class="buttonPricadjust">Commander</a>
                         
                     </li>
                 </ul>
