@@ -268,30 +268,30 @@ def customise_workbook(current_user, report_path, report_dir, bucket_logo):
         style_name="attribute_style_centered",
     )
 
-    wb = c2apply_custom_style_to_range(
-        wb=wb,
-        cell_list=attribute_cells_left,  # Range to style
-        font_family=current_user.fontFamily,
-        font_color=current_user.attribut_font_color[1:],  # White font
-        font_size=11,
-        bg_color=current_user.attribut_color[1:],
-        alignment=Alignment(horizontal="left", vertical="center"),
-        bold=1,
-        style_name="attribute_style_left",
-        back_bg = current_user.bg_color[1:]
-    )
-
-    # wb = c3apply_custom_style_to_range(
+    # wb = c2apply_custom_style_to_range(
     #     wb=wb,
-    #     cell_list=background,  # Range to style
+    #     cell_list=attribute_cells_left,  # Range to style
     #     font_family=current_user.fontFamily,
-    #     font_color=current_user.bg_color[1:],  # White font
-    #     font_size=12,
-    #     bg_color=current_user.bg_color[1:],
-    #     alignment=Alignment(horizontal="center", vertical="center"),
+    #     font_color=current_user.attribut_font_color[1:],  # White font
+    #     font_size=11,
+    #     bg_color=current_user.attribut_color[1:],
+    #     alignment=Alignment(horizontal="left", vertical="center"),
     #     bold=1,
-    #     style_name="bacground_style",
+    #     style_name="attribute_style_left",
+    #     back_bg = current_user.bg_color[1:]
     # )
+
+    wb = c3apply_custom_style_to_range(
+        wb=wb,
+        cell_list=background,  # Range to style
+        font_family=current_user.fontFamily,
+        font_color=current_user.bg_color[1:],  # White font
+        font_size=12,
+        bg_color=current_user.bg_color[1:],
+        alignment=Alignment(horizontal="center", vertical="center"),
+        bold=1,
+        style_name="bacground_style",
+    )
 
     # wb = c4apply_custom_style_to_range(
     #     wb=wb,
