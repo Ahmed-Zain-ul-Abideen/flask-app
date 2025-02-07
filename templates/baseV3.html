@@ -45,16 +45,16 @@
                     <i class="fas fa-user-circle"></i>
                 </span> 
                 </a>
-              <ul id="the_specsul" style="width: 100%;background-color: #666;border-bottom: none;margin-left: 0px;margin-right: 0px;padding-left: 0px;padding-right: 0px;">
+              <ul id="the_specsul" style="padding-top: 0px;padding-bottom: 0px;width: 100%;background-color: #666;border-bottom: none;margin-left: 0px;margin-right: 0px;padding-left: 0px;padding-right: 0px;">
                 {% if is_authenticated %}
-                    <li style="width: 100%;"><a    style="text-align: left;color: white;border-left: none;font-size: 10px;padding-left: 8px;padding-right: 0px;" href="{{ url_for('logout') }}">Se déconnecter</a></li>
-                    <li style="width: 100%;"><a    style="text-align: left;color: white;border-left: none;font-size: 10px;padding-left: 8px;padding-right: 0px;" href="{{ url_for('profile') }}">Profile</a></li>
-                    <li style="width: 100%;"><a    style="text-align: left;color: white;border-left: none;font-size: 10px;padding-left: 8px;padding-right: 0px;" href="{{ url_for('mes_rapports') }}">Mes Rapports</a></li>
+                    <li style="width: 100%;margin-bottom: 0px;padding-top: 0px;"><a    style="text-align: left;color: white;border-left: none;font-size: 10px;padding-left: 8px;padding-right: 0px;" href="{{ url_for('logout') }}">Se déconnecter</a></li>
+                    <li style="width: 100%;margin-bottom: 0px;padding-top: 5px;"><a    style="text-align: left;color: white;border-left: none;font-size: 10px;padding-left: 8px;padding-right: 0px;" href="{{ url_for('profile') }}">Profile</a></li>
+                    <li style="width: 100%;margin-bottom: 0px;padding-top: 5px;"><a    style="text-align: left;color: white;border-left: none;font-size: 10px;padding-left: 8px;padding-right: 0px;" href="{{ url_for('mes_rapports') }}">Mes Rapports</a></li>
                     
                 {% else %}
-                    <li style="width: 100%;"><a    style="text-align: left;color: white;border-left: none;font-size: 12px;padding-left: 8px;padding-right: 0px;"  href="{{ url_for('connexion') }}">Se connecter</a></li>
-                    <li style="width: 100%;"><a    style="text-align: left;color: white;border-left: none;font-size: 12px;padding-left: 8px;padding-right: 0px;"  href="{{ url_for('inscription') }}">S'inscrire</a></li>
-                    <li style="width: 100%;"><a    style="text-align: left;color: white;border-left: none;font-size: 12px;padding-left: 8px;padding-right: 0px;"  href="{{ url_for('reinitialisation') }}">Réinitialiser</a></li>
+                    <li style="width: 100%;margin-bottom: 0px;padding-top: 0px;"><a    style="text-align: left;color: white;border-left: none;font-size: 12px;padding-left: 8px;padding-right: 0px;"  href="{{ url_for('connexion') }}">Se connecter</a></li>
+                    <li style="width: 100%;margin-bottom: 0px;padding-top: 5px;"><a    style="text-align: left;color: white;border-left: none;font-size: 12px;padding-left: 8px;padding-right: 0px;"  href="{{ url_for('inscription') }}">S'inscrire</a></li>
+                    <li style="width: 100%;margin-bottom: 0px;padding-top: 5px;"><a    style="text-align: left;color: white;border-left: none;font-size: 12px;padding-left: 8px;padding-right: 0px;"  href="{{ url_for('reinitialisation') }}">Réinitialiser</a></li>
                 {% endif %}
               </ul>
             </li>
