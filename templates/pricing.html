@@ -3,6 +3,11 @@
 {% block title %}Pricing{% endblock %}
 
 {% block content %}
+<style>
+   .pricfix{
+    font-size: 10px;
+   }
+</style>
 <div style = "padding:20px;"><h2 style="text-align:center" class="top_headings">Politique de Prix</h2></div>
     <div  >
         
@@ -20,14 +25,14 @@
                         </li>
                     {% else %}
 
-                        <li class="header" style="background-color:#04AA6D">Current Package: Essai</li>
-                        <li class="grey">Total Reports: 1 </li>
+                        <li class="header" style="background-color:#04AA6D"  id="bxhghtfix1">Current Package: Essai</li>
+                        <li class="grey"  id="bxhghtfix2">Total Reports: 1 </li>
                         {% if  current_user.downloaded_current  %}
-                            <li>Downloaded Reports:{{current_user.downloaded_current}}</li>
+                            <li  id="bxhghtfix3">Downloaded Reports:{{current_user.downloaded_current}}</li>
                         {% else %}
-                            <li>Downloaded Reports:0</li>
+                            <li  id="bxhghtfix4">Downloaded Reports:0</li>
                         {% endif %}
-                        <li class="grey"  style="min-height: 80.8px;"></li>
+                        <li id="bxhghtfix5"  class="grey  fixsheght"></li>
 
 
                     {% endif %}
