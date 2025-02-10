@@ -1420,3 +1420,13 @@ input[type="password"]::-webkit-text-security {
     min-height: 76.1px;
   }
 }
+
+
+.mncntnrflxes{
+  display: flex;
+  flex-direction: column; 
+}
+
+.mncntr_height{
+  min-height: calc(100vh - 280px);
+}
